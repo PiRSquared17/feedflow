@@ -1,0 +1,113 @@
+﻿<!-------------------------------------------------
+
+	Filename:	Settings.html
+ 	Authors:	Tolga Hosgor, Cristian Patrasciuc
+ 	Emails:		tmuzaffer@gmail.com, cristian.patrasciuc@gmail.com
+ 	Date:		30-May-2010
+	
+ Copyright © 2010 Tolga Hosgor, Cristian Patrasciuc
+ 
+ This file is part of FeedFlow.
+
+ FeedFlow is free project: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ FeedFlow is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with FeedFlow.  If not, see <http://www.gnu.org/licenses/>.
+ 
+--------------------------------------------------->
+
+<HTML>
+	<HEAD>
+		<LINK href="styles/settings.css" rel="stylesheet" type="text/css">
+		<SCRIPT language="javascript" src="scripts/settings.js"></SCRIPT>
+	</HEAD>
+
+	<BODY onload="loadSettings()">
+		
+		<a href="javascript:void(0);" onclick="showTable(feedsTable);">Feeds</a> |
+		<a href="javascript:void(0);" onclick="showTable(optionsTable);">Options</a> |
+		<a href="javascript:void(0);" onclick="showTable(aboutTable);">About</a>
+		<div style="height:20px;"></div>
+		
+		<table id="feedsTable">	
+		<tr><td><label for="feeds">Feeds:</label></td>
+		<td><SELECT name="feeds" id="feeds"/ onchange="feedsChange();"/>
+		</td></tr>
+		<tr><td></td><td><input type="button" name="deleteFeed" id="deleteFeed" value="Delete Feed" style="width:auto;" onclick="deleteExistingFeed();"><input type="button" name="moveFeedUpButton" id="moveFeedUpButton" value="▲"/ style="width:25px;" onclick="moveFeed(0);"><input type="button" name="moveFeedDownButton" id="moveFeedDownButton" value="▼"/ style="width:25px;" onclick="moveFeed(1);"><input type="button" id="filteringButton" value="Filtering" onclick="filterCurrentFeed();" style="width:65px;"/></td></tr>
+		<tr><td><label for="feedName">Feed name:</label></td>
+		<td><input type="text" name="feedName" id="feedName" length="20" onkeyup="editCheck();"/></td></tr>
+		<tr><td><label for="feedURL">Feed URL:</label></td>
+		<td><input type="text" name="feedURL" id="feedURL" onkeyup="editCheck();"/></td></tr>
+	    <tr><td></td><td><input type="button" name="addFeed" id="addFeed" value="Add Feed" style="width:auto;" onclick="addNewFeed( feedName.value, feedURL.value );"><input type="button" name="editFeed" id="editFeed" value="Apply Changes" style="width:120px;" onclick="editExistingFeed();" disabled="true"></td></tr><tr><td><span id="errorMessage"></span></td></tr>
+		<tr><td colspan="2" style="height:15px;"></td></tr>
+		<tr><td></td><td><input type="button" name="importFeeds" id="importFeeds" value="Import Feeds from IE" style="width:auto;" onclick="importFeedsFromIE7();"></td></tr>
+		</table>
+		
+		<table id="optionsTable" style="display:none;">
+		<tr><div id="preview"><img id="previewImage" src="themes/brown/preview.png"></div></tr>
+		<tr><td><label for="feedTheme">Theme:</label></td>
+		<td><SELECT name="feedTheme" id="feedTheme" onchange="updatePreview();">
+				<OPTION value="default" SELECTED>Default</OPTION>
+				<OPTION value="brown">Brown</OPTION>
+				<OPTION value="red">Red</OPTION>
+				<OPTION value="vista">Vista</OPTION>
+		</SELECT></td></tr>
+		<tr><td><label for="feedRefresh">Refresh:</label></td>
+		<td><SELECT name="feedRefresh" id="feedRefresh">
+				<OPTION value="60000">every minute</OPTION>
+				<OPTION value="900000">every 15 minutes</OPTION>
+				<OPTION value="1800000">every 30 minutes</OPTION>
+				<OPTION value="3600000">every 1 hour</OPTION>
+				<OPTION value="-1" SELECTED>only next time the gadget is started</OPTION>
+		</SELECT></td></tr>
+		<tr><td><label for="noItems">Items/page:</label></td>
+		<td><select name="noItems" id="noItems">
+				<option value="4">4</option>
+				<option value="6">6</option>
+				<option value="8">8</option>
+		</select></td></tr>
+		<tr><td></td><td><input type="checkbox" name="autoScrollCheckBox" id="autoScrollCheckBox" style="width:auto;"/>Auto scroll through feeds</td></tr>
+		<tr><td>Autoscroll<br>Interval:</td><td><input type="text" name="autoScrollInterval" id="autoScrollInterval" value="15000" onkeypress="return onlyNumbers();"/></td></tr>
+		<tr><td></td><td><input type="checkbox" name="disableLoopCheckBox" id="disableLoopCheckBox" style="width:auto;"/>Disable changing feeds during auto scroll</td></tr>
+		<tr><td></td><td><input type="checkbox" id="notStopAutoScroll" style="width:auto;"/>Do not stop autoscroll on mouseover</td></tr>
+		</table>
+
+		<table id="filteringTable" style="display:none;">
+		<tr><td colspan="2">Altering filters of:<br><b id="filteringTableN"></b></td></tr>
+		<tr><td colspan="2"><a href="javascript:void(0);" style="float:right;margin:5px;" title="The filters should be written in RegExp form.">?</a></td></tr>
+		<tr><td>Feed Title:</td><td><input type="text" id="filteringTitle"/></td></tr>
+		<tr><td>Feed Content:</td><td><input type="text" id="filteringContent"/></td></tr>
+		<tr><td colspan="2">&nbsp;</td></tr>
+		<tr><td></td><td><input type="button" value="Apply Changes" onclick="filteringApplyChanges();"/></td></tr>
+		</table>
+
+		<table id="aboutTable" style="display:none;">
+		<tr><td colspan="2">FeedFlow Gadget, v1.0</td></tr>
+		<tr><td colspan="2"><div style="height:20px;"></div></td></tr>
+        <tr><td><STRONG>Authors:</STRONG></td><td>Tolga Hosgor, Cristian Patrasciuc</td></tr>
+		<tr><td><STRONG>Emails:</STRONG></td><td><a href="mailto:tmuzaffer@gmail.com">tmuzaffer@gmail.com</a><br><a href="mailto:cristian.patrasciuc@gmail.com">cristian.patrasciuc@gmail.com</a></td></tr>
+		<tr><td>&nbsp;</td></tr><tr><td colspan="2">
+		<textarea cols="33" rows="11">
+Copyright &#169; 2010 Tolga Hosgor, Cristian Patrasciuc
+
+FeedFlow is free project: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+FeedFlow is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with FeedFlow. If not, see <http://www.gnu.org/licenses/>.
+		</textarea>
+		</td></tr></table>
+		
+	</BODY>
+</HTML>
+
