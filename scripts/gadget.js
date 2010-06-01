@@ -199,8 +199,10 @@ function bodyMouseOver()
 
 function bodyMouseOut()
 {
-	if(isAutoScroll==1&&System.Gadget.Flyout.show==false&&System.Gadget.Settings.read("notStopAutoScroll")==0)
+	if(isAutoScroll==1&&System.Gadget.Flyout.show==false&&System.Gadget.Settings.read("notStopAutoScroll")==0){
+		clearTimeout(autoscrolltimeout);
 		autoscrolltimeout=setTimeout("autoScroll();", aSInterval);
+	}
 }
 
 /* Download (request) the feed from the URL */
