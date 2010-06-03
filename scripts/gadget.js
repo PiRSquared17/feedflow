@@ -150,6 +150,13 @@ function AtomItem(itemxml)
 	this.link;
 	this.description;
 	this.pubDate;
+	
+	var filterTData=new RegExp(FT=System.Gadget.Settings.read("feedFTitle"+currentFeed));
+	var filterCData=new RegExp(FC=System.Gadget.Settings.read("feedFContent"+currentFeed));
+	if(i==0 && FT!="" && itemxml.getElementsByTagName("title")[0].childNodes[0].nodeValue.match(filterTData)!=null)
+		this.filter=false;
+	if(i==2 && FC!="" && itemxml.getElementsByTagName("content")[0].childNodes[0].nodeValue.match(filterCData)!=null)
+		this.filter=false;
 
 	try { this.title = itemxml.getElementsByTagName("title")[0].childNodes[0].nodeValue; }
 	catch (e) { this.title = "(no title)"; }
@@ -187,7 +194,8 @@ function AtomChannel(atomxml)
 	for ( var i=0; i<itemElements.length; i++ )
 	{
 		Item = new AtomItem(itemElements[i]);
-		this.items.push(Item);
+		if(Item.filter!=false)
+			this.items.push(Item);
 	}	
 }
 
