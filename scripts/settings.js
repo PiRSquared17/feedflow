@@ -2,7 +2,7 @@
 
  *	Filename:	settings.js
  *	Authors:	Tolga Hosgor, Cristian Patrasciuc
- *	Emails:		tmuzaffer@gmail.com, cristian.patrasciuc@gmail.com
+ *	Emails:		fasdfasdas@gmail.com, cristian.patrasciuc@gmail.com
  *	Date:		30-May-2010
  
  Copyright © 2010 Tolga Hosgor, Cristian Patrasciuc
