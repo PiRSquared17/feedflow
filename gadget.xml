@@ -4,7 +4,7 @@
     <namespace>Patrasciuc.FeedFlowGadget</namespace>
     <version>1.0.0.0</version>
     <author name="Tolga Hosgor, Cristian Patrasciuc">
-        <info text="See Settings for email"/>
+        <info text="http://code.google.com/p/feedflow/"/>
         <logo height="160" width="160" src="gadgeticon.png"  />
     </author>
     <copyright>
