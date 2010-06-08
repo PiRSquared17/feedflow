@@ -263,14 +263,17 @@ function checkVersion()
 	checkVersionButton.value="Checking...";
 	var XMLVersionCheck = new XMLHttpRequest();
 	XMLVersionCheck.onreadystatechange = function(){
-		if(XMLVersionCheck.readyState==4&&XMLVersionCheck.status==200){
+		if(XMLVersionCheck.readyState==4){
 			clearTimeout(XMLVersionCheckTimeout);
 			checkVersionButton.value=" Done ";
-			if(XMLVersionCheck.responseText==System.Gadget.version)
-				checkVersionInfo.innerHTML="<span style='color:#0a7d04;'>You are using the latest version</span>";
-			else {
-				checkVersionInfo.innerHTML="<span style='color:#0a7d04;'>New version found! Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</span>";
+			if(XMLVersionCheck.status==200){
+				if(XMLVersionCheck.responseText==System.Gadget.version)
+					checkVersionInfo.innerHTML="<span style='color:#0a7d04;'>You are using the latest version</span>";
+				else
+					checkVersionInfo.innerHTML="<span style='color:#0a7d04;'>New version found! Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</span>";
 			}
+			else
+				checkVersionInfo.innerHTML="<span style='color:#a20101;'>Could not check for updates</span>";
 		}
 	};
 	var XMLVersionCheckTimeout=setTimeout(function(){
