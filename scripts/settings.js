@@ -258,6 +258,30 @@ function filteringApplyChanges()
 	showTable(feedsTable);
 }
 
+function checkVersion()
+{
+	checkVersionButton.value="Checking...";
+	var XMLVersionCheck = new XMLHttpRequest();
+	XMLVersionCheck.onreadystatechange = function(){
+		if(XMLVersionCheck.readyState==4&&XMLVersionCheck.status==200){
+			clearTimeout(XMLVersionCheckTimeout);
+			checkVersionButton.value=" Done ";
+			if(XMLVersionCheck.responseText==System.Gadget.version)
+				checkVersionInfo.innerHTML="<span style='color:#0a7d04;'>You are using the latest version</span>";
+			else {
+				checkVersionInfo.innerHTML="<span style='color:#0a7d04;'>New version found! Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</span>";
+			}
+		}
+	};
+	var XMLVersionCheckTimeout=setTimeout(function(){
+		XMLVersionCheck.abort();
+		checkVersionInfo.innerHTML="<span style='color:#a20101;'>Could not check for updates</span>";
+		checkVersionButton.disabled=false;
+	},8500);
+	XMLVersionCheck.open("GET","http://feedflow.googlecode.com/files/feedflowver.txt",true);
+	XMLVersionCheck.send(null);
+}
+
 function importFeedsFromIE7() 
 {
 	var feedManager = null;
