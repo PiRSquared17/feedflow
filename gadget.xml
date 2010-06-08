@@ -2,9 +2,9 @@
 <gadget>
     <name>FeedFlow</name>
     <namespace>Patrasciuc.FeedFlowGadget</namespace>
-    <version>1.0.0.0</version>
+    <version>1.0.0.2</version>
     <author name="Tolga Hosgor, Cristian Patrasciuc">
-        <info text="http://code.google.com/p/feedflow/"/>
+        <info url="http://code.google.com/p/feedflow/" />
         <logo height="160" width="160" src="gadgeticon.png"  />
     </author>
     <copyright>
@@ -24,7 +24,7 @@
 	You should have received a copy of the GNU General Public License
 	along with FeedFlow.  If not, see "http://www.gnu.org/licenses/".
 	</copyright>
-    <description>A gadget that lets you get a sneak preview of your favorite RSS and Atom feeds around the web.</description>
+    <description>FeedFlow is a sidebar gadget which allows you to read the feeds you want easily. It has many features like filtering the feeds by title or content.</description>
     <icons>
     	<icon height="160" width="160" src="gadgeticon.png" />
 	</icons>

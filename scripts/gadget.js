@@ -253,7 +253,7 @@ function getNews(i)
 	xmlDocument.send(null);
 	
 	clearTimeout(getNewsTimeout);
-	getNewsTimeout=setTimeout(function(){xmlDocument.abort();showMessage("Could not load<br>"+name);setTimeout(getNextFeed,3000);}, 6500);
+	getNewsTimeout=setTimeout(function(){xmlDocument.abort();showMessage("Could not load<br>"+name);setTimeout(getNextFeed,3000);}, System.Gadget.Settings.read("feedLoadTimeout"));
 	
 	return;
 }

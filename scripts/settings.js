@@ -34,22 +34,20 @@ function settingsClosing(event)
         System.Gadget.Settings.write( "theme", feedTheme.options[feedTheme.selectedIndex].value );
 		System.Gadget.Settings.write( "noItems", noItems.options[noItems.selectedIndex].value );
 		System.Gadget.Settings.write( "autoScroll", ((autoScrollCheckBox.checked == true) ? 1 : 0 ) );
-		System.Gadget.Settings.write( "autoScrollInterval", (autoScrollInterval.value<2000?2000:autoScrollInterval.value) );
+		System.Gadget.Settings.write( "autoScrollInterval", (autoScrollInterval.value<2000?2000:autoScrollInterval.value));
 		System.Gadget.Settings.write("disableLoop",((disableLoopCheckBox.checked==true)?1:0));
 		System.Gadget.Settings.write("notStopAutoScroll",((notStopAutoScroll.checked==true)?1:0));
+		System.Gadget.Settings.write("feedLoadTimeout",(feedLoadTimeout.value<2000?2000:feedLoadTimeout.value));
         event.cancel = false;
     }
 }
 
 function loadSettings() 
 {
-	var refresh = System.Gadget.Settings.read("refresh");
-	var theme = System.Gadget.Settings.read("theme");
-	var interval = System.Gadget.Settings.read("autoScrollInterval");
 	var feedcount=System.Gadget.Settings.read("noFeeds");
 	if(feedcount=="")feedcount=0;
 
-	switch ( refresh ) {
+	switch ( System.Gadget.Settings.read("refresh") ) {
 		case 60000:
 			feedRefresh[0].selected = "1";
 			break;
@@ -66,11 +64,11 @@ function loadSettings()
 			feedRefresh[4].selected = "1";
 	}
 	
-	autoScrollInterval.value=(interval?interval:15000);
-		
+	autoScrollInterval.value=((interval = System.Gadget.Settings.read("autoScrollInterval"))?interval:15000);
 	disableLoopCheckBox.checked=(System.Gadget.Settings.read("disableLoop")==1);
+	feedLoadTimeout.value=((feedloadtimeout = System.Gadget.Settings.read("feedLoadTimeout"))?feedloadtimeout:6500);
 	
-	for ( var i=0; i<4; i++ ) if ( feedTheme[i].value == theme ) feedTheme[i].selected = "1";
+	for ( var i=0; i<4; i++ ) if ( feedTheme[i].value == System.Gadget.Settings.read("theme") ) feedTheme[i].selected = "1";
 	updatePreview();
 
 	buildFeedList();
@@ -318,9 +316,9 @@ function showTable( table )
 function onlyNumbers(evt)
 {
     var e = event || evt;
-    var charCode = e.which || e.keyCode;
+    var cC = e.which || e.keyCode;
 
-    if (charCode > 31 && (charCode < 48 || charCode > 57))
+    if (cC > 31 && (cC < 48 || cC > 57))
         return false;
 
     return true;
