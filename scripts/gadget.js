@@ -232,7 +232,7 @@ function getNews(i)
 	
 	showMessage( "Fetching ..." );
 	currentPosition = 0;
-	
+
 	xmlDocument = new XMLHttpRequest();
 	xmlDocument.onreadystatechange = function () {
 		if (xmlDocument.readyState == 4) {
