@@ -269,7 +269,7 @@ function checkVersion()
 				if(XMLVersionCheck.responseText==System.Gadget.version)
 					checkVersionInfo.innerHTML="<img src='img/o1.png'><span style='color:#0a7d04;'>You are using the latest version</span>";
 				else
-					checkVersionInfo.innerHTML="<span style='color:#0a7d04;'>New version found! Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</span>";
+					checkVersionInfo.innerHTML="<img src='img/d1.png'><span style='color:#0a7d04;'>New version found! Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</span>";
 			}
 			else
 				checkVersionInfo.innerHTML="<img src='img/e1.png'><span style='color:#a20101;'>Could not check for updates</span>";
