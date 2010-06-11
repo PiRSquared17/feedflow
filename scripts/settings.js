@@ -81,6 +81,7 @@ function loadSettings()
 	var items = System.Gadget.Settings.read("noItems");
 	if ( items == "" ) items = 4;
 	noItems.options[items/2-2].selected = "1";
+	checkVersion();
 }
 
 function updatePreview()
@@ -260,26 +261,23 @@ function filteringApplyChanges()
 
 function checkVersion()
 {
-	checkVersionButton.value="Checking...";
 	var XMLVersionCheck = new XMLHttpRequest();
 	XMLVersionCheck.onreadystatechange = function(){
 		if(XMLVersionCheck.readyState==4){
 			clearTimeout(XMLVersionCheckTimeout);
-			checkVersionButton.value=" Done ";
 			if(XMLVersionCheck.status==200){
 				if(XMLVersionCheck.responseText==System.Gadget.version)
-					checkVersionInfo.innerHTML="<span style='color:#0a7d04;'>You are using the latest version</span>";
+					checkVersionInfo.innerHTML="<img src='img/o1.png'><span style='color:#0a7d04;'>You are using the latest version</span>";
 				else
 					checkVersionInfo.innerHTML="<span style='color:#0a7d04;'>New version found! Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</span>";
 			}
 			else
-				checkVersionInfo.innerHTML="<span style='color:#a20101;'>Could not check for updates</span>";
+				checkVersionInfo.innerHTML="<img src='img/e1.png'><span style='color:#a20101;'>Could not check for updates</span>";
 		}
 	};
 	var XMLVersionCheckTimeout=setTimeout(function(){
 		XMLVersionCheck.abort();
-		checkVersionInfo.innerHTML="<span style='color:#a20101;'>Could not check for updates</span>";
-		checkVersionButton.disabled=false;
+		checkVersionInfo.innerHTML="<img src='img/e1.png'><span style='color:#a20101;'>Could not check for updates</span>";
 	},8500);
 	XMLVersionCheck.open("GET","http://feedflow.googlecode.com/files/feedflowver.txt",true);
 	XMLVersionCheck.send(null);

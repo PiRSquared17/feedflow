@@ -61,3 +61,11 @@ input, select { width: 200px; }
 	color: #FF0000;
 	margin-left: 5px;
 }
+
+div#checkVersionInfo img {
+	margin-right:4px;
+}
+
+div#checkVersionInfo span {
+	vertical-align:3px;
+}
