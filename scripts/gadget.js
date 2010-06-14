@@ -269,7 +269,7 @@ function showNews(news)
 		item_html += (news.items[i].description == null) ? "" : "<br>" + decodeHTML(news.items[i].description);
 		document.getElementById( (i-currentPosition) + '' ).innerHTML = item_html;
 	}
-	
+
 	var posText = (currentPosition + 1) + '-' + ((currentPosition + noItems)>news.items.length?news.items.length:(currentPosition + noItems)) + '/' + news.items.length;
 	position.innerHTML = posText;
 

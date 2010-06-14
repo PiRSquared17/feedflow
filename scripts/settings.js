@@ -279,7 +279,7 @@ function checkVersion()
 		XMLVersionCheck.abort();
 		checkVersionInfo.innerHTML="<img src='img/e1.png'><span style='color:#a20101;'>Could not check for updates</span>";
 	},8500);
-	XMLVersionCheck.open("GET","http://feedflow.googlecode.com/files/feedflowver.txt",true);
+	XMLVersionCheck.open("GET","http://feedflow.googlecode.com/files/feedflowver.txt?"+Math.random(),true);
 	XMLVersionCheck.send(null);
 }
 
