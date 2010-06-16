@@ -31,14 +31,16 @@
 	</HEAD>
 
 	<BODY onload="loadSettings()">
-				
+	
+		<div id="checkVersionInfo"><img src="img/l1.gif"/><span>Checking for updates...</span></div>
+		<br/>
 		<a href="javascript:void(0);" onclick="showTable(feedsTable);">Feeds</a> |
 		<a href="javascript:void(0);" onclick="showTable(optionsTable);">Options</a> |
 		<a href="javascript:void(0);" onclick="showTable(aboutTable);">About</a>
 		<div style="height:20px;"></div>
 		
 		<div style="overflow:auto;width:290px;height:300px;">
-		
+				
 		<table id="feedsTable">	
 		<tr><td><label for="feeds">Feeds:</label></td>
 		<td><SELECT name="feeds" id="feeds"/ onchange="feedsChange();"/>
@@ -95,7 +97,7 @@
 		<table id="aboutTable" style="display:none;">
 		<tr><td colspan="2"><a href="http://code.google.com/p/feedflow/">FeedFlow Gadget, v1.0.0.3</a></td></tr>
 		<tr><td colspan="2">Web Address: <a href="http://code.google.com/p/feedflow/">http://code.google.com/p/feedflow/</a></td></tr>
-		<tr><td colspan="2"><div id="checkVersionInfo"><img src="img/l1.gif"/><span>Checking for updates...</span></div></td></tr>
+		<tr><td colspan="2">&nbsp;</td></tr>
         <tr><td><STRONG>Authors:</STRONG></td><td>Tolga Hosgor, Cristian Patrasciuc</td></tr>
 		<tr><td><STRONG>Emails:</STRONG></td><td><a href="mailto:fasdfasdas@gmail.com">fasdfasdas@gmail.com</a><br><a href="mailto:cristian.patrasciuc@gmail.com">cristian.patrasciuc@gmail.com</a></td></tr>
 		<tr><td>&nbsp;</td></tr><tr><td colspan="2">
