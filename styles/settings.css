@@ -35,6 +35,15 @@ label, table, td, tr, strong, input, select, button {
 	vertical-align: middle;
 }
 
+div#checkVersionInfo {
+	font-family: Tahoma;
+	font-size: 9px;
+	vertical-align: middle;
+	position:absolute;
+	top:0;
+	left:10px;
+}
+
 a {
 	color: #0000FF;
 	text-decoration: none;
