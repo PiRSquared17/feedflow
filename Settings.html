@@ -39,13 +39,13 @@
 		<a href="javascript:void(0);" onclick="showTable(aboutTable);">About</a>
 		<div style="height:20px;"></div>
 		
-		<div style="overflow:auto;width:290px;height:300px;">
+		<div style="overflow:auto;width:290px;height:280px;">
 				
 		<table id="feedsTable">	
 		<tr><td><label for="feeds">Feeds:</label></td>
 		<td><SELECT name="feeds" id="feeds"/ onchange="feedsChange();"/>
 		</td></tr>
-		<tr><td></td><td><input type="button" name="deleteFeed" id="deleteFeed" value="Delete Feed" style="width:auto;" onclick="deleteExistingFeed();"><input type="button" name="moveFeedUpButton" id="moveFeedUpButton" value="▲"/ style="width:25px;" onclick="moveFeed(0);"><input type="button" name="moveFeedDownButton" id="moveFeedDownButton" value="▼"/ style="width:25px;" onclick="moveFeed(1);"><input type="button" id="filteringButton" value="Filtering" onclick="filterCurrentFeed();" style="width:65px;"/></td></tr>
+		<tr><td></td><td><input type="button" id="deleteFeed" value="Delete Feed" style="width:auto;" onclick="deleteExistingFeed();"><input type="button" id="moveFeedUpButton" value="▲"/ style="width:25px;" onclick="moveFeed(0);" ondblclick="moveFeed(0);"><input type="button" id="moveFeedDownButton" value="▼"/ style="width:25px;" onclick="moveFeed(1);" ondblclick="moveFeed(1);"><input type="button" id="filteringButton" value="Filtering" onclick="filterCurrentFeed();" style="width:65px;"/></td></tr>
 		<tr><td><label for="feedName">Feed name:</label></td>
 		<td><input type="text" name="feedName" id="feedName" length="20" onkeyup="editCheck();"/></td></tr>
 		<tr><td><label for="feedURL">Feed URL:</label></td>
@@ -54,7 +54,7 @@
 		<tr><td colspan="2" style="height:15px;"></td></tr>
 		<tr><td></td><td><input type="button" name="importFeeds" id="importFeeds" value="Import Feeds from IE" style="width:auto;" onclick="importFeedsFromIE7();"></td></tr>
 		</table>
-		
+
 		<table id="optionsTable" style="display:none;">
 		<tr><div id="preview"><img id="previewImage" src="themes/brown/preview.png"></div></tr>
 		<tr><td><label for="feedTheme">Theme:</label></td>
@@ -101,7 +101,7 @@
         <tr><td><STRONG>Authors:</STRONG></td><td>Tolga Hosgor, Cristian Patrasciuc</td></tr>
 		<tr><td><STRONG>Emails:</STRONG></td><td><a href="mailto:fasdfasdas@gmail.com">fasdfasdas@gmail.com</a><br><a href="mailto:cristian.patrasciuc@gmail.com">cristian.patrasciuc@gmail.com</a></td></tr>
 		<tr><td>&nbsp;</td></tr><tr><td colspan="2">
-		<textarea cols="32" rows="10">
+		<textarea cols="32" rows="9">
 Copyright &#169; 2010 Tolga Hosgor, Cristian Patrasciuc
 
 FeedFlow is free project: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
