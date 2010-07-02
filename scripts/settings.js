@@ -3,7 +3,7 @@
  *	Filename:	settings.js
  *	Authors:	Tolga Hosgor, Cristian Patrasciuc
  *	Emails:		fasdfasdas@gmail.com, cristian.patrasciuc@gmail.com
- *	Date:		30-May-2010
+ *	Date:		05-Jul-2010
  
  Copyright © 2010 Tolga Hosgor, Cristian Patrasciuc
  
@@ -32,12 +32,13 @@ function settingsClosing(event)
     {
         System.Gadget.Settings.write( "refresh", feedRefresh.options[feedRefresh.selectedIndex].value );
         System.Gadget.Settings.write( "theme", feedTheme.options[feedTheme.selectedIndex].value );
-		System.Gadget.Settings.write( "noItems", noItems.options[noItems.selectedIndex].value );
 		System.Gadget.Settings.write( "autoScroll", ((autoScrollCheckBox.checked == true) ? 1 : 0 ) );
 		System.Gadget.Settings.write( "autoScrollInterval", (autoScrollInterval.value<2000?2000:autoScrollInterval.value));
 		System.Gadget.Settings.write("disableLoop",((disableLoopCheckBox.checked==true)?1:0));
 		System.Gadget.Settings.write("notStopAutoScroll",((notStopAutoScroll.checked==true)?1:0));
 		System.Gadget.Settings.write("feedLoadTimeout",(feedLoadTimeout.value<2000?2000:feedLoadTimeout.value));
+		System.Gadget.Settings.write("fontFamily",feedFontF.options[feedFontF.selectedIndex].text);
+		System.Gadget.Settings.write("fontSize",feedFontS.value);
         event.cancel = false;
     }
 }
@@ -78,10 +79,25 @@ function loadSettings()
 	autoScrollCheckBox.checked = System.Gadget.Settings.read( "autoScroll" );
 	notStopAutoScroll.checked = System.Gadget.Settings.read("notStopAutoScroll");
 	filteringButton.disabled = !feedcount;
-	var items = System.Gadget.Settings.read("noItems");
-	if ( items == "" ) items = 4;
-	noItems.options[items/2-2].selected = "1";
-	checkVersion();
+	
+	var font=System.Gadget.Settings.read("fontFamily");
+	if(font=="")
+		font="Arial";
+	var bfr=System.Gadget.Settings.read("fontSize");
+	if(bfr!="")
+		feedFontS.value=bfr;
+	
+	var bfr2=new Array();
+	for(var i=1;i<dlgH.fonts.count;i++)
+		bfr2[i-1]=dlgH.fonts(i);
+	bfr2.sort();
+	for(var i=1;i<dlgH.fonts.count;i++){
+		var bfr=document.createElement("option");
+		if(bfr2[i-1]==font)
+			bfr.selected=true;
+		bfr.text=bfr2[i-1];
+		feedFontF.add(bfr);
+	}
 }
 
 function updatePreview()
@@ -257,30 +273,6 @@ function filteringApplyChanges()
 	System.Gadget.Settings.write("feedFTitle"+i,filteringTitle.value);
 	System.Gadget.Settings.write("feedFContent"+i,filteringContent.value);
 	showTable(feedsTable);
-}
-
-function checkVersion()
-{
-	var XMLVersionCheck = new XMLHttpRequest();
-	XMLVersionCheck.onreadystatechange = function(){
-		if(XMLVersionCheck.readyState==4){
-			clearTimeout(XMLVersionCheckTimeout);
-			if(XMLVersionCheck.status==200){
-				if(XMLVersionCheck.responseText==System.Gadget.version)
-					checkVersionInfo.innerHTML="<img src='img/o1.png'><span style='color:#0a7d04;'>You are using the latest version</span>";
-				else
-					checkVersionInfo.innerHTML="<img src='img/d1.png'><span style='color:#0a7d04;'>New version found! Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</span>";
-			}
-			else
-				checkVersionInfo.innerHTML="<img src='img/e1.png'><span style='color:#a20101;'>Could not check for updates</span>";
-		}
-	};
-	var XMLVersionCheckTimeout=setTimeout(function(){
-		XMLVersionCheck.abort();
-		checkVersionInfo.innerHTML="<img src='img/e1.png'><span style='color:#a20101;'>Could not check for updates</span>";
-	},8500);
-	XMLVersionCheck.open("GET","http://feedflow.googlecode.com/files/feedflowver?"+Math.random(),true);
-	XMLVersionCheck.send(null);
 }
 
 function importFeedsFromIE7() 

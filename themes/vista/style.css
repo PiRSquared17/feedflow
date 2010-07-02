@@ -25,23 +25,24 @@
  **********************************************/
 
 body {
-	color: #787878;
-	background-image: url('background.png');
+	color:#787878;
 }
 
-#feedTitle a { color: #FFFFFF; }
+#feedTitle {background:url('bgU.png') no-repeat;}
+#feedTitle a {color:#FFFFFF;}
 
-.feedItemDocked a, 
-.feedItemDocked a:visited, 
-.feedItemDocked a:link,
-.feedItemUndocked a,
-.feedItemUndocked a:visited,
-.feedItemUndocked a:link
-{ color: #248A9E; }
+#navigation {background:url('bgD.png') no-repeat;}
 
-#leftarrow { background-image: url('leftarrow.png'); }
-#rightarrow { background-image: url('rightarrow.png'); }
+#mainContainer {background:url("bg.png") repeat-y;}
 
-#message { background-image: url('message.png'); background-color: #C7D7DE; }
+#mainContainer a, 
+#mainContainer a:visited, 
+#mainContainer a:link
+{color:#248A9E;}
+
+#leftarrow { background-image: url('la.png'); }
+#rightarrow { background-image: url('ra.png'); }
+
 #message p { color: #248A9E; }
 
+.feedItem {border-bottom:1px #c7d7de solid;}

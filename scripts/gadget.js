@@ -3,7 +3,7 @@
  *	Filename:	gadget.js
  *	Authors:	Tolga Hosgor, Cristian Patrasciuc
  *	Emails:		fasdfasdas@gmail.com, cristian.patrasciuc@gmail.com
- *	Date:		30-May-2010
+ *	Date:		05-Jul-2010
  
  Copyright © 2010 Tolga Hosgor, Cristian Patrasciuc
  
@@ -30,12 +30,13 @@
  var aSInterval=15000;
  var getNewsTimeout;
  var refreshInterval;
+ var newVer=0;
  
 /* Set the event handlers */
 System.Gadget.settingsUI = "Settings.html";
 System.Gadget.onSettingsClosed = settingsClosed;
-System.Gadget.onDock = resizeGadget;
-System.Gadget.onUndock = resizeGadget;
+/*System.Gadget.onDock = resizeGadget;
+System.Gadget.onUndock = resizeGadget;*/
 
 /* Refresh feed when Settings dialog is closed */
 function settingsClosed(event)
@@ -54,15 +55,21 @@ function settingsClosed(event)
 }
 
 /* Rezise gadget when docked/undocked */
-function resizeGadget() 
-{
-	var themeName = System.Gadget.Settings.read('theme');
-	noItems = System.Gadget.Settings.read('noItems');
+function initiateGadget()
+{	
+	checkVersion();
 	
+	noItems = System.Gadget.Settings.read("noItems");
 	if ( noItems == "" ) noItems = 4;
-	if ( themeName == "" ) themeName = "default";
 	
-	switch( noItems ) {
+	var gHeight=System.Gadget.Settings.read("gHeight");
+	if(gHeight=="")gHeight=152;
+	
+	document.body.style.height=gHeight+60+"px";
+	mainContainer.style.height=gHeight+"px";
+	message.style.height=gHeight-10+"px";
+		
+	/*switch( noItems ) {
 		case 4: 
 			document.body.style.height = '209px'; 
 			message.style.height = '142px';
@@ -75,31 +82,26 @@ function resizeGadget()
 			document.body.style.height = '348px'; 
 			message.style.height = '280px';
 			break;
-	}
+	}*/
 	
-	for ( var i = 0; i < noItems; i++ ) document.getElementById(i+'').style.display = 'block';
-	for ( var i = noItems; i < 8; i++ ) document.getElementById(i+'').style.display = 'none';
+	/*for ( var i = 0; i < noItems; i++ ) document.getElementById(i+'').style.display = 'block';
+	for ( var i = noItems; i < 8; i++ ) document.getElementById(i+'').style.display = 'none';*/
 	
-	if ( System.Gadget.docked == true )
+	/*if ( System.Gadget.docked == true )
 	{
-		try { document.body.style.background = "url('../themes/" + themeName + "/background" + noItems + ".png') no-repeat"; } catch(e) {}
+		/*try { document.body.style.background = "url('../themes/" + themeName + "/background" + noItems + ".png') no-repeat"; } catch(e) {}
 		for ( var i = 0; i < noItems; i++ )
-			document.getElementById(i+'').className = "feedItemDocked";	
-		message.style.width = '120px';
-		navigation.style.marginLeft = '8px';
-		titleMarquee.style.width = '72px';
-		document.body.style.width = '132px';
-	}
+			document.getElementById(i+'').className = "feedItemDocked";	*/
+	/*}
 	else
 	{
-		try { document.body.style.background = "url('../themes/" + themeName + "/background-large" + noItems + ".png') no-repeat"; } catch(e) {}
+		/*try { document.body.style.background = "url('../themes/" + themeName + "/background-large" + noItems + ".png') no-repeat"; } catch(e) {}
 		for ( var i = 0; i < noItems; i++ )
-			document.getElementById(i+'').className = "feedItemUndocked";
-		message.style.width = '355px'; 
-		navigation.style.marginLeft = '127px';
+			document.getElementById(i+'').className = "feedItemUndocked";*/
+		/*message.style.width = '355px'; 
 		titleMarquee.style.width = '308px';
 		document.body.style.width = '368px';
-	}
+	}*/
 }
 
 /* Create a new RSS item object */
@@ -213,6 +215,76 @@ function bodyMouseOut()
 	}
 }
 
+function resizeVB()
+{
+	document.body.style.cursor="n-resize";
+	var mYC=event.clientY;
+	document.body.onmousemove=function(){
+		if(event.button==0){
+			resizeVE();
+			return;
+		}
+		var mYF=mYC-event.clientY;
+		mYC=event.clientY;
+		if(g=parseInt(document.body.style.height)-mYF<212){
+			document.style.body.height="210px";
+			resizeVE();
+			return;
+		}
+		document.body.style.height=parseInt(document.body.style.height)-mYF+"px";
+		vResizer.style.height=parseInt(vResizer.style.height)-mYF+"px";
+		mainContainer.style.height=parseInt(mainContainer.style.height)-mYF+"px";
+		message.style.height=parseInt(message.style.height)-mYF+"px";
+	};
+	document.body.onmouseup="resizeVE();";
+}
+
+function resizeVE()
+{
+	var gHeight=parseInt(mainContainer.style.height);
+	noItems=parseInt(gHeight/38);
+	System.Gadget.Settings.write("noItems",noItems);
+	System.Gadget.Settings.write("gHeight",gHeight);
+	document.body.style.cursor="";
+	document.body.onmousemove="";
+	document.body.onmouseup="";
+	showNews(news);
+}
+
+function getPos(o_){
+	var curleft=0;
+	var curtop=0;
+	og=o_;
+	do{
+		curleft+=og.offsetLeft;
+	}
+	while(og=og.offsetParent);
+	
+	do{
+		curtop+=o_.offsetTop;
+	}
+	while(o_=o_.offsetParent);
+	return [curleft,curtop];
+}
+
+function checkVersion()
+{
+	var XMLVersionCheck = new XMLHttpRequest();
+	XMLVersionCheck.onreadystatechange = function(){
+		if(XMLVersionCheck.readyState==4){
+			clearTimeout(XMLVersionCheckTimeout);
+			if(XMLVersionCheck.status==200)
+				if(XMLVersionCheck.responseText!=System.Gadget.version)
+					newVer=1;
+		}
+	};
+	var XMLVersionCheckTimeout=setTimeout(function(){
+		XMLVersionCheck.abort();
+	},8500);
+	XMLVersionCheck.open("GET","http://feedflow.googlecode.com/files/feedflowver?"+Math.random(),true);
+	XMLVersionCheck.send(null);
+}
+
 /* Download (request) the feed from the URL */
 function getNews(i)
 {
@@ -229,6 +301,7 @@ function getNews(i)
 	if ( name != "" ) titleLink.innerHTML = name;
 	else titleLink.innerHTML = 'FeedFlow';
 	position.innerHTML="";
+	mainContainer.innerHTML="";
 	
 	showMessage( "Fetching ..." );
 	currentPosition = 0;
@@ -237,6 +310,7 @@ function getNews(i)
 	xmlDocument.onreadystatechange = function () {
 		if (xmlDocument.readyState == 4) {
 			if(xmlDocument.status == 200){
+				xmlDocument.responseXML.loadXML(xmlDocument.responseText);
 				if ( xmlDocument.responseXML.getElementsByTagName("item") != null ) news = new RSS2Channel(xmlDocument);
 				else news = new AtomChannel(xmlDocument);
 				showNews(news);
@@ -261,14 +335,17 @@ function getNews(i)
 /* Display the current 4 items in the news */
 function showNews(news)
 {
+	var buffer="";
 	for ( var i = currentPosition; (i < currentPosition+noItems) && (i < news.items.length); i++ ) 
 	{
 		item_html = '<a ';
 		item_html += (news.items[i].link == null) ? "" : 'href="javascript:void(0)" onclick="flyoutIndex = ' + i + '; showFlyout()">';
 		item_html += (news.items[i].title == null ) ? "(no title)</a>" : news.items[i].title + "</a>";
 		item_html += (news.items[i].description == null) ? "" : "<br>" + decodeHTML(news.items[i].description);
-		document.getElementById( (i-currentPosition) + '' ).innerHTML = item_html;
+		/*document.getElementById( (i-currentPosition) + '' ).innerHTML = item_html;*/
+		buffer+="<div class='feedItem'>"+item_html+"</div>";
 	}
+	mainContainer.innerHTML=(newVer?"<div style='border:2px red solid;height:50px;position:relative;left:-5px;top:-4px;width:120px;overflow:hidden;'>A new version of<br/>FeedFlow found!<br/>Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</div>":"")+buffer;
 
 	var posText = (currentPosition + 1) + '-' + ((currentPosition + noItems)>news.items.length?news.items.length:(currentPosition + noItems)) + '/' + news.items.length;
 	position.innerHTML = posText;
@@ -281,9 +358,9 @@ function showNews(news)
 /* Display a message to the user */
 function showMessage( msg )
 {
-	message.style.visibility = "visible";
+	message.style.display = "block";
 	messageText.innerHTML = msg;
-	if ( msg == "" ) message.style.visibility = "hidden";
+	if ( msg == "" ) message.style.display = "none";
 }
 
 /* Loads the current theme or the default one */
@@ -292,7 +369,9 @@ function loadTheme()
 	var themeName = System.Gadget.Settings.read('theme');
 	if ( themeName == "" ) themeName = "default";
 	document.styleSheets(1).href = 'themes/' + themeName + '/style.css';
-	resizeGadget();	
+	document.body.style.fontFamily=System.Gadget.Settings.read("fontFamily");
+	document.body.style.fontSize=System.Gadget.Settings.read("fontSize");
+	initiateGadget();	
 }
 
 /* Show the flyout when mouse is over an item */
@@ -311,8 +390,7 @@ function showFlyout()
 /* Clear the contents of the gadget */
 function clear()
 {
-	for ( var i = 0; i < 8; i++ )
-		document.getElementById(i+'').innerHTML = '';
+	mainContent="";
 }
 
 /* Displays the next feed when clicking the top right arrow */
@@ -381,7 +459,7 @@ var news;
 var currentFeed = ( (System.Gadget.Settings.read("currentFeed") == "" ) ? 0 : System.Gadget.Settings.read("currentFeed") );
 
 /* Number of items to display on a page */
-var noItems = ( (System.Gadget.Settings.read("noItems") == "" ) ? 4 : System.Gadget.Settings.read("noItems") );
+var noItems;
 
 
 

@@ -3,7 +3,7 @@
 	Filename:	Gadget.html
  	Authors:	Tolga Hosgor, Cristian Patrasciuc
 	Emails:		fasdfasdas@gmail.com, cristian.patrasciuc@gmail.com
- 	Date:		30-May-2010
+ 	Date:		05-Jul-2010
 	
  Copyright © 2010 Tolga Hosgor, Cristian Patrasciuc
  
@@ -35,38 +35,26 @@
 		</SCRIPT>
 	</HEAD>
 
-	<BODY onload="loadTheme(); resizeGadget(); getNews();" onmouseover="bodyMouseOver();" onmouseout="bodyMouseOut();">
+	<BODY onload="loadTheme();getNews();" onmouseover="bodyMouseOver();" onmouseout="bodyMouseOut();" style="background:url('b.png');height:212px;">
+		<div id="vResizer" style="position:absolute;left:0;top:40px;background-color:red;width:4px;height:125px;cursor:n-resize;z-index:999;filter:alpha(opacity=0);" onmousedown="resizeVB();" onmouseup="resizeVE();"></div>
+
 		<DIV id="gadgetContent">
 			<DIV id="feedTitle">
 				<a href="javascript:void(0);" title="Previous feed" onclick="getPreviousFeed()" class="feedNavigation">&laquo;</a>
 				<marquee id="titleMarquee" scrollamount="1" scrolldelay="2" style="width:72px;float:left;"><a href="javascript:void(0);" title="Click to refresh now" onclick="getNews();" id="titleLink" style="text-decoration:none;">FeedFlow</a></marquee>
 				<a href="javascript:void(0);" title="Next feed" onclick="getNextFeed()" class="feedNavigation">&raquo;</a>
 			</DIV>			
-			<DIV class="feedItem" id="0"></DIV>
-			
-			<DIV class="feedItem" id="1"></DIV>
-			
-			<DIV class="feedItem" id="2"></DIV>
-			
-			<DIV class="feedItem" id="3"></DIV>
-			
-			<DIV class="feedItem" id="4" style="display:none;"></DIV>
-			
-			<DIV class="feedItem" id="5" style="display:none;"></DIV>
-			
-			<DIV class="feedItem" id="6" style="display:none;"></DIV>
-			
-			<DIV class="feedItem" id="7" style="display:none;"></DIV>
-			
+			<div id="mainContainer" style="height:152px;">&nbsp;</div>
+
 			<DIV id="navigation">
 				<a href="javascript:void(0);" id="leftarrow" onclick="previousPage();"></a>
 				<div id="position"></div>
 				<a href="javascript:void(0);" id="rightarrow" onclick="nextPage();"></a>
 			</DIV>
 		</DIV>
-	
+
 		<DIV name="message" id="message">
-			<p name="messageText" id="messageText">No Feed</p>
+			<p id="messageText"><u>Changes</u><br/><p style="font-size:9px;margin-top:3px;">Added dynamic vertical-only resizing, move your mouse to the left side of the gadget.<br/>Changed theme system, you will need to rebuild your themes if you have any custom one.</p></p>
 		</DIV>
 	</BODY>
 </HTML>

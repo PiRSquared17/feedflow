@@ -3,7 +3,7 @@
 	Filename:	Settings.html
  	Authors:	Tolga Hosgor, Cristian Patrasciuc
  	Emails:		fasdfasdas@gmail.com, cristian.patrasciuc@gmail.com
- 	Date:		30-May-2010
+ 	Date:		05-Jul-2010
 	
  Copyright © 2010 Tolga Hosgor, Cristian Patrasciuc
  
@@ -30,10 +30,9 @@
 		<SCRIPT language="javascript" src="scripts/settings.js"></SCRIPT>
 	</HEAD>
 
-	<BODY onload="loadSettings()">
+	<BODY onload="loadSettings();">
+		<object id="dlgH" classid="clsid:3050f819-98b5-11cf-bb82-00aa00bdce0b" width="0px" height="0px"></object>
 	
-		<div id="checkVersionInfo"><img src="img/l1.gif"/><span>Checking for updates...</span></div>
-		<br/>
 		<a href="javascript:void(0);" onclick="showTable(feedsTable);">Feeds</a> |
 		<a href="javascript:void(0);" onclick="showTable(optionsTable);">Options</a> |
 		<a href="javascript:void(0);" onclick="showTable(aboutTable);">About</a>
@@ -64,6 +63,7 @@
 				<OPTION value="red">Red</OPTION>
 				<OPTION value="vista">Vista</OPTION>
 		</SELECT></td></tr>
+		<tr><td>Font:</td><td><select id="feedFontF" style="width:80%;"></select><input type="text" id="feedFontS" maxlength="2" style="width:9%" onkeypress="return onlyNumbers();" value="11"/> px</td></tr>
 		<tr><td><label for="feedRefresh">Refresh:</label></td>
 		<td><SELECT name="feedRefresh" id="feedRefresh">
 				<OPTION value="60000">every minute</OPTION>
@@ -72,17 +72,11 @@
 				<OPTION value="3600000">every 1 hour</OPTION>
 				<OPTION value="-1" SELECTED>only next time the gadget is started</OPTION>
 		</SELECT></td></tr>
-		<tr><td><label for="noItems">Items/page:</label></td>
-		<td><select name="noItems" id="noItems">
-				<option value="4">4</option>
-				<option value="6">6</option>
-				<option value="8">8</option>
-		</select></td></tr>
 		<tr><td></td><td><input type="checkbox" id="autoScrollCheckBox" style="width:auto;"/>Auto scroll through feeds</td></tr>
-		<tr><td>Autoscroll<br/>Interval:</td><td><input type="text" id="autoScrollInterval" value="15000" onkeypress="return onlyNumbers();"/></td></tr>
+		<tr><td>Autoscroll<br/>Interval:</td><td><input type="text" id="autoScrollInterval" value="15000" onkeypress="return onlyNumbers();" maxlength="6"/></td></tr>
 		<tr><td></td><td><input type="checkbox" id="disableLoopCheckBox" style="width:auto;"/>Disable changing feeds during auto scroll</td></tr>
 		<tr><td></td><td><input type="checkbox" id="notStopAutoScroll" style="width:auto;"/>Do not stop autoscroll on mouseover</td></tr>
-		<tr><td>Feed fetching<br/>timeout:</td><td><input type="text" id="feedLoadTimeout" value="6500" onkeypress="return onlyNumbers();"/></td></tr>
+		<tr><td>Feed fetching<br/>timeout:</td><td><input type="text" id="feedLoadTimeout" value="6500" onkeypress="return onlyNumbers();" maxlength="5"/></td></tr>
 		</table>
 
 		<table id="filteringTable" style="display:none;">
@@ -95,7 +89,7 @@
 		</table>
 
 		<table id="aboutTable" style="display:none;">
-		<tr><td colspan="2"><a href="http://code.google.com/p/feedflow/">FeedFlow Gadget, v1.0.0.3</a></td></tr>
+		<tr><td colspan="2"><a href="http://code.google.com/p/feedflow/">FeedFlow Gadget, v1.0.1.1</a></td></tr>
 		<tr><td colspan="2">Web Address: <a href="http://code.google.com/p/feedflow/">http://code.google.com/p/feedflow/</a></td></tr>
 		<tr><td colspan="2">&nbsp;</td></tr>
         <tr><td><STRONG>Authors:</STRONG></td><td>Tolga Hosgor, Cristian Patrasciuc</td></tr>
@@ -113,7 +107,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public 
 You should have received a copy of the GNU General Public License along with FeedFlow. If not, see <http://www.gnu.org/licenses/>.
 		</textarea>
 		</td></tr></table>
-		
 		</div>
 	</BODY>
 </HTML>
