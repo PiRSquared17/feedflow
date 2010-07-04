@@ -68,40 +68,7 @@ function initiateGadget()
 	document.body.style.height=gHeight+60+"px";
 	mainContainer.style.height=gHeight+"px";
 	message.style.height=gHeight-10+"px";
-		
-	/*switch( noItems ) {
-		case 4: 
-			document.body.style.height = '209px'; 
-			message.style.height = '142px';
-			break;
-		case 6: 
-			document.body.style.height = '278px'; 
-			message.style.height = '200px';
-			break;
-		case 8: 
-			document.body.style.height = '348px'; 
-			message.style.height = '280px';
-			break;
-	}*/
-	
-	/*for ( var i = 0; i < noItems; i++ ) document.getElementById(i+'').style.display = 'block';
-	for ( var i = noItems; i < 8; i++ ) document.getElementById(i+'').style.display = 'none';*/
-	
-	/*if ( System.Gadget.docked == true )
-	{
-		/*try { document.body.style.background = "url('../themes/" + themeName + "/background" + noItems + ".png') no-repeat"; } catch(e) {}
-		for ( var i = 0; i < noItems; i++ )
-			document.getElementById(i+'').className = "feedItemDocked";	*/
-	/*}
-	else
-	{
-		/*try { document.body.style.background = "url('../themes/" + themeName + "/background-large" + noItems + ".png') no-repeat"; } catch(e) {}
-		for ( var i = 0; i < noItems; i++ )
-			document.getElementById(i+'').className = "feedItemUndocked";*/
-		/*message.style.width = '355px'; 
-		titleMarquee.style.width = '308px';
-		document.body.style.width = '368px';
-	}*/
+	vResizer.style.height=gHeight-27+"px";
 }
 
 /* Create a new RSS item object */
@@ -342,7 +309,6 @@ function showNews(news)
 		item_html += (news.items[i].link == null) ? "" : 'href="javascript:void(0)" onclick="flyoutIndex = ' + i + '; showFlyout()">';
 		item_html += (news.items[i].title == null ) ? "(no title)</a>" : news.items[i].title + "</a>";
 		item_html += (news.items[i].description == null) ? "" : "<br>" + decodeHTML(news.items[i].description);
-		/*document.getElementById( (i-currentPosition) + '' ).innerHTML = item_html;*/
 		buffer+="<div class='feedItem'>"+item_html+"</div>";
 	}
 	mainContainer.innerHTML=(newVer?"<div style='border:2px red solid;height:50px;position:relative;left:-5px;top:-4px;width:120px;overflow:hidden;'>A new version of<br/>FeedFlow found!<br/>Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</div>":"")+buffer;

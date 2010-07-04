@@ -24,9 +24,7 @@
  
  **********************************************/
 
-body {
-	color:#787878;
-}
+body {color:#787878;}
 
 #feedTitle {background:url('bgU.png') no-repeat;}
 #feedTitle a {color:#FFFFFF;}
@@ -40,9 +38,9 @@ body {
 #mainContainer a:link
 {color:#248A9E;}
 
-#leftarrow { background-image: url('la.png'); }
-#rightarrow { background-image: url('ra.png'); }
+#leftarrow {background-image:url('la.png');}
+#rightarrow {background-image:url('ra.png');}
 
-#message p { color: #248A9E; }
+#message p {color:#248A9E;}
 
 .feedItem {border-bottom:1px #c7d7de solid;}
