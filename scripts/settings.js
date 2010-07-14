@@ -30,13 +30,13 @@ function settingsClosing(event)
 {
     if (event.closeAction == event.Action.commit)
     {
-        System.Gadget.Settings.write( "refresh", feedRefresh.options[feedRefresh.selectedIndex].value );
         System.Gadget.Settings.write( "theme", feedTheme.options[feedTheme.selectedIndex].value );
 		System.Gadget.Settings.write( "autoScroll", ((autoScrollCheckBox.checked == true) ? 1 : 0 ) );
 		System.Gadget.Settings.write( "autoScrollInterval", (autoScrollInterval.value<2000?2000:autoScrollInterval.value));
 		System.Gadget.Settings.write("disableLoop",((disableLoopCheckBox.checked==true)?1:0));
 		System.Gadget.Settings.write("notStopAutoScroll",((notStopAutoScroll.checked==true)?1:0));
 		System.Gadget.Settings.write("feedLoadTimeout",(feedLoadTimeout.value<2000?2000:feedLoadTimeout.value));
+		System.Gadget.Settings.write("feedFetchRefresh",(feedFetchRefresh.disabled?feedFetchRefresh.value+"abc":feedFetchRefresh.value));
 		System.Gadget.Settings.write("fontFamily",feedFontF.options[feedFontF.selectedIndex].text);
 		System.Gadget.Settings.write("fontSize",feedFontS.value);
         event.cancel = false;
@@ -48,23 +48,6 @@ function loadSettings()
 	var feedcount=System.Gadget.Settings.read("noFeeds");
 	if(feedcount=="")feedcount=0;
 
-	switch ( System.Gadget.Settings.read("refresh") ) {
-		case 60000:
-			feedRefresh[0].selected = "1";
-			break;
-		case 900000:
-			feedRefresh[1].selected = "1";
-			break;
-		case 1800000:
-			feedRefresh[2].selected = "1";
-			break;
-		case 3600000:
-			feedRefresh[3].selected = "1";
-			break;
-		default:
-			feedRefresh[4].selected = "1";
-	}
-	
 	autoScrollInterval.value=((interval = System.Gadget.Settings.read("autoScrollInterval"))?interval:15000);
 	disableLoopCheckBox.checked=(System.Gadget.Settings.read("disableLoop")==1);
 	feedLoadTimeout.value=((feedloadtimeout = System.Gadget.Settings.read("feedLoadTimeout"))?feedloadtimeout:6500);
@@ -79,6 +62,7 @@ function loadSettings()
 	autoScrollCheckBox.checked = System.Gadget.Settings.read( "autoScroll" );
 	notStopAutoScroll.checked = System.Gadget.Settings.read("notStopAutoScroll");
 	filteringButton.disabled = !feedcount;
+	feedFetchRefresh.value=((ref=System.Gadget.Settings.read("feedFetchRefresh"))?parseInt(ref):"15");
 	
 	var font=System.Gadget.Settings.read("fontFamily");
 	if(font=="")
@@ -120,6 +104,7 @@ function buildFeedList()
 	}
 	feedName.value=System.Gadget.Settings.read("feedName0");
 	feedURL.value=System.Gadget.Settings.read("feedURL0");
+	feedFetchRefresh.disabled=System.Gadget.Settings.read("autoScroll")&&n!=1;
 }
 
 function addNewFeed( name, url )

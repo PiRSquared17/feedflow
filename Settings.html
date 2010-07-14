@@ -64,18 +64,11 @@
 				<OPTION value="vista">Vista</OPTION>
 		</SELECT></td></tr>
 		<tr><td>Font:</td><td><select id="feedFontF" style="width:80%;"></select><input type="text" id="feedFontS" maxlength="2" style="width:9%" onkeypress="return onlyNumbers();" value="11"/> px</td></tr>
-		<tr><td><label for="feedRefresh">Refresh:</label></td>
-		<td><SELECT name="feedRefresh" id="feedRefresh">
-				<OPTION value="60000">every minute</OPTION>
-				<OPTION value="900000">every 15 minutes</OPTION>
-				<OPTION value="1800000">every 30 minutes</OPTION>
-				<OPTION value="3600000">every 1 hour</OPTION>
-				<OPTION value="-1" SELECTED>only next time the gadget is started</OPTION>
-		</SELECT></td></tr>
-		<tr><td></td><td><input type="checkbox" id="autoScrollCheckBox" style="width:auto;"/>Auto scroll through feeds</td></tr>
+		<tr><td></td><td><input type="checkbox" id="autoScrollCheckBox" style="width:auto;" onclick="if(System.Gadget.Settings.read('noFeeds')<2)return;if(this.checked)feedFetchRefresh.disabled=true;else feedFetchRefresh.disabled=false;"/>Auto scroll through feeds</td></tr>
 		<tr><td>Autoscroll<br/>Interval:</td><td><input type="text" id="autoScrollInterval" value="15000" onkeypress="return onlyNumbers();" maxlength="6"/></td></tr>
 		<tr><td></td><td><input type="checkbox" id="disableLoopCheckBox" style="width:auto;"/>Disable changing feeds during auto scroll</td></tr>
 		<tr><td></td><td><input type="checkbox" id="notStopAutoScroll" style="width:auto;"/>Do not stop autoscroll on mouseover</td></tr>
+		<tr><td>Feed fetching<br/>Interval:</td><td><input type="text" id="feedFetchRefresh" value="15" maxlength="2" onkeypress="return onlyNumbers();" style="width:80%;"/> min | <a title="This will be disabled if you have more then 1 feed and autoscroll on.">?</a></td></tr>
 		<tr><td>Feed fetching<br/>timeout:</td><td><input type="text" id="feedLoadTimeout" value="6500" onkeypress="return onlyNumbers();" maxlength="5"/></td></tr>
 		</table>
 
