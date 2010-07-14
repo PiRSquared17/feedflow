@@ -46,8 +46,8 @@ function settingsClosed(event)
 		clearTimeout(autoscrolltimeout);
 		clearTimeout(getNewsTimeout);
 		clearInterval(refreshInterval);
-		var refreshTime = System.Gadget.Settings.read('refresh');
-			if ( refreshTime > 0 )refreshInterval=setInterval( "getNews();", refreshTime );
+		var refreshTime = System.Gadget.Settings.read('feedFetchRefresh');
+			if (!isNaN(parseFloat(refreshTime)))refreshInterval=setInterval("getNews();",refreshTime*60*1000);
 		loadTheme();
 		currentFeed = 0;
 		getNews(1);
