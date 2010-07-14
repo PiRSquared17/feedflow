@@ -47,7 +47,7 @@ function settingsClosed(event)
 		clearTimeout(getNewsTimeout);
 		clearInterval(refreshInterval);
 		var refreshTime = System.Gadget.Settings.read('feedFetchRefresh');
-			if (!isNaN(parseFloat(refreshTime)))refreshInterval=setInterval("getNews();",refreshTime*60*1000);
+			if (!isNaN(parseFloat(refreshTime)))refreshInterval=setInterval("var cpos=currentPosition;getNews();currentPosition=cpos;showNews();",refreshTime*60000);
 		loadTheme();
 		currentFeed = 0;
 		getNews(1);
