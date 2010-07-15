@@ -47,7 +47,7 @@ function settingsClosed(event)
 		clearTimeout(getNewsTimeout);
 		clearInterval(refreshInterval);
 		var refreshTime = System.Gadget.Settings.read('feedFetchRefresh');
-			if (!isNaN(parseFloat(refreshTime)))refreshInterval=setInterval("var cpos=currentPosition;getNews();currentPosition=cpos;showNews();",refreshTime*60000);
+			if (!isNaN(parseFloat(refreshTime)))refreshInterval=setInterval("getNews(null,currentPosition);",refreshTime*60000);
 		loadTheme();
 		currentFeed = 0;
 		getNews(1);
@@ -253,7 +253,7 @@ function checkVersion()
 }
 
 /* Download (request) the feed from the URL */
-function getNews(i)
+function getNews(i,p)
 {
 	isAutoScroll = System.Gadget.Settings.read( "autoScroll" );
 	clear();
@@ -270,8 +270,10 @@ function getNews(i)
 	position.innerHTML="";
 	mainContainer.innerHTML="";
 	
-	showMessage( "Fetching ..." );
-	currentPosition = 0;
+	showMessage("Fetching ...");
+	if(!p)
+		p=0;
+	currentPosition = p;
 
 	xmlDocument = new XMLHttpRequest();
 	xmlDocument.onreadystatechange = function () {
