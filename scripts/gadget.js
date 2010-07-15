@@ -47,7 +47,7 @@ function settingsClosed(event)
 		clearTimeout(getNewsTimeout);
 		clearInterval(refreshInterval);
 		var refreshTime = System.Gadget.Settings.read('feedFetchRefresh');
-			if (!isNaN(parseFloat(refreshTime)))refreshInterval=setInterval("getNews(null,currentPosition);",refreshTime*60000);
+			if (!isNaN(parseFloat(refreshTime)))refreshInterval=setInterval("getNews(null,1);",refreshTime*60000);
 		loadTheme();
 		currentFeed = 0;
 		getNews(1);
@@ -269,11 +269,9 @@ function getNews(i,p)
 	else titleLink.innerHTML = 'FeedFlow';
 	position.innerHTML="";
 	mainContainer.innerHTML="";
-	
-	showMessage("Fetching ...");
-	if(!p)
-		p=0;
-	currentPosition = p;
+
+	if(p!=1)
+		currentPosition = 0;
 
 	xmlDocument = new XMLHttpRequest();
 	xmlDocument.onreadystatechange = function () {
