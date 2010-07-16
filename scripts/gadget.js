@@ -270,6 +270,7 @@ function getNews(i,p)
 	position.innerHTML="";
 	mainContainer.innerHTML="";
 
+	showMessage("Fetching ...");
 	if(p!=1)
 		currentPosition = 0;
 
