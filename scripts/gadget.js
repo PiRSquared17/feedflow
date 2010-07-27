@@ -80,6 +80,7 @@ function initiateGadget()
 	
 	document.body.style.width=gWidth+"px";
 	mainContainer.style.width=gWidth+"px";
+	mCC.style.width=gWidth-13+"px";
 	feedTitle.style.width=gWidth+"px";
 	titleMarquee.style.width=gWidth-60+"px";
 	hResizer.style.width=gWidth-22+"px";
@@ -263,6 +264,7 @@ function resizeHB()
 		}
 		document.body.style.width=parseInt(document.body.style.width)+mXF+"px";
 		mainContainer.style.width=parseInt(mainContainer.style.width)+mXF+"px";
+		mCC.style.width=parseInt(mCC.style.width)+mXF+"px";
 		hResizer.style.width=parseInt(hResizer.style.width)+mXF+"px";
 		message.style.width=parseInt(message.style.width)+mXF+"px";
 		mainT.style.width=parseInt(mainT.style.width)+mXF+"px";
@@ -340,7 +342,7 @@ function getNews(i,p)
 	if ( name != "" ) titleLink.innerHTML = name;
 	else titleLink.innerHTML = 'FeedFlow';
 	position.innerHTML="";
-	mainContainer.innerHTML="";
+	mCC.innerHTML="";
 
 	showMessage("Fetching ...");
 	if(p!=1)
@@ -384,7 +386,7 @@ function showNews(news)
 		item_html += (news.items[i].description == null) ? "" : "<br>" + decodeHTML(news.items[i].description);
 		buffer+="<div class='feedItem'>"+item_html+"</div>";
 	}
-	mainContainer.innerHTML=(newVer?"<div style='border:2px red solid;height:50px;position:relative;left:-5px;top:-4px;width:120px;overflow:hidden;'>A new version of<br/>FeedFlow found!<br/>Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</div>":"")+buffer;
+	mCC.innerHTML=(newVer?"<div style='border:2px red solid;height:50px;position:relative;width:117px;overflow:hidden;'>A new version of<br/>FeedFlow found!<br/>Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</div>":"")+buffer;
 
 	var posText = (currentPosition + 1) + '-' + ((currentPosition + noItems)>news.items.length?news.items.length:(currentPosition + noItems)) + '/' + news.items.length;
 	position.innerHTML = posText;
