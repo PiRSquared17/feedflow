@@ -26,12 +26,23 @@
 
 body {color:#B4B4B4;}
 
-#feedTitle {background:url('bgU.png') no-repeat;}
+#mainTL {background:url("TL.png") no-repeat;}
+#mainT {background:url("T.png") repeat-x;}
+#mainTR {background:url("TR.png") no-repeat;}
+
+#mainL {background:url("L.png") repeat-y;}
+#mainR {background:url("R.png") repeat-y;}
+
+#mainBL {background:url("BL.png") no-repeat;}
+#mainB {background:url("B.png") repeat-x;}
+#mainBR {background:url("BR.png") no-repeat;}
+
+#feedTitle {background-color:#252c42;}
 #feedTitle a {color:#FF9900;}
 
-#navigation {background:url('bgD.png') no-repeat;}
+#navigation {background-color:#252c42;}
 
-#mainContainer {background:url("bg.png") repeat-y;}
+#mainContainer {background-color:#191f31;}
 
 #mainContainer a, 
 #mainContainer a:visited, 

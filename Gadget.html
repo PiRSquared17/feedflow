@@ -35,16 +35,20 @@
 		</SCRIPT>
 	</HEAD>
 
-	<BODY onload="loadTheme();getNews();" onmouseover="bodyMouseOver();" onmouseout="bodyMouseOut();" style="background:url('b.png');height:212px;">
+	<BODY onload="loadTheme();getNews();" onmouseover="bodyMouseOver();" onmouseout="bodyMouseOut();">
 		<div id="vResizer" style="position:absolute;left:0;top:40px;background-color:red;width:4px;height:125px;cursor:n-resize;z-index:999;filter:alpha(opacity=0);" onmousedown="resizeVB();" onmouseup="resizeVE();"></div>
-
+		<div id="hResizer" style="position:absolute;left:10px;top:-7px;background-color:red;width:110px;height:4px;cursor:e-resize;z-index:999;filter:alpha(opacity=0);" onmousedown="resizeHB();" onmouseup="resizeHE();"></div>
+		
 		<DIV id="gadgetContent">
-			<DIV id="feedTitle">
+			<div id="mainTL"></div><div id="mainTR"></div><div id="mainT"></div>
+			<div id="mainL"></div><div id="mainR"></div>
+			<div id="mainBL"></div><div id="mainBR"></div><div id="mainB"></div>
+			<div id="feedTitle">
 				<a href="javascript:void(0);" title="Previous feed" onclick="getPreviousFeed()" class="feedNavigation">&laquo;</a>
 				<marquee id="titleMarquee" scrollamount="1" scrolldelay="2" style="width:72px;float:left;"><a href="javascript:void(0);" title="Click to refresh now" onclick="getNews();" id="titleLink" style="text-decoration:none;">FeedFlow</a></marquee>
 				<a href="javascript:void(0);" title="Next feed" onclick="getNextFeed()" class="feedNavigation">&raquo;</a>
-			</DIV>			
-			<div id="mainContainer" style="height:152px;">&nbsp;</div>
+			</div>			
+			<div id="mainContainer" style="height:162px;">&nbsp;</div>
 
 			<DIV id="navigation">
 				<a href="javascript:void(0);" id="leftarrow" onclick="previousPage();"></a>
