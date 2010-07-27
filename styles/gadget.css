@@ -30,11 +30,22 @@ body {
 	top: 0;
 	right: 0;
 	bottom: 0;
-    width: 132px;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 11px;
 	background-repeat: no-repeat;
+	background:url('../b.png');
 }
+
+#mainTL {position:absolute;top:0;left:0;width:5px;height:5px;}
+#mainT {position:absolute;top:0;left:5px;width:122px;height:5px;}
+#mainTR {position:absolute;top:0;left:127px;width:5px;height:5px;}
+
+#mainL {position:absolute;top:5px;left:0;width:2px;height:205px;z-index:2;}
+#mainR {position:absolute;top:5px;left:130px;width:2px;height:205px;z-index:2;}
+
+#mainBL {position:absolute;top:210px;left:0;width:5px;height:5px;}
+#mainB {position:absolute;top:210px;left:5px;width:122px;height:5px;}
+#mainBR {position:absolute;top:210px;left:127px;width:5px;height:5px;}
 
 img, object { display:none; visibility:hidden; }
 
@@ -67,23 +78,27 @@ p {
 	font-size: 14px;
 	font-weight: bold;
 	text-decoration: none;
-	filter: alpha(opacity=50);
+	filter:alpha(opacity=50);
 	float:left;
 }
 
 .feedNavigation:hover { filter:alpha(opacity=100); }
 
 #feedTitle {
+	position:relative;
 	width:132px;
 	height:30px;
+	top:5px;
+	padding:2px;
 }
+
 #mainContainer {
+	position:relative;
+	top:5px;
 	margin: 0;
-	height: 135px;
 	width: 110px;
 	overflow: hidden;
 	white-space: nowrap;
-	clear: both;
 	display: block;
 	width:132px;
 	padding:5px 13px 0 8px;
@@ -101,10 +116,12 @@ p {
 #navigation {
 	position:relative;
 	width:132px;
-	height:31px;
+	height:23px;
+	top:-5px;
 	margin:0;
-	padding:5px 0 0 8px;
+	padding:5px 0 0 9px;
 	text-align:center;
+	font-weight:bold;
 }
 
 #leftarrow {
@@ -146,12 +163,12 @@ p {
 }
 
 #message {
-	background:url("../img/msg.png") no-repeat 48 0;
+	background:url("../img/msg.png") no-repeat center top;
 	position: absolute;
 	overflow:hidden;
 	width: 122px;
 	height: 142px;
-	top: 33px;
+	top: 38px;
 	left: 0;
 	z-index: 10;
 	padding:32px 0 0 6px;
@@ -166,7 +183,6 @@ p {
 .feedItem {
 	margin-bottom:4px;
 	padding-bottom:5px;
-	width:113px;
 	height:34px;
 	overflow:hidden;
 }

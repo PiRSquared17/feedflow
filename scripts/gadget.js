@@ -63,12 +63,34 @@ function initiateGadget()
 	if ( noItems == "" ) noItems = 4;
 	
 	var gHeight=System.Gadget.Settings.read("gHeight");
-	if(gHeight=="")gHeight=152;
+	if(gHeight=="")gHeight=162;
 	
 	document.body.style.height=gHeight+60+"px";
 	mainContainer.style.height=gHeight+"px";
 	message.style.height=gHeight-10+"px";
+	mainL.style.height=gHeight+43+"px";
+	mainR.style.height=gHeight+43+"px";
+	mainBL.style.top=gHeight+48+"px";
+	mainB.style.top=gHeight+48+"px";
+	mainBR.style.top=gHeight+48+"px";
 	vResizer.style.height=gHeight-27+"px";
+	
+	var gWidth=System.Gadget.Settings.read("gWidth");
+	if(gWidth=="")gWidth=132;
+	
+	document.body.style.width=gWidth+"px";
+	mainContainer.style.width=gWidth+"px";
+	feedTitle.style.width=gWidth+"px";
+	titleMarquee.style.width=gWidth-60+"px";
+	hResizer.style.width=gWidth-22+"px";
+	message.style.width=gWidth-10+"px";
+	mainT.style.width=gWidth-10+"px";
+	mainTR.style.left=gWidth-5+"px";
+	mainR.style.left=gWidth-2+"px";
+	mainBR.style.left=gWidth-5+"px";
+	mainB.style.width=gWidth-10+"px";
+	navigation.style.width=gWidth+"px";
+	position.style.width=gWidth-57+"px";
 }
 
 /* Create a new RSS item object */
@@ -191,17 +213,22 @@ function resizeVB()
 			resizeVE();
 			return;
 		}
-		var mYF=mYC-event.clientY;
+		var mYF=event.clientY-mYC;
 		mYC=event.clientY;
-		if(g=parseInt(document.body.style.height)-mYF<212){
-			document.style.body.height="210px";
+		if(g=parseInt(document.body.style.height)+mYF<222){
+			document.style.body.height="222px";
 			resizeVE();
 			return;
 		}
-		document.body.style.height=parseInt(document.body.style.height)-mYF+"px";
-		vResizer.style.height=parseInt(vResizer.style.height)-mYF+"px";
-		mainContainer.style.height=parseInt(mainContainer.style.height)-mYF+"px";
-		message.style.height=parseInt(message.style.height)-mYF+"px";
+		document.body.style.height=parseInt(document.body.style.height)+mYF+"px";
+		mainContainer.style.height=parseInt(mainContainer.style.height)+mYF+"px";
+		vResizer.style.height=parseInt(vResizer.style.height)+mYF+"px";
+		message.style.height=parseInt(message.style.height)+mYF+"px";
+		mainL.style.height=parseInt(mainL.style.height)+mYF+"px";
+		mainR.style.height=parseInt(mainR.style.height)+mYF+"px";
+		mainBL.style.top=parseInt(mainBL.style.top)+mYF+"px";
+		mainB.style.top=parseInt(mainB.style.top)+mYF+"px";
+		mainBR.style.top=parseInt(mainBR.style.top)+mYF+"px";
 	};
 	document.body.onmouseup="resizeVE();";
 }
@@ -216,6 +243,51 @@ function resizeVE()
 	document.body.onmousemove="";
 	document.body.onmouseup="";
 	showNews(news);
+}
+
+function resizeHB()
+{
+	document.body.style.cursor="e-resize";
+	var mXC=event.clientX;
+	document.body.onmousemove=function(){
+		if(event.button==0){
+			resizeHE();
+			return;
+		}
+		var mXF=event.clientX-mXC;
+		mXC=event.clientX;
+		if(g=parseInt(document.body.style.width)+mXF<132){
+			document.style.body.width="130px";
+			resizeVE();
+			return;
+		}
+		document.body.style.width=parseInt(document.body.style.width)+mXF+"px";
+		mainContainer.style.width=parseInt(mainContainer.style.width)+mXF+"px";
+		hResizer.style.width=parseInt(hResizer.style.width)+mXF+"px";
+		message.style.width=parseInt(message.style.width)+mXF+"px";
+		mainT.style.width=parseInt(mainT.style.width)+mXF+"px";
+		mainTR.style.left=parseInt(mainTR.style.left)+mXF+"px";
+		mainR.style.left=parseInt(mainR.style.left)+mXF+"px";
+		mainBR.style.left=parseInt(mainBR.style.left)+mXF+"px";
+		mainB.style.width=parseInt(mainB.style.width)+mXF+"px";
+		feedTitle.style.width=parseInt(feedTitle.style.width)+mXF+"px";
+		titleMarquee.style.width=parseInt(titleMarquee.style.width)+mXF+"px";
+		navigation.style.width=parseInt(navigation.style.width)+mXF+"px";
+		position.style.width=parseInt(position.style.width)+mXF+"px";
+		/*mainBL.style.top=parseInt(mainBL.style.top)-mXF+"px";
+		mainB.style.top=parseInt(mainB.style.top)-mXF+"px";
+		mainBR.style.top=parseInt(mainBR.style.top)-mXF+"px";*/
+	};
+	document.body.onmouseup="resizeHE();";
+}
+
+function resizeHE()
+{
+	var gWidth=parseInt(mainContainer.style.width);
+	System.Gadget.Settings.write("gWidth",gWidth);
+	document.body.style.cursor="";
+	document.body.onmousemove="";
+	document.body.onmouseup="";
 }
 
 function getPos(o_){

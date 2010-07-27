@@ -26,12 +26,23 @@
  
 body {color:#787878;}
 
-#feedTitle {background:url('bgU.png') no-repeat;}
+#mainTL {background:url("TL.png") no-repeat;}
+#mainT {background:url("T.png") repeat-x;}
+#mainTR {background:url("TR.png") no-repeat;}
+
+#mainL {background:url("L.png") repeat-y;}
+#mainR {background:url("R.png") repeat-y;}
+
+#mainBL {background:url("BL.png") no-repeat;}
+#mainB {background:url("B.png") repeat-x;}
+#mainBR {background:url("BR.png") no-repeat;}
+
+#feedTitle {background-color:#9e1b34;border-bottom:2px solid #440000;z-index:3;}
 #feedTitle a {color:#FFFFFF;}
 
-#navigation {background:url('bgD.png') no-repeat;}
+#navigation {background-color:#440000;z-index:3;}
 
-#mainContainer {background:url("bg.png") repeat-y;}
+#mainContainer {background-color:#cfcfcf;}
 
 #mainContainer a, 
 #mainContainer a:visited, 
