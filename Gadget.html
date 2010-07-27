@@ -45,10 +45,10 @@
 			<div id="mainBL"></div><div id="mainBR"></div><div id="mainB"></div>
 			<div id="feedTitle">
 				<a href="javascript:void(0);" title="Previous feed" onclick="getPreviousFeed()" class="feedNavigation">&laquo;</a>
-				<marquee id="titleMarquee" scrollamount="1" scrolldelay="2" style="width:72px;float:left;"><a href="javascript:void(0);" title="Click to refresh now" onclick="getNews();" id="titleLink" style="text-decoration:none;">FeedFlow</a></marquee>
+				<marquee id="titleMarquee" scrollamount="1" scrolldelay="2" style="position:relative;top:-3px;width:72px;float:left;"><a href="javascript:void(0);" title="Click to refresh now" onclick="getNews();" id="titleLink" style="text-decoration:none;">FeedFlow</a></marquee>
 				<a href="javascript:void(0);" title="Next feed" onclick="getNextFeed()" class="feedNavigation">&raquo;</a>
-			</div>			
-			<div id="mainContainer" style="height:162px;">&nbsp;</div>
+			</div>		
+			<div id="mainContainer" style="height:162px;"><div id="mCC">&nbsp;</div></div>
 
 			<DIV id="navigation">
 				<a href="javascript:void(0);" id="leftarrow" onclick="previousPage();"></a>
@@ -58,7 +58,7 @@
 		</DIV>
 
 		<DIV name="message" id="message">
-			<p id="messageText"><u>Changes</u><br/><p style="font-size:9px;margin-top:3px;">Added dynamic vertical-only resizing, move your mouse to the left side of the gadget.<br/>Changed theme system, you will need to rebuild your themes if you have any custom one.</p></p>
+			<p id="messageText"><u>Changes</u><br/><p style="font-size:9px;margin-top:3px;">Added horizontal resizing, move your mouse to the top side of the gadget.<br/>Changed theme system again, you will need to rebuild your themes if you have any custom one.</p></p>
 		</DIV>
 	</BODY>
 </HTML>

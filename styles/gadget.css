@@ -71,6 +71,8 @@ p {
 }
 
 .feedNavigation {
+	position:relative;
+	top:-3px;
 	margin-left: 10px;
 	margin-top: 7px;
 	margin-right:10px;
@@ -112,6 +114,8 @@ p {
 }
 
 #mainContainer a:hover {text-decoration: underline;}
+
+#mCC {overflow:hidden;position:relative;left:-2px;}
 
 #navigation {
 	position:relative;
