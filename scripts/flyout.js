@@ -31,7 +31,7 @@ function initFlyout()
 	var ctom = /&lt;([^&]*)&gt;/g;
 	var news = System.Gadget.document.parentWindow.news;
 	var i = System.Gadget.document.parentWindow.flyoutIndex;
-	flyoutTitle.innerHTML = news.items[i].title;
+	flyoutTitle.innerHTML = System.Gadget.Settings.readString("rMarkedFeeds")+news.items[i].title;
 	flyoutDescription.innerHTML = news.items[i].description;
 	flyoutPubDate.innerHTML = "Published on: " + (news.items[i].pubDate==null ? "undefined" : news.items[i].pubDate);
 	flyoutLink.href = news.items[i].link;
@@ -42,4 +42,10 @@ function hideFlyout()
 {
 	if(System.Gadget.document.parentWindow.isAutoScroll==1)
 		System.Gadget.document.parentWindow.autoscrolltimeout=System.Gadget.document.parentWindow.setTimeout("autoScroll();",System.Gadget.document.parentWindow.aSInterval);
+	var xD=System.Gadget.document.parentWindow.xmlDocument;
+	xD.responseXML.loadXML(System.Gadget.document.parentWindow.XMLMem);
+	if ( xD.responseXML.getElementsByTagName("item") != null ) news = new System.Gadget.document.parentWindow.RSS2Channel(xD);
+		else news = new System.Gadget.document.parentWindow.AtomChannel(xD);
+	System.Gadget.document.parentWindow.showNews(news);
+	System.Gadget.document.parentWindow.news=news;
 }

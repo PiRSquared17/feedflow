@@ -39,6 +39,7 @@ function settingsClosing(event)
 		System.Gadget.Settings.write("feedFetchRefresh",(feedFetchRefresh.disabled?feedFetchRefresh.value+"abc":feedFetchRefresh.value));
 		System.Gadget.Settings.write("fontFamily",feedFontF.options[feedFontF.selectedIndex].text);
 		System.Gadget.Settings.write("fontSize",feedFontS.value);
+		System.Gadget.Settings.write("hideFeeds",hideFeeds.selectedIndex);
         event.cancel = false;
     }
 }
@@ -61,6 +62,8 @@ function loadSettings()
 	moveFeedDownButton.disabled=feedcount<2;
 	autoScrollCheckBox.checked = System.Gadget.Settings.read( "autoScroll" );
 	notStopAutoScroll.checked = System.Gadget.Settings.read("notStopAutoScroll");
+	hideFeeds[(a=System.Gadget.Settings.read("hideFeeds"))==""?0:a].selected=true;
+	
 	filteringButton.disabled = !feedcount;
 	feedFetchRefresh.value=((ref=System.Gadget.Settings.read("feedFetchRefresh"))?parseInt(ref):"15");
 	
