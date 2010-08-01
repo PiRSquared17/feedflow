@@ -151,6 +151,8 @@ function AtomItem(itemxml)
 		this.filter=false;
 	if(i==2 && FC!="" && itemxml.getElementsByTagName("content")[0].childNodes[0].nodeValue.match(filterCData)!=null)
 		this.filter=false;
+	if(i==0 && isMarkedAsRead(itemxml.getElementsByTagName("content")[0].childNodes[0].nodeValue)!=-1)
+		this.filter=false;
 
 	try { this.title = itemxml.getElementsByTagName("title")[0].childNodes[0].nodeValue; }
 	catch (e) { this.title = "(no title)"; }
