@@ -31,7 +31,7 @@ function initFlyout()
 	var ctom = /&lt;([^&]*)&gt;/g;
 	var news = System.Gadget.document.parentWindow.news;
 	var i = System.Gadget.document.parentWindow.flyoutIndex;
-	flyoutTitle.innerHTML = System.Gadget.Settings.readString("rMarkedFeeds")+news.items[i].title;
+	flyoutTitle.innerHTML = news.items[i].title;
 	flyoutDescription.innerHTML = news.items[i].description;
 	flyoutPubDate.innerHTML = "Published on: " + (news.items[i].pubDate==null ? "undefined" : news.items[i].pubDate);
 	flyoutLink.href = news.items[i].link;
