@@ -2,7 +2,7 @@
 <gadget>
     <name>FeedFlow</name>
     <namespace>Patrasciuc.FeedFlowGadget</namespace>
-    <version>1.0.2.0</version>
+    <version>1.0.2.1</version>
     <author name="Tolga Hosgor, Cristian Patrasciuc">
         <info url="http://code.google.com/p/feedflow/" />
         <logo height="160" width="160" src="gadgeticon.png"  />
