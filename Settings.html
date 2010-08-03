@@ -52,6 +52,9 @@
 	    <tr><td></td><td><input type="button" name="addFeed" id="addFeed" value="Add Feed" style="width:auto;" onclick="addNewFeed( feedName.value, feedURL.value );"><input type="button" name="editFeed" id="editFeed" value="Apply Changes" style="width:120px;" onclick="editExistingFeed();" disabled="true"></td></tr><tr><td><span id="errorMessage"></span></td></tr>
 		<tr><td colspan="2" style="height:15px;"></td></tr>
 		<tr><td></td><td><input type="button" name="importFeeds" id="importFeeds" value="Import Feeds from IE" style="width:auto;" onclick="importFeedsFromIE7();"></td></tr>
+		<tr><td></td><td>&nbsp;</td></tr>
+		<tr><td></td><td><input type="button" value="Save Settings to a File" style="width:90%;" onclick="saveSettingsToFile();"></td></tr>
+		<tr><td></td><td><input type="button" value="Load Settings from a File" style="width:90%;" onclick="readSettingsFromFile();"></td></tr>
 		</table>
 
 		<table id="optionsTable" style="display:none;">
