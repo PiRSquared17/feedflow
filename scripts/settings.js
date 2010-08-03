@@ -263,6 +263,58 @@ function filteringApplyChanges()
 	showTable(feedsTable);
 }
 
+function saveSettingsToFile()
+{
+	var setP=System.Shell.saveFileDialog("C:\\", "FeedFlow config file\0*.fcg\0\0");
+	if(setP=="")
+		return;
+	var f=new ActiveXObject("Scripting.FileSystemObject");
+	var nf=f.OpenTextFile(setP+".fcg",2,true);
+	nf.WriteLine("[G]");
+	nf.WriteLine("theme="+System.Gadget.Settings.read("theme"));
+	nf.WriteLine("fontFamily="+System.Gadget.Settings.read("fontFamily"));
+	nf.WriteLine("fontSize="+System.Gadget.Settings.read("fontSize"));
+	nf.WriteLine("autoScroll="+System.Gadget.Settings.read("autoScroll"));
+	nf.WriteLine("autoScrollInterval="+System.Gadget.Settings.read("autoScrollInterval"));
+	nf.WriteLine("disableLoop="+System.Gadget.Settings.read("disableLoop"));
+	nf.WriteLine("notStopAutoScroll="+System.Gadget.Settings.read("notStopAutoScroll"));
+	nf.WriteLine("feedLoadTimeout="+System.Gadget.Settings.read("feedLoadTimeout"));
+	nf.WriteLine("feedFetchRefresh="+System.Gadget.Settings.read("feedFetchRefresh"));
+	nf.WriteLine("hideFeeds="+System.Gadget.Settings.read("hideFeeds"));
+	nf.WriteLine("rMarkedFeeds="+System.Gadget.Settings.readString("rMarkedFeeds")+"\n");
+	
+	for(var i=0;i<System.Gadget.Settings.read("noFeeds");i++){
+		nf.WriteLine("[F]");
+		nf.WriteLine("feedName="+System.Gadget.Settings.read("feedName"+i));
+		nf.WriteLine("feedURL="+System.Gadget.Settings.read("feedURL"+i));
+		nf.WriteLine("feedFTitle="+System.Gadget.Settings.read("feedFTitle"+i));
+		nf.WriteLine("feedFContent="+System.Gadget.Settings.read("feedFContent"+i));
+	}
+	nf.Close();
+}
+
+function readSettingsFromFile()
+{
+	var setP=System.Shell.chooseFile(true, "FeedFlow config file:*.fcg::","C:\\","");
+	var f=new ActiveXObject("Scripting.FileSystemObject");
+	var sf=f.OpenTextFile(setP.path);
+	var sct=0;
+	while(!sf.AtEndOfStream){
+		var bffr=sf.ReadLine();
+		if(bffr=="")
+			continue;
+		if(bffr=="[F]")
+			sct++;
+		if(!bffr.match(/^\[.\]$/)){
+			var sep=bffr.indexOf("=");
+			System.Gadget.Settings.write(bffr.substr(0,sep)+(sct?(sct-1):""),bffr.substring(sep+1));
+		}
+	}
+	sf.Close();
+	System.Gadget.Settings.write("noFeeds",sct);
+	loadSettings();
+}
+
 function importFeedsFromIE7() 
 {
 	var feedManager = null;
