@@ -31,6 +31,7 @@
  var getNewsTimeout;
  var refreshInterval;
  var newVer=0;
+ var markedAsReadCache="";
  
 /* Set the event handlers */
 System.Gadget.settingsUI = "Settings.html";
@@ -58,6 +59,12 @@ function settingsClosed(event)
 function initiateGadget()
 {	
 	checkVersion();
+	
+	var fO=new ActiveXObject("Scripting.FileSystemObject");
+	var gPath=System.Gadget.path;
+	var f=fO.OpenTextFile(gPath+"\\readFeeds",1,true);
+	if(!f.AtEndOfStream)
+		markedAsReadCache=f.readAll();
 	
 	noItems = System.Gadget.Settings.read("noItems");
 	if ( noItems == "" ) noItems = 4;
@@ -332,14 +339,27 @@ function checkVersion()
 
 function markAsRead(i)
 {
-	if(i==System.Gadget.Settings.read("hideFeeds"))
-		if(isMarkedAsRead(news.items[flyoutIndex].title)==-1)
-			System.Gadget.Settings.writeString("rMarkedFeeds",crc32(news.items[flyoutIndex].title)+","+System.Gadget.Settings.readString("rMarkedFeeds"));
+	if(i==System.Gadget.Settings.read("hideFeeds")){
+		if(isMarkedAsRead(news.items[flyoutIndex].title)==-1){
+			var fO=new ActiveXObject("Scripting.FileSystemObject");
+			var gPath=System.Gadget.path;
+			if(markedAsReadCache.length > System.Gadget.Settings.read("hideFeedsMax")*11){
+				markedAsReadCache="";
+				var fmode=2;
+			}
+			else
+				var fmode=8;
+			var f=fO.OpenTextFile(gPath+"\\readFeeds",fmode,true);
+			f.Write(crc32(news.items[flyoutIndex].title)+",");
+			f.Close();
+			markedAsReadCache=markedAsReadCache+crc32(news.items[flyoutIndex].title)+",";
+		}
+	}
 }
 
 function isMarkedAsRead(str)
 {
-	return System.Gadget.Settings.readString("rMarkedFeeds").indexOf(crc32(str));
+	return markedAsReadCache.indexOf(crc32(str));
 }
 
 var XMLMem;
