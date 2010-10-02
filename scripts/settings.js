@@ -40,6 +40,7 @@ function settingsClosing(event)
 		System.Gadget.Settings.write("fontFamily",feedFontF.options[feedFontF.selectedIndex].text);
 		System.Gadget.Settings.write("fontSize",feedFontS.value);
 		System.Gadget.Settings.write("hideFeeds",hideFeeds.selectedIndex);
+		System.Gadget.Settings.write("hideFeedsMax",hideFeedsMax.value);
         event.cancel = false;
     }
 }
@@ -63,6 +64,7 @@ function loadSettings()
 	autoScrollCheckBox.checked = System.Gadget.Settings.read( "autoScroll" );
 	notStopAutoScroll.checked = System.Gadget.Settings.read("notStopAutoScroll");
 	hideFeeds[(a=System.Gadget.Settings.read("hideFeeds"))==""?0:a].selected=true;
+	hideFeedsMax.value=((a=System.Gadget.Settings.read("hideFeedsMax"))?a:1000);
 	
 	filteringButton.disabled = !feedcount;
 	feedFetchRefresh.value=((ref=System.Gadget.Settings.read("feedFetchRefresh"))?parseInt(ref):"15");
@@ -281,7 +283,7 @@ function saveSettingsToFile()
 	nf.WriteLine("feedLoadTimeout="+System.Gadget.Settings.read("feedLoadTimeout"));
 	nf.WriteLine("feedFetchRefresh="+System.Gadget.Settings.read("feedFetchRefresh"));
 	nf.WriteLine("hideFeeds="+System.Gadget.Settings.read("hideFeeds"));
-	nf.WriteLine("rMarkedFeeds="+System.Gadget.Settings.readString("rMarkedFeeds")+"\n");
+	nf.WriteLine("hideFeedsMax="+System.Gadget.Settings.readString("hideFeedsMax")+"\n");
 	
 	for(var i=0;i<System.Gadget.Settings.read("noFeeds");i++){
 		nf.WriteLine("[F]");
