@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <gadget>
     <name>FeedFlow</name>
     <namespace>Patrasciuc.FeedFlowGadget</namespace>
@@ -8,7 +8,7 @@
         <logo height="160" width="160" src="gadgeticon.png"  />
     </author>
     <copyright>
-	Copyright © 2010 Tolga Hosgor, Cristian Patrasciuc
+	Copyright � 2010 Tolga Hosgor, Cristian Patrasciuc
 	This file is part of FeedFlow.
 
 	FeedFlow is free project: you can redistribute it and/or modify
