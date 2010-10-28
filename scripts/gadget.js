@@ -1,11 +1,11 @@
-/**********************************************
+﻿/**********************************************
 
  *	Filename:	gadget.js
  *	Authors:	Tolga Hosgor, Cristian Patrasciuc
  *	Emails:		fasdfasdas@gmail.com, cristian.patrasciuc@gmail.com
  *	Date:		05-Jul-2010
  
- Copyright � 2010 Tolga Hosgor, Cristian Patrasciuc
+ Copyright © 2010 Tolga Hosgor, Cristian Patrasciuc
  
  This file is part of FeedFlow.
 
@@ -109,7 +109,7 @@ function RSS2Item(itemxml)
 	this.description;
 	this.pubDate;
 
-	var properties = new Array("title", "link", "description", "pubDate");
+	var properties = new Array("title", "link", "description", "pubDate", "image");
 	var tmpElement = null;
 	for (var i=0; i<properties.length; i++)
 	{
