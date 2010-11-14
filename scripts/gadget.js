@@ -269,7 +269,7 @@ function RSS2Item(itemxml)
 	this.description;
 	this.pubDate;
 
-	var properties = new Array("title", "link", "description", "pubDate", "image");
+	var properties = new Array("title", "link", "description", "pubDate", "enclosure");
 	var tmpElement = null;
 	for (var i=0; i<properties.length; i++)
 	{
@@ -282,12 +282,14 @@ function RSS2Item(itemxml)
 			this.filter=false;
 		if(i==0 && isMarkedAsRead(tmpElement.childNodes[0].nodeValue)!=-1)
 			this.filter=false;
-		if ( tmpElement != null )
+		if ( tmpElement != null ){
 			if ( tmpElement.childNodes != null )
 				if ( tmpElement.childNodes[0] != null )
-					if ( tmpElement.childNodes[0].nodeValue != null ){
-						eval("this."+properties[i]+"=tmpElement.childNodes[0].nodeValue");
-					}
+					if ( tmpElement.childNodes[0].nodeValue != null )
+						eval("this."+properties[i]+"=tmpElement.childNodes[0].nodeValue.replace(/(\\<img.+?\\>)/i,'');");
+			if (i==4)
+				eval("this."+properties[i]+"=tmpElement.attributes.getNamedItem('url').nodeValue;");
+		}
 	}
 }
 
@@ -366,8 +368,8 @@ var XMLMem;
 /* Download (request) the feed from the URL */
 function getNews(i,p)
 {
+	clearTimeout(getNewsTimeout);
 	isAutoScroll = System.Gadget.Settings.read( "autoScroll" );
-	clear();
 	var URL = System.Gadget.Settings.read("feedURL"+currentFeed);
 	if ( URL == "" ) 
 	{
@@ -379,9 +381,9 @@ function getNews(i,p)
 	if ( name != "" ) titleLink.innerHTML = name;
 	else titleLink.innerHTML = 'FeedFlow';
 	position.innerHTML="";
-	mCC.innerHTML="";
+	//mCC.innerHTML="";
 
-	showMessage("Fetching ...");
+	loadingIcon.style.display="block";
 	if(p!=1)
 		currentPosition = 0;
 
@@ -393,6 +395,7 @@ function getNews(i,p)
 				if ( xmlDocument.responseXML.getElementsByTagName("item")[0] != null ) news = new RSS2Channel(xmlDocument);
 				else news = new AtomChannel(xmlDocument);
 				showNews(news);
+				loadingIcon.style.display="none";
 				feedloading=0;
 				clearTimeout(getNewsTimeout);
 				aSInterval=System.Gadget.Settings.read("autoScrollInterval");
@@ -405,8 +408,7 @@ function getNews(i,p)
 	xmlDocument.open("GET",URL,true);
 	xmlDocument.send(null);
 	
-	clearTimeout(getNewsTimeout);
-	getNewsTimeout=setTimeout(function(){xmlDocument.abort();showMessage("Could not load<br>"+name);setTimeout(getNextFeed,3000);}, System.Gadget.Settings.read("feedLoadTimeout"));
+	getNewsTimeout=setTimeout(function(){xmlDocument.abort();loadingIcon.style.display="none";/*showMessage("Could not load<br>"+name);*/setTimeout(getNextFeed,3000);}, System.Gadget.Settings.read("feedLoadTimeout"));
 	
 	return;
 }
@@ -503,7 +505,6 @@ function previousPage()
 	if(feedloading==1)return;
 	currentPosition = (currentPosition - noItems >= 0) ? currentPosition - noItems : ((news.items.length - news.items.length%noItems)); 
 	if ( currentPosition >= news.items.length ) currentPosition -= noItems;
-	clear();
 	showNews(news);
 }
 
@@ -512,7 +513,6 @@ function nextPage(i)
 {
 	if(feedloading==1&&i==1)return;
 	currentPosition = (currentPosition + noItems) >= news.items.length ? 0 : (currentPosition + noItems); 
-	clear();
 	showNews(news);
 }
 
