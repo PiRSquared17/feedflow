@@ -101,107 +101,6 @@ function initiateGadget()
 	position.style.width=gWidth-57+"px";
 }
 
-/* Create a new RSS item object */
-function RSS2Item(itemxml)
-{
-	this.title;
-	this.link;
-	this.description;
-	this.pubDate;
-
-	var properties = new Array("title", "link", "description", "pubDate", "image");
-	var tmpElement = null;
-	for (var i=0; i<properties.length; i++)
-	{
-		tmpElement = itemxml.getElementsByTagName(properties[i])[0];
-		var filterTData=new RegExp(FT=System.Gadget.Settings.read("feedFTitle"+currentFeed));
-		var filterCData=new RegExp(FC=System.Gadget.Settings.read("feedFContent"+currentFeed));
-		if(i==0 && FT!="" && tmpElement.childNodes[0].nodeValue.match(filterTData)!=null)
-			this.filter=false;
-		if(i==2 && FC!="" && tmpElement.childNodes[0].nodeValue.match(filterCData)!=null)
-			this.filter=false;
-		if(i==0 && isMarkedAsRead(tmpElement.childNodes[0].nodeValue)!=-1)
-			this.filter=false;
-		if ( tmpElement != null )
-			if ( tmpElement.childNodes != null )
-				if ( tmpElement.childNodes[0] != null )
-					if ( tmpElement.childNodes[0].nodeValue != null ){
-						eval("this."+properties[i]+"=tmpElement.childNodes[0].nodeValue");
-					}
-	}
-}
-
-/* Create a new RSS channel object */
-function RSS2Channel(rssxml)
-{
-	this.items = new Array();
-	var itemElements = rssxml.responseXML.getElementsByTagName("item");
-	for (var i=0; i<itemElements.length; i++)
-	{
-		Item = new RSS2Item(itemElements[i]);
-		if(Item.filter!=false)
-			this.items.push(Item);
-	}
-}
-
-/* Creates a new Atom feed entry object */
-function AtomItem(itemxml)
-{
-	this.title;
-	this.link;
-	this.description;
-	this.pubDate;
-	
-	var filterTData=new RegExp(FT=System.Gadget.Settings.read("feedFTitle"+currentFeed));
-	var filterCData=new RegExp(FC=System.Gadget.Settings.read("feedFContent"+currentFeed));
-	if(i==0 && FT!="" && itemxml.getElementsByTagName("title")[0].childNodes[0].nodeValue.match(filterTData)!=null)
-		this.filter=false;
-	if(i==2 && FC!="" && itemxml.getElementsByTagName("content")[0].childNodes[0].nodeValue.match(filterCData)!=null)
-		this.filter=false;
-	if(i==0 && isMarkedAsRead(itemxml.getElementsByTagName("content")[0].childNodes[0].nodeValue)!=-1)
-		this.filter=false;
-
-	try { this.title = itemxml.getElementsByTagName("title")[0].childNodes[0].nodeValue; }
-	catch (e) { this.title = "(no title)"; }
-	
-	try { this.pubDate = itemxml.getElementsByTagName("published")[0].childNodes[0].nodeValue; }
-	catch (e) { this.pubDate = null; }
-	
-	try { this.description = itemxml.getElementsByTagName("summary")[0].childNodes[0].nodeValue; }
-	catch (e) { this.description = null; }
-	
-	if ( this.description == null ) 
-	{
-		try { this.description = itemxml.getElementsByTagName("content")[0].childNodes[0].nodeValue; }
-		catch (e) { this.description = "(no summary)"; }
-	}
-	
-	try 
-	{
-		var links = itemxml.getElementsByTagName("link");
-		for ( var i = 0; i < links.length; i++ ) 
-		{
-			try { if ( links[i].attributes.getNamedItem("rel").value == "alternate" ) this.link = links[i].attributes.getNamedItem("href").value }
-			catch (e) {}
-		}
-	} catch(e) {}
-}
-
-/* Create a new Atom feed channel object */
-function AtomChannel(atomxml)
-{
-	this.items = new Array();
-	var itemElements;
-	try { itemElements = atomxml.responseXML.getElementsByTagName("feed")[0].getElementsByTagName("entry"); } catch (e) { return false; }
-
-	for ( var i=0; i<itemElements.length; i++ )
-	{
-		Item = new AtomItem(itemElements[i]);
-		if(Item.filter!=false)
-			this.items.push(Item);
-	}	
-}
-
 function bodyMouseOver()
 {
 	if(System.Gadget.Settings.read("notStopAutoScroll")==0)
@@ -362,6 +261,107 @@ function isMarkedAsRead(str)
 	return markedAsReadCache.indexOf(crc32(str));
 }
 
+/* Create a new RSS item object */
+function RSS2Item(itemxml)
+{
+	this.title;
+	this.link;
+	this.description;
+	this.pubDate;
+
+	var properties = new Array("title", "link", "description", "pubDate", "image");
+	var tmpElement = null;
+	for (var i=0; i<properties.length; i++)
+	{
+		tmpElement = itemxml.getElementsByTagName(properties[i])[0];
+		var filterTData=new RegExp(FT=System.Gadget.Settings.read("feedFTitle"+currentFeed));
+		var filterCData=new RegExp(FC=System.Gadget.Settings.read("feedFContent"+currentFeed));
+		if(i==0 && FT!="" && tmpElement.childNodes[0].nodeValue.match(filterTData)!=null)
+			this.filter=false;
+		if(i==2 && FC!="" && tmpElement.childNodes[0].nodeValue.match(filterCData)!=null)
+			this.filter=false;
+		if(i==0 && isMarkedAsRead(tmpElement.childNodes[0].nodeValue)!=-1)
+			this.filter=false;
+		if ( tmpElement != null )
+			if ( tmpElement.childNodes != null )
+				if ( tmpElement.childNodes[0] != null )
+					if ( tmpElement.childNodes[0].nodeValue != null ){
+						eval("this."+properties[i]+"=tmpElement.childNodes[0].nodeValue");
+					}
+	}
+}
+
+/* Create a new RSS channel object */
+function RSS2Channel(rssxml)
+{
+	this.items = new Array();
+	var itemElements = rssxml.responseXML.getElementsByTagName("item");
+	for (var i=0; i<itemElements.length; i++)
+	{
+		Item = new RSS2Item(itemElements[i]);
+		if(Item.filter!=false)
+			this.items.push(Item);
+	}
+}
+
+/* Creates a new Atom feed entry object */
+function AtomItem(itemxml)
+{
+	this.title;
+	this.link;
+	this.description;
+	this.pubDate;
+	
+	var filterTData=new RegExp(FT=System.Gadget.Settings.read("feedFTitle"+currentFeed));
+	var filterCData=new RegExp(FC=System.Gadget.Settings.read("feedFContent"+currentFeed));
+	if(i==0 && FT!="" && itemxml.getElementsByTagName("title")[0].childNodes[0].nodeValue.match(filterTData)!=null)
+		this.filter=false;
+	if(i==2 && FC!="" && itemxml.getElementsByTagName("content")[0].childNodes[0].nodeValue.match(filterCData)!=null)
+		this.filter=false;
+	if(i==0 && isMarkedAsRead(itemxml.getElementsByTagName("content")[0].childNodes[0].nodeValue)!=-1)
+		this.filter=false;
+
+	try { this.title = itemxml.getElementsByTagName("title")[0].childNodes[0].nodeValue; }
+	catch (e) { this.title = "(no title)"; }
+	
+	try { this.pubDate = itemxml.getElementsByTagName("published")[0].childNodes[0].nodeValue; }
+	catch (e) { this.pubDate = null; }
+	
+	try { this.description = itemxml.getElementsByTagName("summary")[0].childNodes[0].nodeValue; }
+	catch (e) { this.description = null; }
+	
+	if ( this.description == null ) 
+	{
+		try { this.description = itemxml.getElementsByTagName("content")[0].childNodes[0].nodeValue; }
+		catch (e) { this.description = "(no summary)"; }
+	}
+	
+	try 
+	{
+		var links = itemxml.getElementsByTagName("link");
+		for ( var i = 0; i < links.length; i++ ) 
+		{
+			try { if ( links[i].attributes.getNamedItem("rel").value == "alternate" ) this.link = links[i].attributes.getNamedItem("href").value }
+			catch (e) {}
+		}
+	} catch(e) {}
+}
+
+/* Create a new Atom feed channel object */
+function AtomChannel(atomxml)
+{
+	this.items = new Array();
+	var itemElements;
+	try { itemElements = atomxml.responseXML.getElementsByTagName("feed")[0].getElementsByTagName("entry"); } catch (e) { return false; }
+
+	for ( var i=0; i<itemElements.length; i++ )
+	{
+		Item = new AtomItem(itemElements[i]);
+		if(Item.filter!=false)
+			this.items.push(Item);
+	}	
+}
+
 var XMLMem;
 /* Download (request) the feed from the URL */
 function getNews(i,p)
@@ -390,7 +390,7 @@ function getNews(i,p)
 		if (xmlDocument.readyState == 4) {
 			if(xmlDocument.status == 200){
 				xmlDocument.responseXML.loadXML(XMLMem=xmlDocument.responseText);
-				if ( xmlDocument.responseXML.getElementsByTagName("item") != null ) news = new RSS2Channel(xmlDocument);
+				if ( xmlDocument.responseXML.getElementsByTagName("item")[0] != null ) news = new RSS2Channel(xmlDocument);
 				else news = new AtomChannel(xmlDocument);
 				showNews(news);
 				feedloading=0;
