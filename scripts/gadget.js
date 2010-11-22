@@ -286,9 +286,9 @@ function RSS2Item(itemxml)
 			if ( tmpElement.childNodes != null )
 				if ( tmpElement.childNodes[0] != null )
 					if ( tmpElement.childNodes[0].nodeValue != null )
-						eval("this."+properties[i]+"=tmpElement.childNodes[0].nodeValue.replace(/(\\<img.+?\\>)/i,'');");
+						eval("this."+properties[i]+"=tmpElement.childNodes[0].nodeValue;");
 			if (i==4)
-				eval("this."+properties[i]+"=tmpElement.attributes.getNamedItem('url').nodeValue;");
+				this.enclosure=tmpElement.attributes.getNamedItem("url").nodeValue;
 		}
 	}
 }
