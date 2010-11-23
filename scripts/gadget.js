@@ -495,8 +495,8 @@ function getPreviousFeed()
 /* Converts &lt; and &gt; into < and > */
 function decodeHTML(text)
 {
-	var ctom = /&lt;([^&]*)&gt;/g;
-    return text.replace(ctom,"<$1>");
+	var ctom = /\<.+?\>/ig; //&lt;([^&]*)&gt;/g;
+    return text.replace(ctom,"");
 }
 
 /* Scroll one page up */
