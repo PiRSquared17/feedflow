@@ -32,7 +32,7 @@ function initFlyout()
 	var news = System.Gadget.document.parentWindow.news;
 	var i = System.Gadget.document.parentWindow.flyoutIndex;
 	flyoutTitle.innerHTML = news.items[i].title;
-	flyoutDescription.innerHTML = (news.items[i].enclosure!=undefined?"<img src='"+news.items[i].enclosure+"' alt='' align='left'/>"+news.items[i].description.replace(/(\<img.+?\>)/i,''):news.items[i].description);
+	flyoutDescription.innerHTML = (news.items[i].enclosure!=undefined?"<img src='"+news.items[i].enclosure+"' alt='' align='left'/>"+news.items[i].description.replace(/\<.+?\>/ig,''):news.items[i].description);
 	flyoutPubDate.innerHTML = "Published on: " + (news.items[i].pubDate==null ? "undefined" : news.items[i].pubDate);
 	flyoutLink.href = news.items[i].link;
 	self.focus();
