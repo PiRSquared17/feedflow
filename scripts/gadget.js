@@ -269,7 +269,7 @@ function RSS2Item(itemxml)
 	this.description;
 	this.pubDate;
 
-	var properties = new Array("title", "link", "description", "pubDate", "enclosure");
+	var properties = new Array("title", "link", "description", "pubDate", "enclosure", "media:thumbnail");
 	var tmpElement = null;
 	for (var i=0; i<properties.length; i++)
 	{
@@ -287,7 +287,7 @@ function RSS2Item(itemxml)
 				if ( tmpElement.childNodes[0] != null )
 					if ( tmpElement.childNodes[0].nodeValue != null )
 						eval("this."+properties[i]+"=tmpElement.childNodes[0].nodeValue;");
-			if (i==4)
+			if (i==4 || i==5 || this.enclosure!=undefined)
 				this.enclosure=tmpElement.attributes.getNamedItem("url").nodeValue;
 		}
 	}
