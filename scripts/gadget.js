@@ -225,8 +225,14 @@ function checkVersion()
 		if(XMLVersionCheck.readyState==4){
 			clearTimeout(XMLVersionCheckTimeout);
 			if(XMLVersionCheck.status==200)
-				if(XMLVersionCheck.responseText!=System.Gadget.version)
-					newVer=1;
+				if((a=XMLVersionCheck.responseText.split(":"))[0]!=System.Gadget.version){
+					newVer=a[1];
+					if(newVer!=1){
+						mCC.innerHTML="";
+						showMessage("New version found, automatic update will start in 5 sec.<br>Changes will only be effective after a restart!<br><br>");
+						setTimeout("performBgUpdate();showMessage('Automatic update has been completed.<br>Changes will only be effective after a restart!<br><br><br>');", 5000);
+					}
+				}
 		}
 	};
 	var XMLVersionCheckTimeout=setTimeout(function(){
@@ -369,7 +375,7 @@ var XMLMem;
 function getNews(i,p)
 {
 	clearTimeout(getNewsTimeout);
-	isAutoScroll = System.Gadget.Settings.read( "autoScroll" );
+	isAutoScroll = System.Gadget.Settings.read("autoScroll");
 	var URL = System.Gadget.Settings.read("feedURL"+currentFeed);
 	if ( URL == "" ) 
 	{
@@ -380,7 +386,7 @@ function getNews(i,p)
 	var name = System.Gadget.Settings.read( "feedName"+currentFeed );
 	if ( name != "" ) titleLink.innerHTML = name;
 	else titleLink.innerHTML = 'FeedFlow';
-	position.innerHTML="";
+	//position.innerHTML="";
 	//mCC.innerHTML="";
 
 	loadingIcon.style.display="block";
@@ -394,6 +400,7 @@ function getNews(i,p)
 				xmlDocument.responseXML.loadXML(XMLMem=xmlDocument.responseText);
 				if ( xmlDocument.responseXML.getElementsByTagName("item")[0] != null ) news = new RSS2Channel(xmlDocument);
 				else news = new AtomChannel(xmlDocument);
+				currentPosition=0;
 				showNews(news);
 				loadingIcon.style.display="none";
 				feedloading=0;
@@ -404,8 +411,8 @@ function getNews(i,p)
 			}
 		}
 	};
-	feedloading=1;
-	xmlDocument.open("GET",URL,true);
+	feedloading=0;
+	xmlDocument.open("GET",URL+"?"+Math.random(),true);
 	xmlDocument.send(null);
 	
 	getNewsTimeout=setTimeout(function(){xmlDocument.abort();loadingIcon.style.display="none";/*showMessage("Could not load<br>"+name);*/setTimeout(getNextFeed,3000);}, System.Gadget.Settings.read("feedLoadTimeout"));
@@ -425,7 +432,7 @@ function showNews(news)
 		item_html += (news.items[i].description == null) ? "" : "<br>" + decodeHTML(news.items[i].description);
 		buffer+="<div class='feedItem'>"+item_html+"</div>";
 	}
-	mCC.innerHTML=(newVer?"<div style='border:2px red solid;height:50px;position:relative;width:117px;overflow:hidden;'>A new version of<br/>FeedFlow found!<br/>Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</div>":"")+buffer;
+	mCC.innerHTML=(newVer==1?"<div style='border:2px red solid;height:50px;position:relative;width:117px;overflow:hidden;'>A manual update of<br/>FeedFlow is required!<br/>Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</div>":"")+buffer;
 
 	var posText = (currentPosition + 1) + '-' + ((currentPosition + noItems)>news.items.length?news.items.length:(currentPosition + noItems)) + '/' + news.items.length;
 	position.innerHTML = posText;
@@ -447,7 +454,7 @@ function showMessage( msg )
 function loadTheme()
 {
 	var themeName = System.Gadget.Settings.read('theme');
-	if ( themeName == "" ) themeName = "default";
+	if(themeName == "")themeName = "default";
 	document.styleSheets(1).href = 'themes/' + themeName + '/style.css';
 	document.body.style.fontFamily=System.Gadget.Settings.read("fontFamily");
 	document.body.style.fontSize=System.Gadget.Settings.read("fontSize");
