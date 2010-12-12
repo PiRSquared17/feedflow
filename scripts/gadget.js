@@ -403,7 +403,6 @@ function getNews(i,p)
 				currentPosition=0;
 				showNews(news);
 				loadingIcon.style.display="none";
-				feedloading=0;
 				clearTimeout(getNewsTimeout);
 				aSInterval=System.Gadget.Settings.read("autoScrollInterval");
 				if(i==1&&isAutoScroll==1)
@@ -411,7 +410,6 @@ function getNews(i,p)
 			}
 		}
 	};
-	feedloading=0;
 	xmlDocument.open("GET",URL+"?"+Math.random(),true);
 	xmlDocument.send(null);
 	
