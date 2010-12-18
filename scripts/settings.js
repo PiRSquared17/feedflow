@@ -217,7 +217,8 @@ function deleteExistingFeed()
 	buildFeedList();
 	feedName.value=System.Gadget.Settings.read("feedName0");
 	feedURL.value=System.Gadget.Settings.read("feedURL0");
-	feeds.options[0].selected=true;
+	if(a=feeds.options[0])
+		a.selected=true;
 	if(n<2)
 		moveFeedDownButton.disabled=true;
 	moveFeedUpButton.disabled=true;
@@ -270,7 +271,7 @@ function saveSettingsToFile()
 	if(setP=="")
 		return;
 	var f=new ActiveXObject("Scripting.FileSystemObject");
-	var nf=f.OpenTextFile(setP+".fcg",2,true);
+	var nf=f.OpenTextFile(setP+(setP.match(/\.fcg$/)?"":".fcg"),2,true,-1);
 	nf.WriteLine("[G]");
 	nf.WriteLine("theme="+System.Gadget.Settings.read("theme"));
 	nf.WriteLine("fontFamily="+System.Gadget.Settings.read("fontFamily"));
@@ -297,8 +298,10 @@ function saveSettingsToFile()
 function readSettingsFromFile()
 {
 	var setP=System.Shell.chooseFile(true, "FeedFlow config file:*.fcg::","C:\\","");
+	if(!setP)
+		return;
 	var f=new ActiveXObject("Scripting.FileSystemObject");
-	var sf=f.OpenTextFile(setP.path);
+	var sf=f.OpenTextFile(setP.path, 1, false, -1);
 	var sct=0;
 	while(!sf.AtEndOfStream){
 		var bffr=sf.ReadLine();

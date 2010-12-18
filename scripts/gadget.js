@@ -126,7 +126,6 @@ function resizeVB()
 		var mYF=event.clientY-mYC;
 		mYC=event.clientY;
 		if(g=parseInt(document.body.style.height)+mYF<222){
-			document.style.body.height="222px";
 			resizeVE();
 			return;
 		}
@@ -167,7 +166,6 @@ function resizeHB()
 		var mXF=event.clientX-mXC;
 		mXC=event.clientX;
 		if(g=parseInt(document.body.style.width)+mXF<132){
-			document.style.body.width="130px";
 			resizeVE();
 			return;
 		}
@@ -420,6 +418,8 @@ function getNews(i,p)
 /* Display the current 4 items in the news */
 function showNews(news)
 {
+	if(!news)
+		return;
 	var buffer="";
 	for ( var i = currentPosition; (i < currentPosition+noItems) && (i < news.items.length); i++ ) 
 	{
