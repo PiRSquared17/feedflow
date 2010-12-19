@@ -440,7 +440,7 @@ function showNews(news)
 	for ( var i = currentPosition; (i < currentPosition+noItems) && (i < news.items.length); i++ ) 
 	{
 		item_html = '<a ';
-		item_html += (news.items[i].link == null)?"":"href='javascript:void(0)' onclick='flyoutIndex="+i+";markAsRead(1);showFlyout();'>";
+		item_html += (news.items[i].link == null)?"":"href='javascript:void(0)' onclick='flyoutIndex="+i+";markAsRead(1);showFlyout();' ondblclick='window.location.href=\""+news.items[i].link+"\";'>";
 		item_html += (news.items[i].title == null ) ? "(no title)</a>" : news.items[i].title + "</a>";
 		item_html += (news.items[i].description == null) ? "" : "<br>" + decodeHTML(news.items[i].description);
 		buffer+="<div class='feedItem'>"+item_html+"</div>";
