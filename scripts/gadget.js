@@ -230,7 +230,7 @@ function checkVersion()
 					newVer=a[1];
 					if(newVer==1 && window.ActiveXObject){
 						mCC.innerHTML="";
-						showMessage("New version found, automatic update will start in 5 sec.<br>Changes will only be effective after a restart!<br><br>");
+						showMessage("New version found, automatic update will start in 5 sec.<br/>Changes will only be effective after a restart!<br>Gadget may hang during update<br/><br/>");
 						setTimeout("performBgUpdate();showMessage('Automatic update has been completed.<br>Changes will only be effective after a restart!<br><br><br>');", 5000);
 					}
 				}
