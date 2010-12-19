@@ -37,7 +37,7 @@ function createFileList(i)
 				bList = listHTTP.responseText.match(/\<li\><\a.+?\>(.+)\<\/a\>\<\/li\>/ig).join().replace(/\<.+?\>/g,"").split(",");
 				//fileList=fileList.concat(bList);
 				for(x in bList)
-					if(bList[x]!=".." && !bList[x].match(/\/$/) && bList[x]!="Gadget.html" && bList[x]!="au.js" && bList[x]!="gadget.js")
+					if(bList[x]!=".." && !bList[x].match(/\/$/))
 						fileList.push(i+bList[x]);
 			}
 		}
