@@ -46,8 +46,8 @@ function settingsClosing(event)
 
 function loadSettings() 
 {
-	var feedcount=System.Gadget.Settings.read("noFeeds");
-	if(feedcount=="")feedcount=0;
+	var feedCount=System.Gadget.Settings.read("noFeeds");
+	if(feedCount=="")feedCount=0;
 
 	autoScrollInterval.value=((interval = System.Gadget.Settings.read("autoScrollInterval"))?interval:15000);
 	disableLoopCheckBox.checked=(System.Gadget.Settings.read("disableLoop")==1);
@@ -57,15 +57,15 @@ function loadSettings()
 	updatePreview();
 
 	buildFeedList();
-	deleteFeed.disabled=!feedcount;
+	deleteFeed.disabled=!feedCount;
 	moveFeedUpButton.disabled=true;
-	moveFeedDownButton.disabled=feedcount<2;
+	moveFeedDownButton.disabled=feedCount<2;
 	autoScrollCheckBox.checked = System.Gadget.Settings.read( "autoScroll" );
 	notStopAutoScroll.checked = System.Gadget.Settings.read("notStopAutoScroll");
 	hideFeeds[(a=System.Gadget.Settings.read("hideFeeds"))==""?0:a].selected=true;
 	hideFeedsMax.value=((a=System.Gadget.Settings.read("hideFeedsMax"))?a:1000);
 	
-	filteringButton.disabled = !feedcount;
+	filteringButton.disabled = !feedCount;
 	feedFetchRefresh.value=((ref=System.Gadget.Settings.read("feedFetchRefresh"))?parseInt(ref):"15");
 	
 	var font=System.Gadget.Settings.read("fontFamily");
