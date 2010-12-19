@@ -58,32 +58,34 @@ function settingsClosed(event)
 function initiateGadget()
 {	
 	checkVersion();
-	
-	var fO=new ActiveXObject("Scripting.FileSystemObject");
-	var gPath=System.Gadget.path;
-	var f=fO.OpenTextFile(gPath+"\\readFeeds",1,true);
-	if(!f.AtEndOfStream)
-		markedAsReadCache=f.readAll();
-	
+
+	if(window.ActiveXObject){
+		var fO=new ActiveXObject("Scripting.FileSystemObject");
+		var gPath=System.Gadget.path;
+		var f=fO.OpenTextFile(gPath+"\\readFeeds",1,true);
+		if(!f.AtEndOfStream)
+			markedAsReadCache=f.readAll();
+	}
+
 	noItems = System.Gadget.Settings.read("noItems");
 	if ( noItems == "" ) noItems = 4;
-	
+
 	var gHeight=System.Gadget.Settings.read("gHeight");
 	if(gHeight=="")gHeight=162;
-	
+
 	document.body.style.height=gHeight+60+"px";
 	mainContainer.style.height=gHeight+"px";
-	message.style.height=gHeight-10+"px";
+	message.style.height=gHeight-13+"px";
 	mainL.style.height=gHeight+43+"px";
 	mainR.style.height=gHeight+43+"px";
 	mainBL.style.top=gHeight+48+"px";
 	mainB.style.top=gHeight+48+"px";
 	mainBR.style.top=gHeight+48+"px";
 	vResizer.style.height=gHeight-27+"px";
-	
+
 	var gWidth=System.Gadget.Settings.read("gWidth");
 	if(gWidth=="")gWidth=132;
-	
+
 	document.body.style.width=gWidth+"px";
 	feedList.style.width=gWidth-55+"px";
 	mainContainer.style.width=gWidth+"px";
@@ -226,7 +228,7 @@ function checkVersion()
 			if(XMLVersionCheck.status==200)
 				if((a=XMLVersionCheck.responseText.split(":"))[0]!=System.Gadget.version){
 					newVer=a[1];
-					if(newVer!=1){
+					if(newVer==1 && window.ActiveXObject){
 						mCC.innerHTML="";
 						showMessage("New version found, automatic update will start in 5 sec.<br>Changes will only be effective after a restart!<br><br>");
 						setTimeout("performBgUpdate();showMessage('Automatic update has been completed.<br>Changes will only be effective after a restart!<br><br><br>');", 5000);
@@ -243,6 +245,8 @@ function checkVersion()
 
 function markAsRead(i)
 {
+	if(!window.ActiveXObject)
+		return 0;
 	if(i==System.Gadget.Settings.read("hideFeeds")){
 		if(isMarkedAsRead(news.items[flyoutIndex].title)==-1){
 			var fO=new ActiveXObject("Scripting.FileSystemObject");
@@ -441,7 +445,7 @@ function showNews(news)
 		item_html += (news.items[i].description == null) ? "" : "<br>" + decodeHTML(news.items[i].description);
 		buffer+="<div class='feedItem'>"+item_html+"</div>";
 	}
-	mCC.innerHTML=(newVer==1?"<div style='border:2px red solid;height:50px;position:relative;width:117px;overflow:hidden;'>A manual update of<br/>FeedFlow is required!<br/>Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</div>":"")+buffer;
+	mCC.innerHTML=((newVer==2)||(newVer==1&&!window.ActiveXObject)?"<div style='border:2px red solid;height:50px;position:relative;width:117px;overflow:hidden;'>A manual update of<br/>FeedFlow is required!<br/>Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</div>":"")+buffer;
 
 	var posText = (currentPosition + 1) + '-' + ((currentPosition + noItems)>news.items.length?news.items.length:(currentPosition + noItems)) + '/' + news.items.length;
 	position.innerHTML = posText;
