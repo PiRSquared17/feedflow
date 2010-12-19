@@ -63,10 +63,16 @@ function loadSettings()
 	autoScrollCheckBox.checked = System.Gadget.Settings.read( "autoScroll" );
 	notStopAutoScroll.checked = System.Gadget.Settings.read("notStopAutoScroll");
 	hideFeeds[(a=System.Gadget.Settings.read("hideFeeds"))==""?0:a].selected=true;
-	hideFeedsMax.value=((a=System.Gadget.Settings.read("hideFeedsMax"))?a:1000);
-	
+	hideFeedsMax.value=((a=System.Gadget.Settings.read("hideFeedsMax"))?a:1000);	
 	filteringButton.disabled = !feedCount;
 	feedFetchRefresh.value=((ref=System.Gadget.Settings.read("feedFetchRefresh"))?parseInt(ref):"15");
+	
+	if(!window.ActiveXObject){
+		saveSettingsToFile.disabled=true;
+		loadSettingsFromFile.disabled=true;
+		importFeedsFromIE.disabled=true;
+		hideFeeds.disabled=true;
+	}
 	
 	var font=System.Gadget.Settings.read("fontFamily");
 	if(font=="")
