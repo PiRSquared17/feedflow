@@ -85,6 +85,7 @@ function initiateGadget()
 	if(gWidth=="")gWidth=132;
 	
 	document.body.style.width=gWidth+"px";
+	feedList.style.width=gWidth-55+"px";
 	mainContainer.style.width=gWidth+"px";
 	mCC.style.width=gWidth-13+"px";
 	feedTitle.style.width=gWidth+"px";
@@ -170,6 +171,7 @@ function resizeHB()
 			return;
 		}
 		document.body.style.width=parseInt(document.body.style.width)+mXF+"px";
+		feedList.style.width=parseInt(feedList.style.width)+mXF+"px";
 		mainContainer.style.width=parseInt(mainContainer.style.width)+mXF+"px";
 		mCC.style.width=parseInt(mCC.style.width)+mXF+"px";
 		hResizer.style.width=parseInt(hResizer.style.width)+mXF+"px";
@@ -262,6 +264,16 @@ function markAsRead(i)
 function isMarkedAsRead(str)
 {
 	return markedAsReadCache.indexOf(crc32(str));
+}
+
+function fillFeedList()
+{
+	feedList.options.length=0;
+	for (i=0;t=System.Gadget.Settings.read("feedName"+i);i++)
+	{
+		feedList.options[i] = new Option(t,i);
+	}
+	feedList.options[currentFeed].selected=true;
 }
 
 /* Create a new RSS item object */
