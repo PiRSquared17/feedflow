@@ -36,7 +36,7 @@ body {color:#787878;}
 #mainB {background:url("B.png") repeat-x;}
 #mainBR {background:url("BR.png") no-repeat;}
 
-#feedTitle {background-color:#9e1b34;border-bottom:2px solid #440000;z-index:3;}
+#feedTitle {background-color:#9e1b34;border-bottom:2px solid #440000;}
 #feedTitle a {color:#FFFFFF;}
 
 #navigation {background-color:#440000;z-index:3;}
