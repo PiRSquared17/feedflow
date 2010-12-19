@@ -148,7 +148,7 @@ function resizeVB()
 function resizeVE()
 {
 	var gHeight=parseInt(mainContainer.style.height);
-	noItems=parseInt(gHeight/38);
+	noItems=Math.round((gHeight/39));
 	System.Gadget.Settings.write("noItems",noItems);
 	System.Gadget.Settings.write("gHeight",gHeight);
 	document.body.style.cursor="";
