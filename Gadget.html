@@ -36,7 +36,7 @@
 		<div id="vResizer" style="position:absolute;left:0;top:40px;background-color:red;width:4px;height:125px;cursor:n-resize;z-index:999;filter:alpha(opacity=0);" onmousedown="resizeVB();" onmouseup="resizeVE();"></div>
 		<div id="hResizer" style="position:absolute;left:10px;top:-7px;background-color:red;width:110px;height:4px;cursor:e-resize;z-index:999;filter:alpha(opacity=0);" onmousedown="resizeHB();" onmouseup="resizeHE();"></div>
 		<div id="loadingIcon" style="display:none;background:url('img/l3.gif') 50% 25% no-repeat;position:absolute;top:65px;left:0;z-index:10;width:100%;height:50%;filter:alpha(opacity=13);"></div>
-		<select id="feedList" onchange="currentFeed=feedList.selectedIndex;getNews();this.style.display='none';" onmouseout="if(!this.z)this.style.display='none';" onclick="this.z=~this.z;" ondblclick="this.z=~this.z;" onblur="this.style.display='none';" onchange="this.style.display='none';" style="position:absolute;top:10px;left:30px;;display:none;z-index:100;"></select>
+		<select id="feedList" title="Right click to refresh current feed." onmouseup="feedListMUP(event);" onchange="currentFeed=feedList.selectedIndex;getNews();this.style.display='none';" onmouseout="if(!this.z)this.style.display='none';" onclick="this.z=~this.z;" ondblclick="this.z=~this.z;" onblur="this.style.display='none';" onchange="this.style.display='none';" style="position:absolute;top:10px;left:30px;;display:none;z-index:100;"></select>
 
 		<DIV id="gadgetContent">
 			<div id="mainTL"></div><div id="mainTR"></div><div id="mainT"></div>
@@ -44,7 +44,7 @@
 			<div id="mainBL"></div><div id="mainBR"></div><div id="mainB"></div>
 			<div id="feedTitle">
 				<a href="javascript:void(0);" title="Previous feed" onclick="getPreviousFeed()" class="feedNavigation">&laquo;</a>
-				<marquee onmouseover="if(System.Gadget.Settings.read('noFeeds')){fillFeedList();feedList.style.display='block';feedList.z=0;}" id="titleMarquee" scrollamount="1" scrolldelay="2" style="position:relative;top:-3px;width:72px;float:left;"><a href="javascript:void(0);" title="Click to refresh now" onclick="getNews();" id="titleLink" style="text-decoration:none;">FeedFlow</a></marquee>
+				<marquee onmouseover="if(System.Gadget.Settings.read('noFeeds')){fillFeedList();feedList.style.display='block';feedList.z=0;}" id="titleMarquee" scrollamount="1" scrolldelay="2" style="position:relative;top:-3px;width:72px;float:left;"><a href="javascript:void(0);" id="titleLink" style="text-decoration:none;">FeedFlow</a></marquee>
 				<a href="javascript:void(0);" title="Next feed" onclick="getNextFeed()" class="feedNavigation">&raquo;</a>
 			</div>
 			<div id="mainContainer" style="height:162px;"><div id="mCC">&nbsp;</div></div>
