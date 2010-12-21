@@ -280,6 +280,12 @@ function fillFeedList()
 	feedList.options[currentFeed].selected=true;
 }
 
+function feedListMUP(e)
+{
+	if(e.button==2)
+		getNews();
+}
+
 /* Create a new RSS item object */
 function RSS2Item(itemxml)
 {
@@ -423,7 +429,7 @@ function getNews(i,p)
 			}
 		}
 	};
-	xmlDocument.open("GET",URL+"?"+Math.random(),true);
+	xmlDocument.open("GET",URL+(URL.match(/\?/)?"&":"?")+Math.random(),true);
 	xmlDocument.send(null);
 	
 	getNewsTimeout=setTimeout(function(){xmlDocument.abort();loadingIcon.style.display="none";/*showMessage("Could not load<br>"+name);*/setTimeout(getNextFeed,3000);}, System.Gadget.Settings.read("feedLoadTimeout"));
