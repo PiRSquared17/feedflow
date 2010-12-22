@@ -40,6 +40,7 @@ function settingsClosing(event)
 		System.Gadget.Settings.write("fontSize",feedFontS.value);
 		System.Gadget.Settings.write("hideFeeds",hideFeeds.selectedIndex);
 		System.Gadget.Settings.write("hideFeedsMax",hideFeedsMax.value);
+		System.Gadget.Settings.write("NOUpdate",disableUpdate.checked);
         event.cancel = false;
     }
 }
@@ -259,6 +260,7 @@ function filterCurrentFeed()
 	filteringTableN.innerText=feeds.selectedIndex+1+". "+System.Gadget.Settings.read("feedName"+i);
 	filteringTitle.value=System.Gadget.Settings.read("feedFTitle"+i);
 	filteringContent.value=System.Gadget.Settings.read("feedFContent"+i);
+	filteringDisableHTML.value=System.Gadget.Settings.read("feedFDisableHTML"+i);
 	showTable(filteringTable);
 	
 }
@@ -268,35 +270,31 @@ function filteringApplyChanges()
 	var i=feeds.selectedIndex;
 	System.Gadget.Settings.write("feedFTitle"+i,filteringTitle.value);
 	System.Gadget.Settings.write("feedFContent"+i,filteringContent.value);
+	System.Gadget.Settings.write("feedFDisableHTML"+i,filteringDisableHTML.value);
 	showTable(feedsTable);
 }
 
+
 function saveSettingsToFile()
 {
+	var aS=["theme","fontFamily","fontSize","autoScroll","autoScrollInterval","disableLoop","notStopAutoScroll","feedLoadTimeout","feedFetchRefresh","hideFeeds","hideFeedsMax","NOUpdate"];
 	var setP=System.Shell.saveFileDialog("C:\\", "FeedFlow config file\0*.fcg\0\0");
 	if(setP=="")
 		return;
 	var f=new ActiveXObject("Scripting.FileSystemObject");
 	var nf=f.OpenTextFile(setP+(setP.match(/\.fcg$/)?"":".fcg"),2,true,-1);
+
 	nf.WriteLine("[G]");
-	nf.WriteLine("theme="+System.Gadget.Settings.read("theme"));
-	nf.WriteLine("fontFamily="+System.Gadget.Settings.read("fontFamily"));
-	nf.WriteLine("fontSize="+System.Gadget.Settings.read("fontSize"));
-	nf.WriteLine("autoScroll="+System.Gadget.Settings.read("autoScroll"));
-	nf.WriteLine("autoScrollInterval="+System.Gadget.Settings.read("autoScrollInterval"));
-	nf.WriteLine("disableLoop="+System.Gadget.Settings.read("disableLoop"));
-	nf.WriteLine("notStopAutoScroll="+System.Gadget.Settings.read("notStopAutoScroll"));
-	nf.WriteLine("feedLoadTimeout="+System.Gadget.Settings.read("feedLoadTimeout"));
-	nf.WriteLine("feedFetchRefresh="+System.Gadget.Settings.read("feedFetchRefresh"));
-	nf.WriteLine("hideFeeds="+System.Gadget.Settings.read("hideFeeds"));
-	nf.WriteLine("hideFeedsMax="+System.Gadget.Settings.readString("hideFeedsMax")+"\n");
-	
+	for(n in aS)
+		nf.WriteLine(aS[n]+"="+System.Gadget.Settings.read(aS[n]));
+
 	for(var i=0;i<System.Gadget.Settings.read("noFeeds");i++){
 		nf.WriteLine("[F]");
 		nf.WriteLine("feedName="+System.Gadget.Settings.read("feedName"+i));
 		nf.WriteLine("feedURL="+System.Gadget.Settings.read("feedURL"+i));
 		nf.WriteLine("feedFTitle="+System.Gadget.Settings.read("feedFTitle"+i));
 		nf.WriteLine("feedFContent="+System.Gadget.Settings.read("feedFContent"+i));
+		nf.WriteLine("feedFDisableHTML="+System.Gadget.Settings.read("feedFDisableHTML"+i));
 	}
 	nf.Close();
 }

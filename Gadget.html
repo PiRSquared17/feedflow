@@ -44,7 +44,7 @@
 			<div id="mainBL"></div><div id="mainBR"></div><div id="mainB"></div>
 			<div id="feedTitle">
 				<a href="javascript:void(0);" title="Previous feed" onclick="getPreviousFeed()" class="feedNavigation">&laquo;</a>
-				<marquee onmouseover="if(System.Gadget.Settings.read('noFeeds')){fillFeedList();feedList.style.display='block';feedList.z=0;}" id="titleMarquee" scrollamount="1" scrolldelay="2" style="position:relative;top:-3px;width:72px;float:left;"><a href="javascript:void(0);" id="titleLink" style="text-decoration:none;">FeedFlow</a></marquee>
+				<div onmouseover="if(System.Gadget.Settings.read('noFeeds')){fillFeedList();feedList.style.display='block';feedList.z=0;}" id="titleDiv"><a href="javascript:void(0);" id="titleLink" style="text-decoration:none;">FeedFlow</a></div>
 				<a href="javascript:void(0);" title="Next feed" onclick="getNextFeed()" class="feedNavigation">&raquo;</a>
 			</div>
 			<div id="mainContainer" style="height:162px;"><div id="mCC">&nbsp;</div></div>
@@ -57,7 +57,7 @@
 		</DIV>
 
 		<DIV name="message" id="message">
-			<p id="messageText"><u>Changes</u><br/><p style="font-size:9px;margin-top:3px;">Auto update system implemented.<br/>Dropdown menu for switching between feeds, mouseover feed title.<br/>Some fixes for harmless little bugs.<br/><br/>Didn't have time to test properly, just mail me if you find weird bugs please.</p></p>
+			<p id="messageText"><u>Changes</u><br/><p style="font-size:9px;margin-top:3px;">See homepage to see the new features.<br/><br/>If you find bugs please report via issue reporting system.</p></p>
 		</DIV>
 	</BODY>
 </HTML>

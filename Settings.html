@@ -77,6 +77,7 @@
 		<tr><td colspan="2">Reset feed hiding cache when it reaches <input type="text" id="hideFeedsMax" value="1000" style="width:32px;" maxlength="4"  onkeypress="return onlyNumbers();"/> feeds</td></tr>
 		<tr><td>Feed fetching<br/>Interval:</td><td><input type="text" id="feedFetchRefresh" value="15" maxlength="2" onkeypress="return onlyNumbers();" style="width:80%;"/> min | <a title="This will be disabled if you have more then 1 feed and autoscroll on.">?</a></td></tr>
 		<tr><td>Feed fetching<br/>timeout:</td><td><input type="text" id="feedLoadTimeout" value="6500" onkeypress="return onlyNumbers();" maxlength="5"/></td></tr>
+		<tr style="display:none;"><td></td><td><input type="checkbox" id="disableUpdate" style="width:auto;"/>Disable update systems <a title="You will not be notified of the new versions and there won't be any auto updates. Not recommended.">?</a></td></tr>
 		</table>
 
 		<table id="filteringTable" style="display:none;">
@@ -84,6 +85,7 @@
 		<tr><td colspan="2"><a href="javascript:void(0);" style="float:right;margin:5px;" title="The filters should be written in RegExp form.">?</a></td></tr>
 		<tr><td>Feed Title:</td><td><input type="text" id="filteringTitle"/></td></tr>
 		<tr><td>Feed Content:</td><td><input type="text" id="filteringContent"/></td></tr>
+		<tr><td></td><td><input type="checkbox" id="filteringDisableHTML" style="width:auto;"/>Disable HTML filtering for this feed <a title="It will affect the description sections of the nodes of this feed in main window, i.e. links will be clickable.">?</a></td></tr>
 		<tr><td colspan="2">&nbsp;</td></tr>
 		<tr><td></td><td><input type="button" value="Apply Changes" onclick="filteringApplyChanges();"/></td></tr>
 		</table>
