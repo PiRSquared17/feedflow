@@ -81,8 +81,7 @@ function initiateGadget()
 	mainBR.style.top=gHeight+48+"px";
 	vResizer.style.height=gHeight-27+"px";
 
-	var gWidth=System.Gadget.Settings.read("gWidth");
-	if(gWidth=="")gWidth=132;
+	var gWidth=System.Gadget.Settings.read("gWidth")||132;
 
 	document.body.style.width=gWidth+"px";
 	feedList.style.width=gWidth-55+"px";
@@ -90,6 +89,7 @@ function initiateGadget()
 	mCC.style.width=gWidth-13+"px";
 	feedTitle.style.width=gWidth+"px";
 	titleDiv.style.width=gWidth-60+"px";
+	titleDiv.style.marginLeft=(60-gWidth)/2+"px";
 	hResizer.style.width=gWidth-22+"px";
 	message.style.width=gWidth-10+"px";
 	mainT.style.width=gWidth-10+"px";
@@ -183,6 +183,7 @@ function resizeHB()
 		mainB.style.width=parseInt(mainB.style.width)+mXF+"px";
 		feedTitle.style.width=parseInt(feedTitle.style.width)+mXF+"px";
 		titleDiv.style.width=parseInt(titleDiv.style.width)+mXF+"px";
+		titleDiv.style.marginLeft=-parseInt(titleDiv.style.width)/2+"px";
 		navigation.style.width=parseInt(navigation.style.width)+mXF+"px";
 		position.style.width=parseInt(position.style.width)+mXF+"px";
 		/*mainBL.style.top=parseInt(mainBL.style.top)-mXF+"px";
@@ -394,15 +395,15 @@ function getNews(i,p)
 	clearTimeout(getNewsTimeout);
 	isAutoScroll = System.Gadget.Settings.read("autoScroll");
 	var URL = System.Gadget.Settings.read("feedURL"+currentFeed);
-	if ( URL == "" )
+	if (URL=="")
 	{
-		titleLink.innerHTML = "FeedFlow";
+		titleLink.innerHTML="FeedFlow";
 		showMessage( "No Feed" );
 		return true;
 	}
-	var name = System.Gadget.Settings.read( "feedName"+currentFeed );
-	if ( name != "" ) titleLink.innerHTML = name;
-	else titleLink.innerHTML = 'FeedFlow';
+	var name = System.Gadget.Settings.read("feedName"+currentFeed);
+	if (name != "") titleLink.innerHTML = name;
+	else titleLink.innerHTML="FeedFlow";
 	//position.innerHTML="";
 	//mCC.innerHTML="";
 
