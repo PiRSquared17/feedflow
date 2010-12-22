@@ -41,6 +41,7 @@ function settingsClosing(event)
 		System.Gadget.Settings.write("hideFeeds",hideFeeds.selectedIndex);
 		System.Gadget.Settings.write("hideFeedsMax",hideFeedsMax.value);
 		System.Gadget.Settings.write("NOUpdate",disableUpdate.checked);
+		System.Gadget.Settings.write("feedPPCoefficient",feedPPCoefficient.value);
         event.cancel = false;
     }
 }
@@ -67,6 +68,8 @@ function loadSettings()
 	hideFeedsMax.value=((a=System.Gadget.Settings.read("hideFeedsMax"))?a:1000);	
 	filteringButton.disabled = !feedCount;
 	feedFetchRefresh.value=((ref=System.Gadget.Settings.read("feedFetchRefresh"))?parseInt(ref):"15");
+	filteringDisableHTML.checked = System.Gadget.Settings.read("feedFNotDecoded");
+	feedPPCoefficient.value=System.Gadget.Settings.readString("feedPPCoefficient")||1;
 	
 	if(!window.ActiveXObject){
 		saveSettingsToFile.disabled=true;
@@ -260,7 +263,7 @@ function filterCurrentFeed()
 	filteringTableN.innerText=feeds.selectedIndex+1+". "+System.Gadget.Settings.read("feedName"+i);
 	filteringTitle.value=System.Gadget.Settings.read("feedFTitle"+i);
 	filteringContent.value=System.Gadget.Settings.read("feedFContent"+i);
-	filteringDisableHTML.value=System.Gadget.Settings.read("feedFDisableHTML"+i);
+	filteringDisableHTML.value=System.Gadget.Settings.read("feedFNotDecoded"+i);
 	showTable(filteringTable);
 	
 }
@@ -270,14 +273,14 @@ function filteringApplyChanges()
 	var i=feeds.selectedIndex;
 	System.Gadget.Settings.write("feedFTitle"+i,filteringTitle.value);
 	System.Gadget.Settings.write("feedFContent"+i,filteringContent.value);
-	System.Gadget.Settings.write("feedFDisableHTML"+i,filteringDisableHTML.value);
+	System.Gadget.Settings.write("feedFNotDecoded"+i,filteringDisableHTML.value);
 	showTable(feedsTable);
 }
 
 
 function saveSettingsToFile()
 {
-	var aS=["theme","fontFamily","fontSize","autoScroll","autoScrollInterval","disableLoop","notStopAutoScroll","feedLoadTimeout","feedFetchRefresh","hideFeeds","hideFeedsMax","NOUpdate"];
+	var aS=["theme","fontFamily","fontSize","autoScroll","autoScrollInterval","disableLoop","notStopAutoScroll","feedLoadTimeout","feedFetchRefresh","hideFeeds","hideFeedsMax","NOUpdate","feedPPCoefficient"];
 	var setP=System.Shell.saveFileDialog("C:\\", "FeedFlow config file\0*.fcg\0\0");
 	if(setP=="")
 		return;
@@ -294,7 +297,7 @@ function saveSettingsToFile()
 		nf.WriteLine("feedURL="+System.Gadget.Settings.read("feedURL"+i));
 		nf.WriteLine("feedFTitle="+System.Gadget.Settings.read("feedFTitle"+i));
 		nf.WriteLine("feedFContent="+System.Gadget.Settings.read("feedFContent"+i));
-		nf.WriteLine("feedFDisableHTML="+System.Gadget.Settings.read("feedFDisableHTML"+i));
+		nf.WriteLine("feedFNotDecoded="+System.Gadget.Settings.read("feedFNotDecoded"+i));
 	}
 	nf.Close();
 }
@@ -378,12 +381,12 @@ function showTable( table )
 	table.style.display = 'block';
 }
 
-function onlyNumbers(evt)
+function onlyNumbers(evt,d)
 {
     var e = event || evt;
     var cC = e.which || e.keyCode;
 
-    if (cC > 31 && (cC < 48 || cC > 57))
+    if (cC > 31 && (cC < 48 || cC > 57) && cC!=d)
         return false;
 
     return true;

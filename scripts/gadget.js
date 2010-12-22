@@ -67,11 +67,9 @@ function initiateGadget()
 			markedAsReadCache=f.readAll();
 	}
 
-	noItems = System.Gadget.Settings.read("noItems");
-	if ( noItems == "" ) noItems = 4;
-
-	var gHeight=System.Gadget.Settings.read("gHeight");
-	if(gHeight=="")gHeight=162;
+	var gHeight=System.Gadget.Settings.read("gHeight")||162;
+	
+	noItems=Math.round(gHeight/39*System.Gadget.Settings.readString("feedPPCoefficient"));
 
 	document.body.style.height=gHeight+60+"px";
 	mainContainer.style.height=gHeight+"px";
@@ -148,7 +146,7 @@ function resizeVB()
 function resizeVE()
 {
 	var gHeight=parseInt(mainContainer.style.height);
-	noItems=Math.round((gHeight/39));
+	noItems=Math.round(gHeight/39*System.Gadget.Settings.read("feedPPCoefficient"));
 	System.Gadget.Settings.write("noItems",noItems);
 	System.Gadget.Settings.write("gHeight",gHeight);
 	document.body.style.cursor="";
@@ -448,7 +446,7 @@ function showNews(news)
 		item_html = '<a ';
 		item_html += (news.items[i].link == null)?"":"href='javascript:void(0)' onclick='flyoutIndex="+i+";markAsRead(1);showFlyout();' ondblclick='window.location.href=\""+news.items[i].link+"\";'>";
 		item_html += (news.items[i].title == null ) ? "(no title)</a>" : news.items[i].title + "</a>";
-		item_html += (news.items[i].description == null) ? "" : "<br>" + (System.Gadget.Settings.read("feedFDisableHTML"+currentFeed)?news.items[i].description:decodeHTML(news.items[i].description));
+		item_html += (news.items[i].description == null) ? "" : "<br>" + decodeHTML(news.items[i].description);
 		buffer+="<div class='feedItem'>"+item_html+"</div>";
 	}
 	if((newVer==2||(newVer==1&&!window.ActiveXObject))&&System.Gadget.Settings.read("NOUpdate")!=1)
@@ -521,11 +519,20 @@ function getPreviousFeed()
 	getNews();	
 }
 
-/* Converts &lt; and &gt; into < and > */
 function decodeHTML(text)
 {
-	var ctom = /\<.+?\>/ig; //&lt;([^&]*)&gt;/g;
-    return text.replace(ctom,"");
+	var ctom = /<.+?>/ig; //&lt;([^&]*)&gt;/g;
+    return text.replace(ctom,decodeHTMLR);
+}
+
+function decodeHTMLR(str,p1)
+{
+	var a=System.Gadget.Settings.readString("feedFNotDecoded"+currentFeed).replace(/,/g,"|");
+	m=new RegExp("</?("+a+")( .+?)?/?>");
+	if(m.test(str))
+		return str;
+	else
+		return " ";
 }
 
 /* Scroll one page up */
