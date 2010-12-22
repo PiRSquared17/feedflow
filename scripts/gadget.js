@@ -91,7 +91,7 @@ function initiateGadget()
 	mainContainer.style.width=gWidth+"px";
 	mCC.style.width=gWidth-13+"px";
 	feedTitle.style.width=gWidth+"px";
-	titleMarquee.style.width=gWidth-60+"px";
+	titleDiv.style.width=gWidth-60+"px";
 	hResizer.style.width=gWidth-22+"px";
 	message.style.width=gWidth-10+"px";
 	mainT.style.width=gWidth-10+"px";
@@ -184,7 +184,7 @@ function resizeHB()
 		mainBR.style.left=parseInt(mainBR.style.left)+mXF+"px";
 		mainB.style.width=parseInt(mainB.style.width)+mXF+"px";
 		feedTitle.style.width=parseInt(feedTitle.style.width)+mXF+"px";
-		titleMarquee.style.width=parseInt(titleMarquee.style.width)+mXF+"px";
+		titleDiv.style.width=parseInt(titleDiv.style.width)+mXF+"px";
 		navigation.style.width=parseInt(navigation.style.width)+mXF+"px";
 		position.style.width=parseInt(position.style.width)+mXF+"px";
 		/*mainBL.style.top=parseInt(mainBL.style.top)-mXF+"px";
@@ -238,7 +238,7 @@ function checkVersion()
 	};
 	var XMLVersionCheckTimeout=setTimeout(function(){
 		XMLVersionCheck.abort();
-	},8500);
+	},16500);
 	XMLVersionCheck.open("GET","http://feedflow.googlecode.com/files/feedflowver?"+Math.random(),true);
 	XMLVersionCheck.send(null);
 }
@@ -396,7 +396,7 @@ function getNews(i,p)
 	clearTimeout(getNewsTimeout);
 	isAutoScroll = System.Gadget.Settings.read("autoScroll");
 	var URL = System.Gadget.Settings.read("feedURL"+currentFeed);
-	if ( URL == "" ) 
+	if ( URL == "" )
 	{
 		titleLink.innerHTML = "FeedFlow";
 		showMessage( "No Feed" );
@@ -431,9 +431,9 @@ function getNews(i,p)
 	};
 	xmlDocument.open("GET",URL+(URL.match(/\?/)?"&":"?")+Math.random(),true);
 	xmlDocument.send(null);
-	
+
 	getNewsTimeout=setTimeout(function(){xmlDocument.abort();loadingIcon.style.display="none";/*showMessage("Could not load<br>"+name);*/setTimeout(getNextFeed,3000);}, System.Gadget.Settings.read("feedLoadTimeout"));
-	
+
 	return;
 }
 
@@ -448,10 +448,13 @@ function showNews(news)
 		item_html = '<a ';
 		item_html += (news.items[i].link == null)?"":"href='javascript:void(0)' onclick='flyoutIndex="+i+";markAsRead(1);showFlyout();' ondblclick='window.location.href=\""+news.items[i].link+"\";'>";
 		item_html += (news.items[i].title == null ) ? "(no title)</a>" : news.items[i].title + "</a>";
-		item_html += (news.items[i].description == null) ? "" : "<br>" + decodeHTML(news.items[i].description);
+		item_html += (news.items[i].description == null) ? "" : "<br>" + (System.Gadget.Settings.read("feedFDisableHTML"+currentFeed)?news.items[i].description:decodeHTML(news.items[i].description));
 		buffer+="<div class='feedItem'>"+item_html+"</div>";
 	}
-	mCC.innerHTML=((newVer==2)||(newVer==1&&!window.ActiveXObject)?"<div style='border:2px red solid;height:50px;position:relative;width:117px;overflow:hidden;'>A manual update of<br/>FeedFlow is required!<br/>Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</div>":"")+buffer;
+	if((newVer==2||(newVer==1&&!window.ActiveXObject))&&System.Gadget.Settings.read("NOUpdate")!=1)
+		buffer="<p style='border:2px red solid;width:100%;height:50px;'>A manual update of<br/>FeedFlow is required!<br/>Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</p>"+buffer;
+		
+	mCC.innerHTML=buffer;
 
 	var posText = (currentPosition + 1) + '-' + ((currentPosition + noItems)>news.items.length?news.items.length:(currentPosition + noItems)) + '/' + news.items.length;
 	position.innerHTML = posText;
