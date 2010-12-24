@@ -68,8 +68,6 @@ function initiateGadget()
 	}
 
 	var gHeight=System.Gadget.Settings.read("gHeight")||162;
-	
-	noItems=Math.round(gHeight/39*System.Gadget.Settings.readString("feedPPCoefficient"));
 
 	document.body.style.height=gHeight+60+"px";
 	mainContainer.style.height=gHeight+"px";
@@ -146,8 +144,6 @@ function resizeVB()
 function resizeVE()
 {
 	var gHeight=parseInt(mainContainer.style.height);
-	noItems=Math.round(gHeight/39*System.Gadget.Settings.read("feedPPCoefficient"));
-	System.Gadget.Settings.write("noItems",noItems);
 	System.Gadget.Settings.write("gHeight",gHeight);
 	document.body.style.cursor="";
 	document.body.onmousemove="";
@@ -299,8 +295,8 @@ function RSS2Item(itemxml)
 	for (var i=0; i<properties.length; i++)
 	{
 		tmpElement = itemxml.getElementsByTagName(properties[i])[0];
-		var filterTData=new RegExp(FT=System.Gadget.Settings.read("feedFTitle"+currentFeed));
-		var filterCData=new RegExp(FC=System.Gadget.Settings.read("feedFContent"+currentFeed));
+		var filterTData=new RegExp(FT=System.Gadget.Settings.readString("feedFTitle"+currentFeed));
+		var filterCData=new RegExp(FC=System.Gadget.Settings.readString("feedFContent"+currentFeed));
 		if(i==0 && FT!="" && tmpElement.childNodes[0].nodeValue.match(filterTData)!=null)
 			this.filter=false;
 		if(i==2 && FC!="" && tmpElement.childNodes[0].nodeValue.match(filterCData)!=null)
@@ -445,18 +441,20 @@ function showNews(news)
 {
 	if(!news)
 		return;
+
+	noItems=Math.round((System.Gadget.Settings.read("gHeight")||162)/39*(System.Gadget.Settings.readString("feedPPCoefficient"+currentFeed)||1));
 	var buffer="";
 	for ( var i = currentPosition; (i < currentPosition+noItems) && (i < news.items.length); i++ ) 
 	{
-		item_html = '<a ';
+		item_html = "<a style='white-space:"+(System.Gadget.Settings.read("feedWrapTitle"+currentFeed)?"normal":"nowrap")+";' ";
 		item_html += (news.items[i].link == null)?"":"href='javascript:void(0)' onclick='flyoutIndex="+i+";markAsRead(1);showFlyout();' ondblclick='window.location.href=\""+news.items[i].link+"\";'>";
-		item_html += (news.items[i].title == null ) ? "(no title)</a>" : news.items[i].title + "</a>";
-		item_html += (news.items[i].description == null) ? "" : "<br>" + decodeHTML(news.items[i].description);
+		item_html += (news.items[i].title == null )?"(no title)</a>":news.items[i].title+"</a>";
+		item_html += (news.items[i].description == null) ?"":"<br><span style='white-space:"+(System.Gadget.Settings.read("feedWrapDescription"+currentFeed)?"normal":"nowrap")+";'>"+decodeHTML(news.items[i].description)+"</span>";
 		buffer+="<div class='feedItem'>"+item_html+"</div>";
 	}
 	if((newVer==2||(newVer==1&&!window.ActiveXObject))&&System.Gadget.Settings.read("NOUpdate")!=1)
-		buffer="<p style='border:2px red solid;width:100%;height:50px;'>A manual update of<br/>FeedFlow is required!<br/>Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</p>"+buffer;
-		
+		buffer="<div style='border:2px red solid;width:100%;height:50px;'>A manual update of FeedFlow is required! Click <a href='http://code.google.com/p/feedflow/'>here</a> to download</div>"+buffer;
+
 	mCC.innerHTML=buffer;
 
 	var posText = (currentPosition + 1) + '-' + ((currentPosition + noItems)>news.items.length?news.items.length:(currentPosition + noItems)) + '/' + news.items.length;

@@ -41,7 +41,6 @@ function settingsClosing(event)
 		System.Gadget.Settings.write("hideFeeds",hideFeeds.selectedIndex);
 		System.Gadget.Settings.write("hideFeedsMax",hideFeedsMax.value);
 		System.Gadget.Settings.write("NOUpdate",disableUpdate.checked);
-		System.Gadget.Settings.write("feedPPCoefficient",feedPPCoefficient.value);
         event.cancel = false;
     }
 }
@@ -69,7 +68,6 @@ function loadSettings()
 	eEditButton.disabled = !feedCount;
 	feedFetchRefresh.value=((ref=System.Gadget.Settings.read("feedFetchRefresh"))?parseInt(ref):"15");
 	eEditTableDisableHTML.checked = System.Gadget.Settings.read("feedFNotDecoded");
-	feedPPCoefficient.value=System.Gadget.Settings.readString("feedPPCoefficient")||1;
 
 	if(!window.ActiveXObject){
 		saveSettingsToFile.disabled=true;
@@ -143,14 +141,14 @@ function addNewFeed( name, url )
 	var aux = System.Gadget.Settings.read("noFeeds");
 	if ( aux == "" ) n = 0; else n = aux;
 
-	System.Gadget.Settings.write( "feedName"+n, name );	
-	System.Gadget.Settings.write( "feedURL"+n, url );	
+	System.Gadget.Settings.write("feedName"+n,name);	
+	System.Gadget.Settings.write("feedURL"+n,url);	
 
 	n++;
 	System.Gadget.Settings.write("noFeeds",n);
-	
+
 	errorMessage.innerHTML = "";
-	
+
 	buildFeedList();
 	feeds.options[feeds.options.length-1].selected = "1";
 	feedName.value=name;
@@ -266,6 +264,9 @@ function eEditCurrentFeed()
 	eEditTableDisableHTML.value=System.Gadget.Settings.read("feedFNotDecoded"+i);
 	maxAgeToView.value=System.Gadget.Settings.read("feedMaxAgeToView"+i)||0;
 	maxAgeToViewC.options[System.Gadget.Settings.read("feedMaxAgeToViewC"+i)||0].selected=1;
+	wrapTitle.checked=System.Gadget.Settings.read("feedWrapTitle"+i)||0;
+	wrapDescription.checked=System.Gadget.Settings.read("feedWrapDescription"+i)||0;
+	feedPPCoefficient.value=System.Gadget.Settings.readString("feedPPCoefficient"+i)||"1.000";
 	showTable(eEditTable);
 }
 
@@ -277,12 +278,15 @@ function eEditApplyChanges()
 	System.Gadget.Settings.write("feedFNotDecoded"+i,eEditTableDisableHTML.value);
 	System.Gadget.Settings.write("feedMaxAgeToView"+i,maxAgeToView.value);
 	System.Gadget.Settings.write("feedMaxAgeToViewC"+i,maxAgeToViewC.selectedIndex);
+	System.Gadget.Settings.write("feedWrapTitle"+i,wrapTitle.checked);
+	System.Gadget.Settings.write("feedWrapDescription"+i,wrapDescription.checked);
+	System.Gadget.Settings.write("feedPPCoefficient"+i,feedPPCoefficient.value);
 	showTable(feedsTable);
 }
 
 function saveSettingsToFile()
 {
-	var aS=["theme","fontFamily","fontSize","autoScroll","autoScrollInterval","disableLoop","notStopAutoScroll","feedLoadTimeout","feedFetchRefresh","hideFeeds","hideFeedsMax","NOUpdate","feedPPCoefficient"];
+	var aS=["theme","fontFamily","fontSize","autoScroll","autoScrollInterval","disableLoop","notStopAutoScroll","feedLoadTimeout","feedFetchRefresh","hideFeeds","hideFeedsMax","NOUpdate"];
 	var setP=System.Shell.saveFileDialog("C:\\", "FeedFlow config file\0*.fcg\0\0");
 	if(setP=="")
 		return;
@@ -302,6 +306,9 @@ function saveSettingsToFile()
 		nf.WriteLine("feedFNotDecoded="+System.Gadget.Settings.read("feedFNotDecoded"+i));
 		nf.WriteLine("feedMaxAgeToView="+System.Gadget.Settings.read("feedMaxAgeToView"+i));
 		nf.WriteLine("feedMaxAgeToViewC="+System.Gadget.Settings.read("feedMaxAgeToViewC"+i));
+		nf.WriteLine("feedWrapTitle="+System.Gadget.Settings.read("feedWrapTitle"+i));
+		nf.WriteLine("feedWrapDescription="+System.Gadget.Settings.read("feedWrapDescription"+i));
+		nf.WriteLine("feedPPCoefficient="+System.Gadget.Settings.read("feedPPCoefficient"+i));
 	}
 	nf.Close();
 }
