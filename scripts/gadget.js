@@ -294,6 +294,7 @@ function RSS2Item(itemxml)
 	this.pubDate;
 
 	var properties = new Array("title", "link", "description", "pubDate", "enclosure", "media:thumbnail");
+	var feedMaxAgeToViewArray = new Array(86400000, 3600000, 60000, 1000);
 	var tmpElement = null;
 	for (var i=0; i<properties.length; i++)
 	{
@@ -306,6 +307,9 @@ function RSS2Item(itemxml)
 			this.filter=false;
 		if(i==0 && isMarkedAsRead(tmpElement.childNodes[0].nodeValue)!=-1)
 			this.filter=false;
+		if(i==3 && System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed))
+			if(new Date()-Date.parse(tmpElement.childNodes[0].nodeValue) > System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed)*feedMaxAgeToViewArray[System.Gadget.Settings.read("feedMaxAgeToViewC"+currentFeed)])
+				this.filter=false;
 		if ( tmpElement != null ){
 			if ( tmpElement.childNodes != null )
 				if ( tmpElement.childNodes[0] != null )

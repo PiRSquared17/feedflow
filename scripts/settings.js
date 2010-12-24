@@ -264,8 +264,9 @@ function eEditCurrentFeed()
 	eEditTableTitle.value=System.Gadget.Settings.read("feedFTitle"+i);
 	eEditTableContent.value=System.Gadget.Settings.read("feedFContent"+i);
 	eEditTableDisableHTML.value=System.Gadget.Settings.read("feedFNotDecoded"+i);
+	maxAgeToView.value=System.Gadget.Settings.read("feedMaxAgeToView"+i)||0;
+	maxAgeToViewC.options[System.Gadget.Settings.read("feedMaxAgeToViewC"+i)||0].selected=1;
 	showTable(eEditTable);
-	
 }
 
 function eEditApplyChanges()
@@ -274,9 +275,10 @@ function eEditApplyChanges()
 	System.Gadget.Settings.write("feedFTitle"+i,eEditTableTitle.value);
 	System.Gadget.Settings.write("feedFContent"+i,eEditTableContent.value);
 	System.Gadget.Settings.write("feedFNotDecoded"+i,eEditTableDisableHTML.value);
+	System.Gadget.Settings.write("feedMaxAgeToView"+i,maxAgeToView.value);
+	System.Gadget.Settings.write("feedMaxAgeToViewC"+i,maxAgeToViewC.selectedIndex);
 	showTable(feedsTable);
 }
-
 
 function saveSettingsToFile()
 {
@@ -298,6 +300,8 @@ function saveSettingsToFile()
 		nf.WriteLine("feedFTitle="+System.Gadget.Settings.read("feedFTitle"+i));
 		nf.WriteLine("feedFContent="+System.Gadget.Settings.read("feedFContent"+i));
 		nf.WriteLine("feedFNotDecoded="+System.Gadget.Settings.read("feedFNotDecoded"+i));
+		nf.WriteLine("feedMaxAgeToView="+System.Gadget.Settings.read("feedMaxAgeToView"+i));
+		nf.WriteLine("feedMaxAgeToViewC="+System.Gadget.Settings.read("feedMaxAgeToViewC"+i));
 	}
 	nf.Close();
 }
@@ -331,8 +335,8 @@ function importFeedsFromIE7()
 	var feedManager = null;
 	try
 	{
-		feedManager = new ActiveXObject( "Microsoft.FeedsManager" );
-		if ( feedManager == null ) return false;
+		feedManager = new ActiveXObject("Microsoft.FeedsManager");
+		if (feedManager == null) return false;
 		searchAndAddFeed( feedManager.RootFolder );
 	} catch(e) {}
 	buildFeedList();
@@ -355,15 +359,15 @@ function exportFeeds()
 	var feedManager = null;
 	try
 	{
-		feedManager = new ActiveXObject( "Microsoft.FeedsManager" );
-		if ( feedManager == null ) return false;
+		feedManager = new ActiveXObject("Microsoft.FeedsManager");
+		if (feedManager == null) return false;
 	} catch(e) {}
-	
-	var folder = feedManager.RootFolder.CreateSubfolder( "FeedFlow Gadget Feeds" );
+
+	var folder = feedManager.RootFolder.CreateSubfolder("FeedFlow Gadget Feeds");
 	var n;
 	var aux = System.Gadget.Settings.read("noFeeds");
 	if ( aux == "" ) n = 0; else n = aux;
-	
+
 	for ( var i = 0; i < n; i++ )
 	{
 		var name = System.Gadget.Settings.read("feedName"+i);
@@ -391,4 +395,25 @@ function onlyNumbers(evt,d)
 
     return true;
 
+}
+
+function parseTimeStr(str)
+{
+	var s;
+	if(!(s=str.match(/([0-9]+)(d|h|m|s)$/)))
+		return false;
+	else
+	{
+		switch(s[2])
+		{
+			case "d":
+				return s[1]*86400;
+			case "h":
+				return s[1]*3600;
+			case "m":
+				return s[1]*60;
+			default:
+				return s[1];
+		}
+	}
 }
