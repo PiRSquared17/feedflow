@@ -52,7 +52,7 @@ p {
 	margin:0; 
 	padding:0;
 	overflow: hidden;
-	white-space: nowrap; 
+	white-space: nowrap;
 	float: left;
 }
 
@@ -91,7 +91,6 @@ p {
 	margin: 0;
 	width: 110px;
 	overflow: hidden;
-	white-space: nowrap;
 	display: block;
 	width:132px;
 	padding:5px 13px 0 8px;

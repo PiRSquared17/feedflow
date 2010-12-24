@@ -39,24 +39,22 @@
 		<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=CQN3JZEVN7UYJ&lc=TR&item_name=FeedFlow%20sidebar%20gadget&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted">Donate</a>
 		</span>
 		<div style="height:20px;"></div>
-		
+
 		<div style="overflow:auto;width:290px;height:280px;">
-				
+
 		<table id="feedsTable">	
 		<tr><td><label for="feeds">Feeds:</label></td>
 		<td><SELECT name="feeds" id="feeds"/ onchange="feedsChange();"/>
 		</td></tr>
 		<tr><td></td><td><input type="button" id="deleteFeed" value="Delete Feed" style="width:71px;" onclick="deleteExistingFeed();"><input type="button" id="moveFeedUpButton" value="▲"/ style="width:25px;" onclick="moveFeed(0);" ondblclick="moveFeed(0);"><input type="button" id="moveFeedDownButton" value="▼"/ style="width:25px;" onclick="moveFeed(1);" ondblclick="moveFeed(1);"><input type="button" id="eEditButton" value="Extended Opt." onclick="eEditCurrentFeed();" style="width:80px;"/></td></tr>
-		<tr><td><label for="feedName">Feed name:</label></td>
-		<td><input type="text" name="feedName" id="feedName" length="20" onkeyup="editCheck();"/></td></tr>
-		<tr><td><label for="feedURL">Feed URL:</label></td>
-		<td><input type="text" name="feedURL" id="feedURL" onkeyup="editCheck();"/></td></tr>
-	    <tr><td></td><td><input type="button" name="addFeed" id="addFeed" value="Add Feed" style="width:auto;" onclick="addNewFeed( feedName.value, feedURL.value );"><input type="button" name="editFeed" id="editFeed" value="Apply Changes" style="width:120px;" onclick="editExistingFeed();" disabled="true"></td></tr><tr><td><span id="errorMessage"></span></td></tr>
+		<tr><td><label for="feedName">Feed name:</label></td><td><input type="text" name="feedName" id="feedName" length="20" onkeyup="editCheck();"/></td></tr>
+		<tr><td><label for="feedURL">Feed URL:</label></td><td><input type="text" name="feedURL" id="feedURL" onkeyup="editCheck();"/></td></tr>
+	    <tr><td></td><td><input type="button" name="addFeed" id="addFeed" value="Add Feed" style="width:auto;" onclick="addNewFeed( feedName.value, feedURL.value );"><input type="button" name="editFeed" id="editFeed" value="Apply Changes" style="width:120px;" onclick="editExistingFeed();" disabled="true"/></td></tr><tr><td><span id="errorMessage"></span></td></tr>
 		<tr><td colspan="2" style="height:15px;"></td></tr>
-		<tr><td></td><td><input type="button" id="importFeedsFromIE" name="importFeeds" id="importFeeds" value="Import Feeds from IE" style="width:auto;" onclick="importFeedsFromIE7();"></td></tr>
+		<tr><td></td><td><span class="iSave"><input type="button" id="importFeedsFromIE" name="importFeeds" id="importFeeds" value="Import Feeds from IE" style="width:auto;" onclick="importFeedsFromIE7();"/></span></td></tr>
 		<tr><td></td><td>&nbsp;</td></tr>
-		<tr><td></td><td><input type="button" id="saveSettingsToFile" value="Save Settings to a File" style="width:90%;" onclick="saveSettingsToFile();"></td></tr>
-		<tr><td></td><td><input type="button" id="loadSettingsFromFile" value="Load Settings from a File" style="width:90%;" onclick="readSettingsFromFile();"></td></tr>
+		<tr><td></td><td><input type="button" id="saveSettingsToFile" value="Save Settings to a File" style="width:90%;" onclick="saveSettingsToFile();"/></td></tr>
+		<tr><td></td><td><input type="button" id="loadSettingsFromFile" value="Load Settings from a File" style="width:90%;" onclick="readSettingsFromFile();"/></td></tr>
 		</table>
 
 		<table id="optionsTable" style="display:none;">
@@ -77,20 +75,21 @@
 		<tr><td colspan="2">Reset feed hiding cache when it reaches <input type="text" id="hideFeedsMax" value="1000" style="width:32px;" maxlength="4"  onkeypress="return onlyNumbers();"/> feeds</td></tr>
 		<tr><td>Feed fetching<br/>Interval:</td><td><input type="text" id="feedFetchRefresh" value="15" maxlength="2" onkeypress="return onlyNumbers();" style="width:80%;"/> min | <a title="This will be disabled if you have more then 1 feed and autoscroll on.">?</a></td></tr>
 		<tr><td>Feed fetching<br/>timeout:</td><td><input type="text" id="feedLoadTimeout" value="6500" onkeypress="return onlyNumbers();" maxlength="5"/></td></tr>
-		<tr><td>Feed per page<br/>coefficient:</td><td><input type="text" id="feedPPCoefficient" value="1" onkeypress="return onlyNumbers(null,46);" maxlength="5"/> <a title="Adjust this to increase and decrease feed number per page, i.e. 0.5 is simply half times of normal count. May help if you use custom font settings.">?</a></td></tr>
 		<tr style="display:none;"><td></td><td><input type="checkbox" id="disableUpdate" style="width:auto;"/>Disable update systems <a title="You will not be notified of the new versions and there won't be any auto updates. Not recommended.">?</a></td></tr>
 		</table>
 
 		<table id="eEditTable" style="display:none;">
 		<tr><td colspan="2">Altering:<br><b id="eEditTableN"></b></td></tr>
+		<tr><td colspan="2"><input type="button" value="Apply Changes" onclick="eEditApplyChanges();" style="width:65%;"/><input type="button" value="Cancel" onclick="showTable(feedsTable);" style="width:35%;"/></td></tr>
 		<tr><td colspan="2"><b><u>Filtering:</u></b>  <a title="RegExp form is acceptable for first two.">?</a>
-		<tr><td>Feed Title:</td><td><input type="text" id="eEditTableTitle"/></td></tr>
-		<tr><td>Feed Content:</td><td><input type="text" id="eEditTableContent"/></td></tr>
-		<tr><td colspan="2">Hide items that are older than <input type="text" id="maxAgeToView"/ maxlength="3" style="width:25px;" onchange="return onlyNumbers();"><select id="maxAgeToViewC" style="width:35px;"><option value="86400000">d</option><option value="3600000">h</option><option value="60000">m</option><option value="1000">s</option></select> <a title="Leave zero for no effect.">?</a></td></tr>
+		<tr><td>by Title:</td><td><input type="text" id="eEditTableTitle"/></td></tr>
+		<tr><td>by Description:</td><td><input type="text" id="eEditTableContent"/></td></tr>
+		<tr><td colspan="2">Hide items that are older than <input type="text" id="maxAgeToView"/ maxlength="3" style="width:25px;" onchange="return onlyNumbers();"><select id="maxAgeToViewC" style="width:35px;"><option value="86400000">d</option><option value="3600000">h</option><option value="60000">m</option><option value="1000">s</option></select><a title="Leave zero for no effect.">?</a></td></tr>
 		<tr><td colspan="2">&nbsp;</td></tr>
-		<tr><td>HTML tags to exclude<a title="It will affect the description sections of the nodes of this feed in main window, i.e. links will be clickable.">?</a>:</td><td><input type="text" id="eEditTableDisableHTML"/> <a title="i.e. type 'a' without brackets to exclude the links. Use comma to seperate multiple.">?</a></td></tr>
-		<tr><td colspan="2">&nbsp;</td></tr>
-		<tr><td></td><td><input type="button" value="Apply Changes" onclick="eEditApplyChanges();" style="width:65%;"/><input type="button" value="Cancel" onclick="showTable(feedsTable);" style="width:35%;"/></td></tr>
+		<tr><td>HTML tags to exclude<a title="It will affect the description sections of the nodes of this feed in main window, i.e. links will be clickable.">?</a>:</td><td><input type="text" id="eEditTableDisableHTML"/><a title="i.e. type 'a' without brackets to exclude the links. Use comma to seperate multiple.">?</a></td></tr>
+		<tr><td>Feed per page<br/>coefficient:</td><td><input type="text" id="feedPPCoefficient" value="1.0" onkeypress="return onlyNumbers(null,46);" maxlength="5"/><a title="Adjust this to increase and decrease feed number per page, i.e. 0.5 is simply half times of normal count. May help if you use custom font settings.">?</a></td></tr>
+		<tr><td></td><td><input type="checkbox" id="wrapTitle" style="width:auto;"/> Wrap Title</td></tr>
+		<tr><td></td><td><input type="checkbox" id="wrapDescription" style="width:auto;"/> Wrap Description</td></tr>
 		</table>
 
 		<table id="aboutTable" style="display:none;">

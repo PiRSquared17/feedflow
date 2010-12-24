@@ -24,50 +24,50 @@
  **********************************************/
 
 body {
-	width: 380px;
-    height: 350px;
+	width:380px;
+    height:350px;
 }
 
 label, table, td, tr, strong, input, select, button {
-	font-family: Tahoma;
-	font-size: 11px;
-	vertical-align: middle;
+	font-family:Tahoma;
+	font-size:11px;
+	vertical-align:middle;
 }
 
 div#checkVersionInfo {
-	font-family: Tahoma;
-	font-size: 9px;
-	vertical-align: middle;
+	font-family:Tahoma;
+	font-size:9px;
+	vertical-align:middle;
 	position:absolute;
 	top:0;
 	left:10px;
 }
 
 a {
-	color: #0000FF;
-	text-decoration: none;
+	color:#0000FF;
+	text-decoration:none;
 }
 
-a:hover { text-decoration: underline; }
+a:hover {text-decoration:underline;}
 
-hr { margin-top: 30px; }
+hr {margin-top:30px;}
 
-input, select { width: 200px; }
+input, select {width:200px;}
 
 #preview {
-	border: solid 1px;
-	height: 120px;
-	text-align: center;
+	border:solid 1px;
+	height:120px;
+	text-align:center;
 }
 
 #preview img { 
-	margin-left: auto; 
-	margin-top: 10px; 
+	margin-left:auto; 
+	margin-top:10px; 
 }
 
 #errorMessage {
-	color: #FF0000;
-	margin-left: 5px;
+	color:#FF0000;
+	margin-left:5px;
 }
 
 div#checkVersionInfo img {
