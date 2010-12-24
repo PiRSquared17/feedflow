@@ -46,7 +46,7 @@
 		<tr><td><label for="feeds">Feeds:</label></td>
 		<td><SELECT name="feeds" id="feeds"/ onchange="feedsChange();"/>
 		</td></tr>
-		<tr><td></td><td><input type="button" id="deleteFeed" value="Delete Feed" style="width:auto;" onclick="deleteExistingFeed();"><input type="button" id="moveFeedUpButton" value="▲"/ style="width:25px;" onclick="moveFeed(0);" ondblclick="moveFeed(0);"><input type="button" id="moveFeedDownButton" value="▼"/ style="width:25px;" onclick="moveFeed(1);" ondblclick="moveFeed(1);"><input type="button" id="filteringButton" value="Filtering" onclick="filterCurrentFeed();" style="width:65px;"/></td></tr>
+		<tr><td></td><td><input type="button" id="deleteFeed" value="Delete Feed" style="width:71px;" onclick="deleteExistingFeed();"><input type="button" id="moveFeedUpButton" value="▲"/ style="width:25px;" onclick="moveFeed(0);" ondblclick="moveFeed(0);"><input type="button" id="moveFeedDownButton" value="▼"/ style="width:25px;" onclick="moveFeed(1);" ondblclick="moveFeed(1);"><input type="button" id="eEditButton" value="Extended Opt." onclick="eEditCurrentFeed();" style="width:80px;"/></td></tr>
 		<tr><td><label for="feedName">Feed name:</label></td>
 		<td><input type="text" name="feedName" id="feedName" length="20" onkeyup="editCheck();"/></td></tr>
 		<tr><td><label for="feedURL">Feed URL:</label></td>
@@ -81,14 +81,14 @@
 		<tr style="display:none;"><td></td><td><input type="checkbox" id="disableUpdate" style="width:auto;"/>Disable update systems <a title="You will not be notified of the new versions and there won't be any auto updates. Not recommended.">?</a></td></tr>
 		</table>
 
-		<table id="filteringTable" style="display:none;">
-		<tr><td colspan="2">Altering filters of:<br><b id="filteringTableN"></b></td></tr>
+		<table id="eEditTable" style="display:none;">
+		<tr><td colspan="2">Altering:<br><b id="eEditTableN"></b></td></tr>
 		<tr><td colspan="2"><a href="javascript:void(0);" style="float:right;margin:5px;" title="RegExp form is acceptable for first two.">?</a></td></tr>
-		<tr><td>Feed Title:</td><td><input type="text" id="filteringTitle"/></td></tr>
-		<tr><td>Feed Content:</td><td><input type="text" id="filteringContent"/></td></tr>
-		<tr><td>HTML tags to exclude<a title="It will affect the description sections of the nodes of this feed in main window, i.e. links will be clickable.">?</a>:</td><td><input type="text" id="filteringDisableHTML"/> <a title="i.e. type a to exclude the links. Use comma to seperate multiple.">?</a></td></tr>
+		<tr><td>Feed Title:</td><td><input type="text" id="eEditTableTitle"/></td></tr>
+		<tr><td>Feed Content:</td><td><input type="text" id="eEditTableContent"/></td></tr>
+		<tr><td>HTML tags to exclude<a title="It will affect the description sections of the nodes of this feed in main window, i.e. links will be clickable.">?</a>:</td><td><input type="text" id="eEditTableDisableHTML"/> <a title="i.e. type a to exclude the links. Use comma to seperate multiple.">?</a></td></tr>
 		<tr><td colspan="2">&nbsp;</td></tr>
-		<tr><td></td><td><input type="button" value="Apply Changes" onclick="filteringApplyChanges();"/></td></tr>
+		<tr><td></td><td><input type="button" value="Apply Changes" onclick="eEditApplyChanges();"/></td></tr>
 		</table>
 
 		<table id="aboutTable" style="display:none;">
