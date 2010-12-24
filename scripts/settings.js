@@ -66,18 +66,18 @@ function loadSettings()
 	notStopAutoScroll.checked = System.Gadget.Settings.read("notStopAutoScroll");
 	hideFeeds[(a=System.Gadget.Settings.read("hideFeeds"))==""?0:a].selected=true;
 	hideFeedsMax.value=((a=System.Gadget.Settings.read("hideFeedsMax"))?a:1000);	
-	filteringButton.disabled = !feedCount;
+	eEditButton.disabled = !feedCount;
 	feedFetchRefresh.value=((ref=System.Gadget.Settings.read("feedFetchRefresh"))?parseInt(ref):"15");
-	filteringDisableHTML.checked = System.Gadget.Settings.read("feedFNotDecoded");
+	eEditTableDisableHTML.checked = System.Gadget.Settings.read("feedFNotDecoded");
 	feedPPCoefficient.value=System.Gadget.Settings.readString("feedPPCoefficient")||1;
-	
+
 	if(!window.ActiveXObject){
 		saveSettingsToFile.disabled=true;
 		loadSettingsFromFile.disabled=true;
 		importFeedsFromIE.disabled=true;
 		hideFeeds.disabled=true;
 	}
-	
+
 	var font=System.Gadget.Settings.read("fontFamily");
 	if(font=="")
 		font="Arial";
@@ -157,7 +157,7 @@ function addNewFeed( name, url )
 	feedURL.value=url;
 	deleteFeed.disabled=false;
 	editFeed.disabled=true;
-	filteringButton.disabled=false;
+	eEditButton.disabled=false;
 	if(n>1)
 		moveFeedUpButton.disabled=false;
 	moveFeedDownButton.disabled=true;
@@ -220,7 +220,7 @@ function deleteExistingFeed()
 	if ( n > 0 ) n--; else n = 0;
 	if(n==0){
 		deleteFeed.disabled=true;
-		filteringButton.disabled=true;
+		eEditButton.disabled=true;
 	}
 	System.Gadget.Settings.write("noFeeds",n);
 	editFeed.disabled=true;
@@ -257,23 +257,23 @@ function editCheck(){
 			editFeed.disabled=false;
 }
 
-function filterCurrentFeed()
+function eEditCurrentFeed()
 {
 	var i=feeds.selectedIndex;
-	filteringTableN.innerText=feeds.selectedIndex+1+". "+System.Gadget.Settings.read("feedName"+i);
-	filteringTitle.value=System.Gadget.Settings.read("feedFTitle"+i);
-	filteringContent.value=System.Gadget.Settings.read("feedFContent"+i);
-	filteringDisableHTML.value=System.Gadget.Settings.read("feedFNotDecoded"+i);
-	showTable(filteringTable);
+	eEditTableN.innerText=feeds.selectedIndex+1+". "+System.Gadget.Settings.read("feedName"+i);
+	eEditTableTitle.value=System.Gadget.Settings.read("feedFTitle"+i);
+	eEditTableContent.value=System.Gadget.Settings.read("feedFContent"+i);
+	eEditTableDisableHTML.value=System.Gadget.Settings.read("feedFNotDecoded"+i);
+	showTable(eEditTable);
 	
 }
 
-function filteringApplyChanges()
+function eEditApplyChanges()
 {
 	var i=feeds.selectedIndex;
-	System.Gadget.Settings.write("feedFTitle"+i,filteringTitle.value);
-	System.Gadget.Settings.write("feedFContent"+i,filteringContent.value);
-	System.Gadget.Settings.write("feedFNotDecoded"+i,filteringDisableHTML.value);
+	System.Gadget.Settings.write("feedFTitle"+i,eEditTableTitle.value);
+	System.Gadget.Settings.write("feedFContent"+i,eEditTableContent.value);
+	System.Gadget.Settings.write("feedFNotDecoded"+i,eEditTableDisableHTML.value);
 	showTable(feedsTable);
 }
 
@@ -377,7 +377,7 @@ function showTable( table )
 	feedsTable.style.display = 'none';
 	aboutTable.style.display = 'none';
 	optionsTable.style.display = 'none';
-	filteringTable.style.display="none";
+	eEditTable.style.display="none";
 	table.style.display = 'block';
 }
 
