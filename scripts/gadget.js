@@ -61,8 +61,7 @@ function initiateGadget()
 
 	if(window.ActiveXObject){
 		var fO=new ActiveXObject("Scripting.FileSystemObject");
-		var gPath=System.Gadget.path;
-		var f=fO.OpenTextFile(gPath+"\\readFeeds",1,true);
+		var f=fO.OpenTextFile(System.Gadget.path+"\\readFeeds",1,true);
 		if(!f.AtEndOfStream)
 			markedAsReadCache=f.readAll();
 	}
@@ -245,14 +244,13 @@ function markAsRead(i)
 	if(i==System.Gadget.Settings.read("hideFeeds")){
 		if(isMarkedAsRead(news.items[flyoutIndex].title)==-1){
 			var fO=new ActiveXObject("Scripting.FileSystemObject");
-			var gPath=System.Gadget.path;
 			if(markedAsReadCache.length > System.Gadget.Settings.read("hideFeedsMax")*11){
 				markedAsReadCache="";
 				var fmode=2;
 			}
 			else
 				var fmode=8;
-			var f=fO.OpenTextFile(gPath+"\\readFeeds",fmode,true);
+			var f=fO.OpenTextFile(System.Gadget.path+"\\readFeeds",fmode,true);
 			f.Write(crc32(news.items[flyoutIndex].title)+",");
 			f.Close();
 			markedAsReadCache=markedAsReadCache+crc32(news.items[flyoutIndex].title)+",";
@@ -303,9 +301,13 @@ function RSS2Item(itemxml)
 			this.filter=false;
 		if(i==0 && isMarkedAsRead(tmpElement.childNodes[0].nodeValue)!=-1)
 			this.filter=false;
-		if(i==3 && System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed))
-			if(new Date()-Date.parse(tmpElement.childNodes[0].nodeValue) > System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed)*feedMaxAgeToViewArray[System.Gadget.Settings.read("feedMaxAgeToViewC"+currentFeed)])
-				this.filter=false;
+		if(i==3){
+			if(System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed))
+				if(new Date()-Date.parse(tmpElement.childNodes[0].nodeValue) > System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed)*feedMaxAgeToViewArray[System.Gadget.Settings.read("feedMaxAgeToViewC"+currentFeed)])
+					this.filter=false;
+			var d=new Date(tmpElement.childNodes[0].nodeValue);
+			tmpElement.childNodes[0].nodeValue=d.toLocaleDateString()+", "+d.toLocaleTimeString();
+		}
 		if ( tmpElement != null ){
 			if ( tmpElement.childNodes != null )
 				if ( tmpElement.childNodes[0] != null )
@@ -337,31 +339,46 @@ function AtomItem(itemxml)
 	this.link;
 	this.description;
 	this.pubDate;
-	
-	var filterTData=new RegExp(FT=System.Gadget.Settings.read("feedFTitle"+currentFeed));
-	var filterCData=new RegExp(FC=System.Gadget.Settings.read("feedFContent"+currentFeed));
-	if(i==0 && FT!="" && itemxml.getElementsByTagName("title")[0].childNodes[0].nodeValue.match(filterTData)!=null)
-		this.filter=false;
-	if(i==2 && FC!="" && itemxml.getElementsByTagName("content")[0].childNodes[0].nodeValue.match(filterCData)!=null)
-		this.filter=false;
-	if(i==0 && isMarkedAsRead(itemxml.getElementsByTagName("content")[0].childNodes[0].nodeValue)!=-1)
-		this.filter=false;
 
 	try { this.title = itemxml.getElementsByTagName("title")[0].childNodes[0].nodeValue; }
 	catch (e) { this.title = "(no title)"; }
-	
+
+	var filterTData=new RegExp(FT=System.Gadget.Settings.read("feedFTitle"+currentFeed));
+	var filterCData=new RegExp(FC=System.Gadget.Settings.read("feedFContent"+currentFeed));
+	var feedMaxAgeToViewArray = new Array(86400000, 3600000, 60000, 1000);
+
+	try { this.pubDate = itemxml.getElementsByTagName("created")[0].childNodes[0].nodeValue; }
+	catch (e) {
 	try { this.pubDate = itemxml.getElementsByTagName("published")[0].childNodes[0].nodeValue; }
-	catch (e) { this.pubDate = null; }
-	
-	try { this.description = itemxml.getElementsByTagName("summary")[0].childNodes[0].nodeValue; }
-	catch (e) { this.description = null; }
-	
-	if ( this.description == null ) 
-	{
-		try { this.description = itemxml.getElementsByTagName("content")[0].childNodes[0].nodeValue; }
-		catch (e) { this.description = "(no summary)"; }
+	catch (e) {
+	try { this.pubDate = itemxml.getElementsByTagName("updated")[0].childNodes[0].nodeValue; }
+	catch (e) {
+	try { this.pubDate = itemxml.getElementsByTagName("modified")[0].childNodes[0].nodeValue; }
+	catch (e) {this.pubDate=null;}
+	}}}
+
+	if(this.pubDate!=null){
+		var d=new Date();
+		d.setTime(Date.parse(this.pubDate)||convISODate(this.pubDate));
+		if(System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed))
+			if(new Date()-d > System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed)*feedMaxAgeToViewArray[System.Gadget.Settings.read("feedMaxAgeToViewC"+currentFeed)])
+				this.filter=false;
+		this.pubDate=d.toLocaleDateString()+", "+d.toLocaleTimeString();
 	}
-	
+
+	try {this.description = itemxml.getElementsByTagName("summary")[0].childNodes[0].nodeValue;}
+	catch (e) {
+	try {this.description = itemxml.getElementsByTagName("content")[0].childNodes[0].nodeValue;}
+	catch (e) { this.description = "(no summary)"; }
+	}
+
+	if(FT!="" && this.title.match(filterTData)!=null)
+		this.filter=false;
+	if(FC!="" && this.description.match(filterCData)!=null)
+		this.filter=false;
+	if(isMarkedAsRead(this.title)!=-1)
+		this.filter=false;
+
 	try 
 	{
 		var links = itemxml.getElementsByTagName("link");
@@ -600,3 +617,36 @@ function crc32 ( str ) {
  
     return crc ^ (-1);
 }
+
+//setISO8601
+function convISODate(dString){
+
+var regexp = /(\d\d\d\d)(-)?(\d\d)(-)?(\d\d)(T)?(\d\d)(:)?(\d\d)(:)?(\d\d)(\.\d+)?(Z|([+-])(\d\d)(:)?(\d\d))/;
+
+if (dString.toString().match(new RegExp(regexp))) {
+var d = dString.match(new RegExp(regexp));
+var offset = 0;
+
+var z=new Date();
+z.setUTCDate(1);
+z.setUTCFullYear(parseInt(d[1],10));
+z.setUTCMonth(parseInt(d[3],10) - 1);
+z.setUTCDate(parseInt(d[5],10));
+z.setUTCHours(parseInt(d[7],10));
+z.setUTCMinutes(parseInt(d[9],10));
+z.setUTCSeconds(parseInt(d[11],10));
+if (d[12])
+z.setUTCMilliseconds(parseFloat(d[12]) * 1000);
+else
+z.setUTCMilliseconds(0);
+if (d[13] != 'Z') {
+offset = (d[15] * 60) + parseInt(d[17],10);
+offset *= ((d[14] == '-') ? -1 : 1);
+z.setTime(z.getTime() - offset * 60 * 1000);
+}
+}
+else {
+z.setTime(Date.parse(dString));
+}
+return z.getTime();
+};
