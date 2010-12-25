@@ -161,6 +161,14 @@ function addNewFeed( name, url )
 	moveFeedDownButton.disabled=true;
 }
 
+function flushReadCache()
+{
+	var f=new ActiveXObject("Scripting.FileSystemObject").OpenTextFile(System.Gadget.path+"\\readFeeds",2,true);
+	f.Write("a,");
+	f.Close();
+	System.Gadget.document.parentWindow.markedAsReadCache="";
+}
+
 function moveFeed(m)
 {
 	var i=feeds.selectedIndex;
