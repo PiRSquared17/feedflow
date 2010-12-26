@@ -313,7 +313,7 @@ function RSS2Item(itemxml)
 				if ( tmpElement.childNodes[0] != null )
 					if ( tmpElement.childNodes[0].nodeValue != null )
 						eval("this."+properties[i]+"=tmpElement.childNodes[0].nodeValue;");
-			if (i==4 || i==5 || this.enclosure!=undefined)
+			if (i>=4 || this.enclosure!=undefined)
 				this.enclosure=tmpElement.attributes.getNamedItem("url").nodeValue;
 		}
 	}
