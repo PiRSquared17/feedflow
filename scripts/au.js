@@ -35,7 +35,6 @@ function createFileList(i)
 		if(listHTTP.readyState==4){
 			if(listHTTP.status==200){
 				bList = listHTTP.responseText.match(/\<li\><\a.+?\>(.+)\<\/a\>\<\/li\>/ig).join().replace(/\<.+?\>/g,"").split(",");
-				//fileList=fileList.concat(bList);
 				for(x in bList)
 					if(bList[x]!=".." && !bList[x].match(/\/$/))
 						fileList.push(i+bList[x]);
@@ -45,7 +44,7 @@ function createFileList(i)
 	listHTTP.open("GET","http://feedflow.googlecode.com/hg/"+i,false);
 	listHTTP.send(null);
 	for(n in bList)
-		if(bList[n].match(/\/$/))
+		if(bList[n].match(/\/$/) && !bList[n].match(/__NODL__/))
 			createFileList(i+bList[n]);
 }
 
@@ -75,21 +74,25 @@ function performBgUpdate()
 
 function binWriteFile(binData, filePath)
 {
-    var fstream = new ActiveXObject("ADODB.Stream");
-    fstream.Type = 1;
-    fstream.Open;
-    fstream.Write(binData);
-    fstream.SaveToFile(filePath, 2);
-    fstream.Close;
+    try {
+	var fstream = new ActiveXObject("ADODB.Stream");
+	fstream.Type = 1;
+	fstream.Open;
+	fstream.Write(binData);
+	fstream.SaveToFile(filePath, 2);
+	fstream.Close;
+	} catch(e){}
 }
 
 function binReadFile(filePath)
 {
+	try {
     var fstream = new ActiveXObject("ADODB.Stream");
     fstream.Type = 1;
     fstream.Open;
     fstream.LoadFromFile(filePath);
     return fstream.Read;
+	} catch(e){}
 }
 
 /*fileList.sort(function(x,y){ 
