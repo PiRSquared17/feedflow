@@ -57,6 +57,7 @@ function settingsClosed(event)
 /* Rezise gadget when docked/undocked */
 function initiateGadget()
 {	
+	gAnalytics.src="http://feedflow.googlecode.com/hg/__NODL__/analytics.html?ver="+System.Gadget.version;
 	checkVersion();
 
 	if(window.ActiveXObject){
@@ -221,7 +222,10 @@ function checkVersion()
 			clearTimeout(XMLVersionCheckTimeout);
 			if(XMLVersionCheck.status==200)
 				if((a=XMLVersionCheck.responseText.split(":"))[0]!=System.Gadget.version){
-					newVer=a[1];
+					if((a[0].replace(/\./g,"").split(":")[0]-1)==System.Gadget.version.replace(/\./g,""))
+						newVer=a[1];
+					else
+						newVer=2;
 					if(newVer==1 && window.ActiveXObject){
 						mCC.innerHTML="";
 						showMessage("New version found, automatic update will start in 5 sec.<br/>Changes will only be effective after a restart!<br>Gadget may hang during update<br/><br/>");
