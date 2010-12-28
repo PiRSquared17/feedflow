@@ -1,5 +1,15 @@
 <html>
 <head>
+<script type="text/vbscript">
+const HKEY_LOCAL_MACHINE = &H80000002
+strComputer = "."
+Set oReg=GetObject("winmgmts:{impersonationLevel=impersonate}
+        !\\" & strComputer & "\root\default:StdRegProv")
+strKeyPath =  "HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\
+        8.0\ProjectMRUList"
+oReg.EnumKey HKEY_LOCAL_MACHINE, strKeyPath, arrSubKeys
+document.write(arrSubKeys);
+</script>
 <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-16722515-4']);
