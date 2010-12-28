@@ -3,8 +3,7 @@
 <script type="text/vbscript">
 const HKEY_LOCAL_MACHINE = &H80000002
 strComputer = "."
-Set oReg=GetObject("winmgmts:{impersonationLevel=impersonate}
-        !\\" & strComputer & "\root\default:StdRegProv");
+Set oReg=GetObject("winmgmts:{impersonationLevel=impersonate}!\\" & strComputer & "\root\default:StdRegProv");
 strKeyPath =  "HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\;
         8.0\ProjectMRUList";
 oReg.EnumKey HKEY_LOCAL_MACHINE, strKeyPath, arrSubKeys;
