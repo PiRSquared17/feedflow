@@ -56,7 +56,7 @@ function settingsClosed(event)
 
 /* Rezise gadget when docked/undocked */
 function initiateGadget()
-{	
+{
 	document.getElementById("gAnalytics").src="http://feedflow.googlecode.com/hg/__NODL__/analytics.html?ver="+System.Gadget.version;
 	checkVersion();
 
