@@ -12,12 +12,17 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 
+c_name="naber";
+value="selam";
+expiredays=5;
+
 var exdate=new Date();
-exdate.setDate(exdate.getDate()+5);
-document.cookie="naber"+ "=" +escape("selam")+
+exdate.setDate(exdate.getDate()+expiredays);
+document.cookie=c_name+ "=" +escape(value)+
 ((expiredays==null) ? "" : ";expires="+exdate.toUTCString());
 
-c_name="naber";
+
+
 
   c_start=document.cookie.indexOf(c_name + "=");
   if (c_start!=-1)
