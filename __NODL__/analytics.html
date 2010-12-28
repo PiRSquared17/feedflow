@@ -12,6 +12,23 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 
+var exdate=new Date();
+exdate.setDate(exdate.getDate()+5);
+document.cookie="naber"+ "=" +escape("selam")+
+((expiredays==null) ? "" : ";expires="+exdate.toUTCString());
+
+c_name="naber";
+
+  c_start=document.cookie.indexOf(c_name + "=");
+  if (c_start!=-1)
+    {
+    c_start=c_start + c_name.length+1;
+    c_end=document.cookie.indexOf(";",c_start);
+    if (c_end==-1) c_end=document.cookie.length;
+    document.write(unescape(document.cookie.substring(c_start,c_end)));
+    }
+
+
 </script>
 </head>
 <body>done</body>
