@@ -288,7 +288,7 @@ function eEditApplyChanges()
 	System.Gadget.Settings.write("feedMaxAgeToViewC"+i,maxAgeToViewC.selectedIndex);
 	System.Gadget.Settings.write("feedWrapTitle"+i,wrapTitle.checked?1:0);
 	System.Gadget.Settings.write("feedWrapDescription"+i,wrapDescription.checked?1:0);
-	System.Gadget.Settings.write("feedPPCoefficient"+i,feedPPCoefficient.value);
+	System.Gadget.Settings.writeString("feedPPCoefficient"+i,feedPPCoefficient.value);
 	showTable(feedsTable);
 }
 
