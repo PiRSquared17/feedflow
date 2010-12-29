@@ -436,7 +436,7 @@ function getNews(i,p)
 	xmlDocument.onreadystatechange = function () {
 		if (xmlDocument.readyState == 4) {
 			if(xmlDocument.status == 200){
-				XMLMem=xmlDocument.responseText
+				XMLMem=xmlDocument.responseText;
 				if(xmlDocument.getResponseHeader("Content-Type")!="text/xml")
 					xmlDocument.responseXML.loadXML(XMLMem);
 				if ( xmlDocument.responseXML.getElementsByTagName("item")[0] != null ) news = new RSS2Channel(xmlDocument);
