@@ -297,7 +297,7 @@ function RSS2Item(itemxml)
 	for (var i=0; i<properties.length; i++)
 	{
 		tmpElement = itemxml.getElementsByTagName(properties[i])[0];
-		if(!tmpElement)
+		if(tmpElement==null)
 			continue;
 		var filterTData=new RegExp(FT=System.Gadget.Settings.readString("feedFTitle"+currentFeed));
 		var filterCData=new RegExp(FC=System.Gadget.Settings.readString("feedFContent"+currentFeed));
@@ -314,14 +314,12 @@ function RSS2Item(itemxml)
 			var d=new Date(tmpElement.childNodes[0].nodeValue);
 			tmpElement.childNodes[0].nodeValue=d.toLocaleDateString()+", "+d.toLocaleTimeString();
 		}
-		if ( tmpElement != null ){
-			if ( tmpElement.childNodes != null )
-				if ( tmpElement.childNodes[0] != null )
-					if ( tmpElement.childNodes[0].nodeValue != null )
-						eval("this."+properties[i]+"=tmpElement.childNodes[0].nodeValue;");
-			if (i>=4 || this.enclosure!=undefined)
-				this.enclosure=tmpElement.attributes.getNamedItem("url").nodeValue;
-		}
+		if ( tmpElement.childNodes != null )
+			if ( tmpElement.childNodes[0] != null )
+				if ( tmpElement.childNodes[0].nodeValue != null )
+					eval("this."+properties[i]+"=tmpElement.childNodes[0].nodeValue;");
+		if (i>=4 || this.enclosure!=undefined)
+			this.enclosure=tmpElement.attributes.getNamedItem("url").nodeValue;
 	}
 }
 
