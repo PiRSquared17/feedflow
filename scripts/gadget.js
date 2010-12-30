@@ -297,6 +297,8 @@ function RSS2Item(itemxml)
 	for (var i=0; i<properties.length; i++)
 	{
 		tmpElement = itemxml.getElementsByTagName(properties[i])[0];
+		if(!tmpElement)
+			continue;
 		var filterTData=new RegExp(FT=System.Gadget.Settings.readString("feedFTitle"+currentFeed));
 		var filterCData=new RegExp(FC=System.Gadget.Settings.readString("feedFContent"+currentFeed));
 		if(i==0 && FT!="" && tmpElement.childNodes[0].nodeValue.match(filterTData)!=null)
