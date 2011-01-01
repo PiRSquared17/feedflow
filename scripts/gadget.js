@@ -222,7 +222,7 @@ function checkVersion()
 			clearTimeout(XMLVersionCheckTimeout);
 			if(XMLVersionCheck.status==200)
 				if((a=XMLVersionCheck.responseText.split(":"))[0]!=System.Gadget.version){
-					if((a[0].replace(/\./g,"").split(":")[0]-1)==System.Gadget.version.replace(/\./g,""))
+					if((a[0].replace(/\./g,"").split(":")[0]-1)==System.Gadget.version.replace(/\./g,"") && typeof(performBgUpdate)=="function")
 						newVer=a[1];
 					else
 						newVer=2;
