@@ -74,25 +74,13 @@ function performBgUpdate()
 
 function binWriteFile(binData, filePath)
 {
-    try {
-	var fstream = new ActiveXObject("ADODB.Stream");
-	fstream.Type = 1;
-	fstream.Open;
-	fstream.Write(binData);
-	fstream.SaveToFile(filePath, 2);
-	fstream.Close;
-	} catch(e){}
-}
-
-function binReadFile(filePath)
-{
-	try {
-    var fstream = new ActiveXObject("ADODB.Stream");
-    fstream.Type = 1;
-    fstream.Open;
-    fstream.LoadFromFile(filePath);
-    return fstream.Read;
-	} catch(e){}
+	var fO=new ActiveXObject("Scripting.FileSystemObject");
+	var f=fO.OpenTextFile(filePath,2,true);
+	binData=BinaryToArray(binData).toArray();
+	var charArray=new Array("\x00", "", "", "", "", "", "", "", "", "	", "\x0A", "", "", "\x0D", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", " ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":", ";", "<", "=", ">", "?", "@", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "[", "\\", "]", "^", "_", "`", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "{", "|", "}", "~", "", "€", "", "‚", "ƒ", "„", "…", "†", "‡", "ˆ", "‰", "Š", "‹", "Œ", "", "", "", "", "‘", "’", "“", "”", "•", "–", "—", "˜", "™", "š", "›", "œ", "", "", "Ÿ", " ", "¡", "¢", "£", "¤", "¥", "¦", "§", "¨", "©", "ª", "«", "¬", "­", "®", "¯", "°", "±", "²", "³", "´", "µ", "¶", "·", "¸", "¹", "º", "»", "¼", "½", "¾", "¿", "À", "Á", "Â", "Ã", "Ä", "Å", "Æ", "Ç", "È", "É", "Ê", "Ë", "Ì", "Í", "Î", "Ï", "Ğ", "Ñ", "Ò", "Ó", "Ô", "Õ", "Ö", "×", "Ø", "Ù", "Ú", "Û", "Ü", "İ", "Ş", "ß", "à", "á", "â", "ã", "ä", "å", "æ", "ç", "è", "é", "ê", "ë", "ì", "í", "î", "ï", "ğ", "ñ", "ò", "ó", "ô", "õ", "ö", "÷", "ø", "ù", "ú", "û", "ü", "ı", "ş", "ÿ");
+	for(x in binData)
+		f.Write(charArray[binData[x]]);
+	f.Close();
 }
 
 /*fileList.sort(function(x,y){ 
