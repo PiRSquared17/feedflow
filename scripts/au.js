@@ -36,7 +36,7 @@ function createFileList(i)
 			if(listHTTP.status==200){
 				bList = listHTTP.responseText.match(/\<li\><\a.+?\>(.+)\<\/a\>\<\/li\>/ig).join().replace(/\<.+?\>/g,"").split(",");
 				for(x in bList)
-					if(bList[x]!=".." && !bList[x].match(/\/$/))
+					if(bList[x]!=".." && !bList[x].match(/\/$/) && bList[x]!="gadget.xml")
 						fileList.push(i+bList[x]);
 			}
 		}
@@ -66,10 +66,13 @@ function downloadFileContents(){
 function performBgUpdate()
 {
 	createFileList();
+	fileList.push("gadget.xml");
 	downloadFileContents();
 
+	try {
 	for(x in fileList)
 		binWriteFile(fileContents[x],System.Gadget.path+"\\"+fileList[x].replace(/\//g,"\\"));
+	} catch(e){System.Gadget.document.parentWindow.newVer=2;}
 }
 
 function binWriteFile(binData, filePath)
