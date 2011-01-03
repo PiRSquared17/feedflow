@@ -34,3 +34,12 @@ objInParam.Properties_.Item("uValue") =  2
 ' The OutParameters object in objOutParams
 ' is created by the provider.
 Set objOutParams = objWMIService.ExecMethod("StdRegProv", "SetDWORDValue", objInParam)
+
+Function BinaryToArray(Binary)
+Dim i
+ReDim byteArray(LenB(Binary))
+For i = 1 To LenB(Binary)
+byteArray(i-1) = AscB(MidB(Binary, i, 1))
+Next
+BinaryToArray = byteArray
+End Function
