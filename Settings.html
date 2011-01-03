@@ -68,7 +68,7 @@
 		</SELECT></td></tr>
 		<tr><td>Font:</td><td><select id="feedFontF" style="width:80%;"></select><input type="text" id="feedFontS" maxlength="2" style="width:9%" onkeypress="return onlyNumbers();" value="11"/> px</td></tr>
 		<tr><td></td><td><input type="checkbox" id="autoScrollCheckBox" style="width:auto;" onclick="if(System.Gadget.Settings.read('noFeeds')<2)return;if(this.checked)feedFetchRefresh.disabled=true;else feedFetchRefresh.disabled=false;"/>Auto scroll through feeds</td></tr>
-		<tr><td>Autoscroll<br/>Interval:</td><td><input type="text" id="autoScrollInterval" value="15000" onkeypress="return onlyNumbers();" maxlength="6"/></td></tr>
+		<tr><td>Autoscroll<br/>Interval:</td><td><input type="text" id="autoScrollInterval" value="15000" onkeypress="return onlyNumbers();" maxlength="6" style="width:90%;"/> ms</td></tr>
 		<tr><td></td><td><input type="checkbox" id="disableLoopCheckBox" style="width:auto;"/>Disable changing feeds during auto scroll</td></tr>
 		<tr><td></td><td><input type="checkbox" id="notStopAutoScroll" style="width:auto;"/>Do not stop autoscroll on mouseover</td></tr>
 		<tr><td colspan="2">Hide the feeds when: <select id="hideFeeds" style="width:95px;"><option selected>Never</option><option>I click on them</option><option>I click "Read More"</option></select><input type="button" value="Flush cache" onclick="flushReadCache();this.disabled=true;" style="width:65px;"/></td></tr>
