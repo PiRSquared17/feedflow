@@ -42,8 +42,7 @@ function hideFlyout()
 	if(System.Gadget.document.parentWindow.isAutoScroll==1)
 		System.Gadget.document.parentWindow.autoscrolltimeout=System.Gadget.document.parentWindow.setTimeout("autoScroll();",System.Gadget.document.parentWindow.aSInterval);
 	var xD=System.Gadget.document.parentWindow.xmlDocument;
-	xD.responseXML.loadXML(System.Gadget.document.parentWindow.XMLMem);
-	if ( xD.responseXML.getElementsByTagName("item")[0] != null ) news = new System.Gadget.document.parentWindow.RSS2Channel(xD);
+	if ( xD.getElementsByTagName("item")[0] != null ) news = new System.Gadget.document.parentWindow.RSS2Channel(xD);
 		else news = new System.Gadget.document.parentWindow.AtomChannel(xD);
 	System.Gadget.document.parentWindow.showNews(news);
 	System.Gadget.document.parentWindow.news=news;
