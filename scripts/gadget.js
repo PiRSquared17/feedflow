@@ -448,7 +448,7 @@ function getNews(i,p)
 					autoscrolltimeout=setTimeout("autoScroll();",aSInterval);
 		}
 	};
-	xmlDocument.load(URL+(URL.match(/\?/)?"&":"?")+Math.random());
+	xmlDocument.load(URL+(URL.match(/\?/)?"&":"?")+Math.random()+"=1");
 
 	getNewsTimeout=setTimeout(function(){xmlDocument.abort();loadingIcon.style.display="none";/*showMessage("Could not load<br>"+name);*/setTimeout(getNextFeed,3000);}, System.Gadget.Settings.read("feedLoadTimeout"));
 
