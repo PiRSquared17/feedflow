@@ -3,9 +3,9 @@
 ' *	Filename:	gadget.vbs
 ' *	Authors:	Tolga Hosgor, Cristian Patrasciuc
 ' *	Emails:		fasdfasdas@gmail.com, cristian.patrasciuc@gmail.com
-' 
+'
 ' Copyright © 2010, 2011 Tolga Hosgor, Cristian Patrasciuc
-' 
+'
 ' This file is part of FeedFlow.
 '
 ' FeedFlow is free project: you can redistribute it and/or modify
