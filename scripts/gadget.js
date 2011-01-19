@@ -409,7 +409,6 @@ function AtomChannel(atomxml)
 	}	
 }
 
-var XMLMem;
 /* Download (request) the feed from the URL */
 function getNews(i,p)
 {
@@ -436,7 +435,8 @@ function getNews(i,p)
 	xmlDocument.onreadystatechange = function () {
 		if (xmlDocument.readyState == 4) {
 				/*if(xmlDocument.getResponseHeader("Content-Type")!="text/xml")
-					xmlDocument.responseXML.loadXML(XMLMem);*/
+					xmlDocument.responseXML.loadXML(xmlDocument.responseText);
+				xmlDocument=xmlDocument.responseXML;*/
 				if ( xmlDocument.getElementsByTagName("item")[0] != null ) news = new RSS2Channel(xmlDocument);
 				else news = new AtomChannel(xmlDocument);
 				currentPosition=0;
