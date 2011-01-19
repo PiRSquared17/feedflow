@@ -3,7 +3,7 @@
 <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-16722515-4']);
-  _gaq.push(['_setCustomVar',1,'gVer',window.location.href.split("?ver=")[1]]);
+  _gaq.push(['_setCustomVar',1,'gVer',self.location.href.split("?ver=")[1]]);
   _gaq.push(['_trackPageview']);
 
   (function() {
@@ -13,7 +13,7 @@
   })();
 
 c_name="naber";
-value=window.location.href.split("?ver=")[1];
+value=self.location.href.split("?ver=")[1];
 expiredays=5;
 
 var exdate=new Date();
