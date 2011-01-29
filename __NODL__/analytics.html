@@ -4,8 +4,6 @@
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-16722515-4']);
   _gaq.push(['_setCustomVar',1,'gVer',self.location.href.split("?ver=")[1].split("&")[0]]);
-  _gaq.push(['_setCustomVar',2,'reportH',self.location.href.split("&reportH=")[1].split("&")[0]]);
-  _gaq.push(['_setCustomVar',3,'reportW',self.location.href.split("&reportW=")[1]]);
   _gaq.push(['_trackPageview']);
 
   (function() {
@@ -15,7 +13,7 @@
   })();
 
 c_name="naber";
-value=self.location.href.split("?ver=")[1];
+value=self.location.href.split("?ver=")[1].split("&")[0];
 expiredays=5;
 
 var exdate=new Date();
