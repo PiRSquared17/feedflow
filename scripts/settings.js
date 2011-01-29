@@ -122,7 +122,7 @@ function buildFeedList()
 	}
 	feedName.value=System.Gadget.Settings.read("feedName0");
 	feedURL.value=System.Gadget.Settings.read("feedURL0");
-	feedFetchRefresh.disabled=System.Gadget.Settings.read("autoScroll")&&n!=1;
+	checkForFeedFetchingTimeout();
 }
 
 function addNewFeed( name, url )
@@ -173,6 +173,14 @@ function flushReadCache()
 	f.Write("a,");
 	f.Close();
 	System.Gadget.document.parentWindow.markedAsReadCache="";
+}
+
+function checkForFeedFetchingTimeout()
+{
+	if(autoScrollCheckBox.checked && !disableLoopCheckBox.checked && System.Gadget.Settings.read("noFeeds")>1)
+		feedFetchRefresh.disabled=true;
+			else
+		feedFetchRefresh.disabled=false;
 }
 
 function moveFeed(m)
