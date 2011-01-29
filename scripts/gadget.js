@@ -31,7 +31,7 @@
  var refreshInterval;
  var newVer=0;
  var markedAsReadCache="";
- 
+
 /* Set the event handlers */
 System.Gadget.settingsUI = "Settings.html";
 System.Gadget.onSettingsClosed = settingsClosed;
@@ -47,7 +47,7 @@ function settingsClosed(event)
 		clearTimeout(getNewsTimeout);
 		clearInterval(refreshInterval);
 		var refreshTime = System.Gadget.Settings.read('feedFetchRefresh');
-			if (!isNaN(parseFloat(refreshTime)))refreshInterval=setInterval("getNews(null,1);",refreshTime*60000);
+			if (!isNaN(parseFloat(refreshTime)))refreshInterval=setInterval("getNews(null,1);",refreshTime*System.Gadget.Settings.read("feedFetchRefreshC"));
 		loadTheme();
 		currentFeed = 0;
 		getNews(1);
