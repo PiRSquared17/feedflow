@@ -36,6 +36,7 @@ function settingsClosing(event)
 		System.Gadget.Settings.write("notStopAutoScroll",notStopAutoScroll.checked==true?1:0);
 		System.Gadget.Settings.write("feedLoadTimeout",(feedLoadTimeout.value<2000?2000:feedLoadTimeout.value));
 		System.Gadget.Settings.write("feedFetchRefresh",(feedFetchRefresh.disabled?feedFetchRefresh.value+"abc":feedFetchRefresh.value));
+		System.Gadget.Settings.write("feedFetchRefreshC",feedFetchRefreshC.options[feedFetchRefreshC.selectedIndex].value);
 		System.Gadget.Settings.write("fontFamily",feedFontF.options[feedFontF.selectedIndex].text);
 		System.Gadget.Settings.write("fontSize",feedFontS.value);
 		System.Gadget.Settings.write("hideFeeds",hideFeeds.selectedIndex);
@@ -68,6 +69,9 @@ function loadSettings()
 	hideFeedsMax.value=((a=System.Gadget.Settings.read("hideFeedsMax"))?a:1000);	
 	eEditButton.disabled = !feedCount;
 	feedFetchRefresh.value=((ref=System.Gadget.Settings.read("feedFetchRefresh"))?parseInt(ref):"15");
+	var i=Math.round(Math.log(System.Gadget.Settings.read("feedFetchRefreshC")||60000)/4.0943445622221006848304688130651)-1;
+	if(i<0)i=0;
+	feedFetchRefreshC.options[i].selected=true;
 	eEditTableDisableHTML.checked = System.Gadget.Settings.read("feedFNotDecoded");
 	feedPPGCoefficient.value=System.Gadget.Settings.readString("feedPPGCoefficient")||"1.000";
 
@@ -296,7 +300,7 @@ function eEditApplyChanges()
 
 function saveSettingsToFile()
 {
-	var aS=["theme","fontFamily","fontSize","autoScroll","autoScrollInterval","disableLoop","notStopAutoScroll","feedLoadTimeout","feedFetchRefresh","hideFeeds","hideFeedsMax","NOUpdate","feedPPGCoefficient"];
+	var aS=["theme","fontFamily","fontSize","autoScroll","autoScrollInterval","disableLoop","notStopAutoScroll","feedLoadTimeout","feedFetchRefresh","feedFetchRefreshC","hideFeeds","hideFeedsMax","NOUpdate","feedPPGCoefficient"];
 	var setP=System.Shell.saveFileDialog("C:\\", "FeedFlow config file\0*.fcg\0\0");
 	if(setP=="")
 		return;
