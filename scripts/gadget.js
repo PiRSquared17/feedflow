@@ -31,6 +31,7 @@
  var refreshInterval;
  var newVer=0;
  var markedAsReadCache="";
+ var Months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
 /* Set the event handlers */
 System.Gadget.settingsUI = "Settings.html";
@@ -312,7 +313,7 @@ function RSS2Item(itemxml)
 				if(new Date()-Date.parse(tmpElement.childNodes[0].nodeValue) > System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed)*feedMaxAgeToViewArray[System.Gadget.Settings.read("feedMaxAgeToViewC"+currentFeed)])
 					this.filter=false;
 			var d=new Date(tmpElement.childNodes[0].nodeValue);
-			tmpElement.childNodes[0].nodeValue=d.toLocaleDateString()+", "+d.toLocaleTimeString();
+			this.dateObj=d;
 		}
 		if ( tmpElement.childNodes != null )
 			if ( tmpElement.childNodes[0] != null )
@@ -368,6 +369,7 @@ function AtomItem(itemxml)
 			if(new Date()-d > System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed)*feedMaxAgeToViewArray[System.Gadget.Settings.read("feedMaxAgeToViewC"+currentFeed)])
 				this.filter=false;
 		this.pubDate=d.toLocaleDateString()+", "+d.toLocaleTimeString();
+		this.dateObj=d;
 	}
 
 	try {this.description = itemxml.getElementsByTagName("summary")[0].childNodes[0].nodeValue;}
@@ -463,12 +465,12 @@ function showNews(news)
 
 	noItems=Math.round((System.Gadget.Settings.read("gHeight")||162)/39*(System.Gadget.Settings.readString("feedPPCoefficient"+currentFeed)||1)*(System.Gadget.Settings.readString("feedPPGCoefficient")||1));
 	var buffer="";
-	for ( var i = currentPosition; (i < currentPosition+noItems) && (i < news.items.length); i++ ) 
+	for ( var i = currentPosition; (i < currentPosition+noItems) && (i < news.items.length); i++ )
 	{
 		item_html = "<a style='white-space:"+(System.Gadget.Settings.read("feedWrapTitle"+currentFeed)?"normal":"nowrap")+";' ";
 		item_html += (news.items[i].link == null)?"":"href='javascript:void(0)' onclick='flyoutIndex="+i+";markAsRead(1);showFlyout();' ondblclick='window.location.href=\""+news.items[i].link+"\";'>";
 		item_html += (news.items[i].title == null )?"(no title)</a>":news.items[i].title+"</a>";
-		item_html += (news.items[i].description == null) ?"":"<br><span style='white-space:"+(System.Gadget.Settings.read("feedWrapDescription"+currentFeed)?"normal":"nowrap")+";'>"+decodeHTML(news.items[i].description)+"</span>";
+		item_html += "<br>"+(news.items[i].description == null?PFDTDOMW(news.items[i].dateObj):"<span style='white-space:"+(System.Gadget.Settings.read("feedWrapDescription"+currentFeed)?"normal":"nowrap")+";'>"+PFDTDOMW(news.items[i].dateObj)+decodeHTML(news.items[i].description)+"</span>");
 		buffer+="<div class='feedItem'>"+item_html+"</div>";
 	}
 	if((newVer==2||(newVer==1&&!window.ActiveXObject))&&System.Gadget.Settings.read("NOUpdate")!=1)
@@ -482,6 +484,39 @@ function showNews(news)
 	System.Gadget.Settings.write("currentFeed", currentFeed);
 	showMessage("");
 	return true;
+}
+
+function PFDTDOMW(d)
+{
+	try	{
+	var i;
+	var r="";
+	var td=new Date();
+	switch(System.Gadget.Settings.read("dispPubDateOnMW"))
+	{
+	case 1:
+	if (td.getMonth()==d.getMonth() && td.getFullYear()==d.getFullYear() && td.getDate()==d.getDate())
+			r=((i=d.getHours())<10?"0"+i:i)+":"+((i=d.getMinutes())<10?"0"+i:i);
+	else
+		r=d.getDate()+" "+Months[d.getMonth()]+", "+(d.getFullYear()+"").substring(2,4);
+	break;
+	case 2:
+	var z=td.getTime()-d.getTime();
+	if(i=Math.floor(z/86400000))
+		r+=i+"d"
+	z-=i*86400000;
+	if(i=Math.floor(z/3600000))
+		r+=i+"h"
+	z-=i*3600000;
+	if(i=Math.floor(z/60000))
+		r+=i+"m";
+	break;
+	default:
+	return "";
+	break;
+	}
+	return r+" | ";
+	} catch(e){}
 }
 
 /* Display a message to the user */
