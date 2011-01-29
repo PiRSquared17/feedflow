@@ -43,6 +43,7 @@ function settingsClosing(event)
 		System.Gadget.Settings.write("hideFeedsMax",hideFeedsMax.value);
 		System.Gadget.Settings.write("NOUpdate",0);
 		System.Gadget.Settings.writeString("feedPPGCoefficient",feedPPGCoefficient.value);
+		System.Gadget.Settings.write("dispPubDateOnMW",dispPubDateOnMW.selectedIndex);
         event.cancel = false;
     }
 }
@@ -74,6 +75,7 @@ function loadSettings()
 	feedFetchRefreshC.options[i].selected=true;
 	eEditTableDisableHTML.checked = System.Gadget.Settings.read("feedFNotDecoded");
 	feedPPGCoefficient.value=System.Gadget.Settings.readString("feedPPGCoefficient")||"1.000";
+	dispPubDateOnMW.options[System.Gadget.Settings.read("dispPubDateOnMW")].selected=true;
 
 	if(!window.ActiveXObject){
 		saveSettingsToFile.disabled=true;
@@ -308,7 +310,7 @@ function eEditApplyChanges()
 
 function saveSettingsToFile()
 {
-	var aS=["theme","fontFamily","fontSize","autoScroll","autoScrollInterval","disableLoop","notStopAutoScroll","feedLoadTimeout","feedFetchRefresh","feedFetchRefreshC","hideFeeds","hideFeedsMax","NOUpdate","feedPPGCoefficient"];
+	var aS=["theme","fontFamily","fontSize","autoScroll","autoScrollInterval","disableLoop","notStopAutoScroll","feedLoadTimeout","feedFetchRefresh","feedFetchRefreshC","hideFeeds","hideFeedsMax","NOUpdate","feedPPGCoefficient","dispPubDateOnMW"];
 	var setP=System.Shell.saveFileDialog("C:\\", "FeedFlow config file\0*.fcg\0\0");
 	if(setP=="")
 		return;
