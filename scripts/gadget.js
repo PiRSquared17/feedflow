@@ -58,7 +58,21 @@ function settingsClosed(event)
 /* Rezise gadget when docked/undocked */
 function initiateGadget()
 {
-	document.getElementById("gAnalytics").src="http://feedflow.googlecode.com/hg/__NODL__/analytics.html?ver="+System.Gadget.version;
+	var gHeight=System.Gadget.Settings.read("gHeight")||162;
+	var gWidth=System.Gadget.Settings.read("gWidth")||132;
+
+	var reportH="650<H";
+	for(var i=2;i<12;i++){
+		if(gHeight>50*i && gHeight<=50*(i+1))
+			reportH=50*i+"<H<"+50*(i+1);
+	}
+	var reportW="650<W";
+	for(var i=2;i<12;i++){
+		if(gWidth>50*i && gWidth<=50*(i+1))
+			reportW=50*i+"<W<"+50*(i+1);
+	}
+	
+	document.getElementById("gAnalytics").src="http://feedflow.googlecode.com/hg/__NODL__/analytics.html?ver="+System.Gadget.version+"&reportH="+reportH+"&reportW="+reportW;
 	checkVersion();
 
 	if(window.ActiveXObject){
@@ -68,7 +82,7 @@ function initiateGadget()
 			markedAsReadCache=f.readAll();
 	}
 
-	var gHeight=System.Gadget.Settings.read("gHeight")||162;
+	
 
 	document.body.style.height=gHeight+60+"px";
 	mainContainer.style.height=gHeight+"px";
@@ -79,8 +93,6 @@ function initiateGadget()
 	mainB.style.top=gHeight+48+"px";
 	mainBR.style.top=gHeight+48+"px";
 	vResizer.style.height=gHeight-27+"px";
-
-	var gWidth=System.Gadget.Settings.read("gWidth")||132;
 
 	document.body.style.width=gWidth+"px";
 	feedList.style.width=gWidth-55+"px";
