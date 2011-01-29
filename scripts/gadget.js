@@ -62,14 +62,20 @@ function initiateGadget()
 	var gWidth=System.Gadget.Settings.read("gWidth")||132;
 
 	var reportH="650<H";
-	for(var i=2;i<12;i++){
-		if(gHeight>50*i && gHeight<=50*(i+1))
+	for(var i=2;i<12;i++)
+	{
+		if(gHeight>50*i && gHeight<=50*(i+1)){
 			reportH=50*i+"<H<"+50*(i+1);
+			break;
+		}
 	}
 	var reportW="650<W";
-	for(var i=2;i<12;i++){
-		if(gWidth>50*i && gWidth<=50*(i+1))
+	for(var i=2;i<12;i++)
+	{
+		if(gWidth>50*i && gWidth<=50*(i+1)){
 			reportW=50*i+"<W<"+50*(i+1);
+			break;
+		}
 	}
 	
 	document.getElementById("gAnalytics").src="http://feedflow.googlecode.com/hg/__NODL__/analytics.html?ver="+System.Gadget.version+"&reportH="+reportH+"&reportW="+reportW;
