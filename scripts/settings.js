@@ -75,7 +75,7 @@ function loadSettings()
 	feedFetchRefreshC.options[i].selected=true;
 	eEditTableDisableHTML.checked = System.Gadget.Settings.read("feedFNotDecoded");
 	feedPPGCoefficient.value=System.Gadget.Settings.readString("feedPPGCoefficient")||"1.000";
-	dispPubDateOnMW.options[System.Gadget.Settings.read("dispPubDateOnMW")].selected=true;
+	dispPubDateOnMW.options[System.Gadget.Settings.read("dispPubDateOnMW")||2].selected=true;
 
 	if(!window.ActiveXObject){
 		saveSettingsToFile.disabled=true;
