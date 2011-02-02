@@ -1,10 +1,13 @@
 <html>
 <head>
 <script type="text/javascript">
+  var gASET1="";
+  var gASET2="";
+  var gASET3="";
   try {
-  var gASET1=self.location.href.split("?ver=")[1].split("&")[0];
-  var gASET2=self.location.href.split("&reportH=")[1].split("&")[0];
-  var gASET2=self.location.href.split("&reportW=")[1];
+  gASET1=self.location.href.split("?ver=")[1].split("&")[0];
+  gASET2=self.location.href.split("&reportH=")[1].split("&")[0];
+  gASET3=self.location.href.split("&reportW=")[1];
   } catch(e){}
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-16722515-4']);
