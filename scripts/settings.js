@@ -300,7 +300,7 @@ function eEditCurrentFeed()
 	eEditTableTitle.value=System.Gadget.Settings.read("feedFTitle"+i);
 	eEditTableContent.value=System.Gadget.Settings.read("feedFContent"+i);
 	eEditTableDisableHTML.value=System.Gadget.Settings.read("feedFNotDecoded"+i);
-	feedMaxAgeToViewMode.options[System.Gadget.Settings.read("feedMaxAgeToViewMode"+i)||0].selected=1;
+	maxAgeToViewMode.options[System.Gadget.Settings.read("feedMaxAgeToViewMode"+i)||0].selected=1;
 	maxAgeToView.value=System.Gadget.Settings.read("feedMaxAgeToView"+i)||0;
 	maxAgeToViewC.options[System.Gadget.Settings.read("feedMaxAgeToViewC"+i)||0].selected=1;
 	feedPPCoefficient.value=System.Gadget.Settings.readString("feedPPCoefficient"+i)||"1.000";
