@@ -45,7 +45,7 @@ function settingsClosing(event)
 		System.Gadget.Settings.write("hideFeedsMax",hideFeedsMax.value);
 		System.Gadget.Settings.write("NOUpdate",0);
 		System.Gadget.Settings.writeString("feedPPGCoefficient",feedPPGCoefficient.value);
-		System.Gadget.Settings.write("GmaxAgeToViewMode",GhideDescription.checked?1:0);
+		System.Gadget.Settings.write("GmaxAgeToViewMode",GmaxAgeToViewMode.checked?1:0);
 		System.Gadget.Settings.write("GfeedMaxAgeToView",GmaxAgeToView.value);
 		System.Gadget.Settings.write("GfeedMaxAgeToViewC",GmaxAgeToViewC.selectedIndex);
 		System.Gadget.Settings.write("GwrapTitle",GwrapTitle.checked?1:0);
@@ -316,7 +316,7 @@ function eEditApplyChanges()
 	System.Gadget.Settings.write("feedFTitle"+i,eEditTableTitle.value);
 	System.Gadget.Settings.write("feedFContent"+i,eEditTableContent.value);
 	System.Gadget.Settings.write("feedFNotDecoded"+i,eEditTableDisableHTML.value);
-	System.Gadget.Settings.write("feedMaxAgeToViewMode"+i,maxAgeToView.value);
+	System.Gadget.Settings.write("feedMaxAgeToViewMode"+i,maxAgeToViewMode.selectedIndex);
 	System.Gadget.Settings.write("feedMaxAgeToView"+i,maxAgeToView.value);
 	System.Gadget.Settings.write("feedMaxAgeToViewC"+i,maxAgeToViewC.selectedIndex);
 	System.Gadget.Settings.writeString("feedPPCoefficient"+i,feedPPCoefficient.value);
