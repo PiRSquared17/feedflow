@@ -25,6 +25,8 @@
 
 System.Gadget.onSettingsClosing = settingsClosing;
 
+var aS=["theme","fontFamily","fontSize","autoScroll","autoScrollInterval","loopType","notStopAutoScroll","feedLoadTimeout","feedFetchRefresh","feedFetchRefreshC","hideFeeds","hideFeedsMax","NOUpdate","feedPPGCoefficient","dispPubDateOnMW","GwrapTitle","GwrapDescription","GhideDescription"];
+
 function settingsClosing(event)
 {
     if (event.closeAction == event.Action.commit)
@@ -43,7 +45,9 @@ function settingsClosing(event)
 		System.Gadget.Settings.write("hideFeedsMax",hideFeedsMax.value);
 		System.Gadget.Settings.write("NOUpdate",0);
 		System.Gadget.Settings.writeString("feedPPGCoefficient",feedPPGCoefficient.value);
-		System.Gadget.Settings.writeString("GhideDescription",GhideDescription.checked?1:0);
+		System.Gadget.Settings.write("GwrapTitle",GwrapTitle.checked?1:0);
+		System.Gadget.Settings.write("GwrapDescription",GwrapDescription.checked?1:0);
+		System.Gadget.Settings.write("GhideDescription",GhideDescription.checked?1:0);
 		System.Gadget.Settings.write("dispPubDateOnMW",dispPubDateOnMW.selectedIndex);
         event.cancel = false;
     }
@@ -75,6 +79,8 @@ function loadSettings()
 	if(i<0)i=0;
 	feedFetchRefreshC.options[i].selected=true;
 	feedPPGCoefficient.value=System.Gadget.Settings.readString("feedPPGCoefficient")||"1.000";
+	GwrapTitle.checked=System.Gadget.Settings.read("GwrapTitle")||0;
+	GwrapDescription.checked=System.Gadget.Settings.read("GwrapDescription")||0;
 	GhideDescription.checked=System.Gadget.Settings.read("GhideDescription")||0;
 	dispPubDateOnMW.options[System.Gadget.Settings.read("dispPubDateOnMW")||0].selected=true;
 	checkForFeedFetchingTimeout();
@@ -290,9 +296,9 @@ function eEditCurrentFeed()
 	eEditTableDisableHTML.value=System.Gadget.Settings.read("feedFNotDecoded"+i);
 	maxAgeToView.value=System.Gadget.Settings.read("feedMaxAgeToView"+i)||0;
 	maxAgeToViewC.options[System.Gadget.Settings.read("feedMaxAgeToViewC"+i)||0].selected=1;
-	wrapTitle.checked=System.Gadget.Settings.read("feedWrapTitle"+i)||0;
-	wrapDescription.checked=System.Gadget.Settings.read("feedWrapDescription"+i)||0;
 	feedPPCoefficient.value=System.Gadget.Settings.readString("feedPPCoefficient"+i)||"1.000";
+	wrapTitle.options[System.Gadget.Settings.read("wrapTitle"+i)||0].selected=true;
+	wrapDescription.options[System.Gadget.Settings.read("wrapDescription"+i)||0].selected=true;
 	hideDescription.options[System.Gadget.Settings.read("hideDescription"+i)||0].selected=true;
 	showTable(eEditTable);
 }
@@ -305,16 +311,15 @@ function eEditApplyChanges()
 	System.Gadget.Settings.write("feedFNotDecoded"+i,eEditTableDisableHTML.value);
 	System.Gadget.Settings.write("feedMaxAgeToView"+i,maxAgeToView.value);
 	System.Gadget.Settings.write("feedMaxAgeToViewC"+i,maxAgeToViewC.selectedIndex);
-	System.Gadget.Settings.write("feedWrapTitle"+i,wrapTitle.checked?1:0);
-	System.Gadget.Settings.write("feedWrapDescription"+i,wrapDescription.checked?1:0);
 	System.Gadget.Settings.writeString("feedPPCoefficient"+i,feedPPCoefficient.value);
+	System.Gadget.Settings.write("wrapTitle"+i,wrapTitle.selectedIndex);
+	System.Gadget.Settings.write("wrapDescription"+i,wrapDescription.selectedIndex);
 	System.Gadget.Settings.write("hideDescription"+i,hideDescription.selectedIndex);
 	showTable(feedsTable);
 }
 
 function saveSettingsToFile()
 {
-	var aS=["theme","fontFamily","fontSize","autoScroll","autoScrollInterval","loopType","notStopAutoScroll","feedLoadTimeout","feedFetchRefresh","feedFetchRefreshC","hideFeeds","hideFeedsMax","NOUpdate","feedPPGCoefficient","dispPubDateOnMW"];
 	var setP=System.Shell.saveFileDialog("C:\\", "FeedFlow config file\0*.fcg\0\0");
 	if(setP=="")
 		return;
@@ -334,8 +339,9 @@ function saveSettingsToFile()
 		nf.WriteLine("feedFNotDecoded="+System.Gadget.Settings.readString("feedFNotDecoded"+i));
 		nf.WriteLine("feedMaxAgeToView="+System.Gadget.Settings.read("feedMaxAgeToView"+i));
 		nf.WriteLine("feedMaxAgeToViewC="+System.Gadget.Settings.read("feedMaxAgeToViewC"+i));
-		nf.WriteLine("feedWrapTitle="+System.Gadget.Settings.read("feedWrapTitle"+i));
-		nf.WriteLine("feedWrapDescription="+System.Gadget.Settings.read("feedWrapDescription"+i));
+		nf.WriteLine("wrapTitle="+System.Gadget.Settings.read("wrapTitle"+i));
+		nf.WriteLine("wrapDescription="+System.Gadget.Settings.read("wrapDescription"+i));
+		nf.WriteLine("hideDescription="+System.Gadget.Settings.read("hideDescription"+i));
 		nf.WriteLine("feedPPCoefficient="+System.Gadget.Settings.readString("feedPPCoefficient"+i));
 	}
 	nf.Close();
