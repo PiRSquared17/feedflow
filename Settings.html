@@ -69,7 +69,7 @@
 		<tr><td>Font:</td><td><select id="feedFontF" style="width:80%;"></select><input type="text" id="feedFontS" maxlength="2" style="width:9%" onkeypress="return onlyNumbers();" value="11"/> px</td></tr>
 		<tr><td></td><td><input type="checkbox" id="autoScrollCheckBox" onclick="checkForFeedFetchingTimeout();" style="width:auto;"/>Auto scroll through feeds</td></tr>
 		<tr><td>Autoscroll<br/>Interval:</td><td><input type="text" id="autoScrollInterval" value="15000" onkeypress="return onlyNumbers();" maxlength="6" style="width:90%;"/> ms</td></tr>
-		<tr><td></td><td><input type="checkbox" id="disableLoopCheckBox" onclick="checkForFeedFetchingTimeout();" style="width:auto;"/>Disable changing feeds during auto scroll</td></tr>
+		<tr><td colspan="2"><select id="loopType" style="width:100%;"><option>Loop both feeds and pages during autoscroll</option><option>Only loop between pages during autoscroll</option><option>Only loop between feeds during autoscroll</option></select></td></tr>
 		<tr><td></td><td><input type="checkbox" id="notStopAutoScroll" style="width:auto;"/>Do not stop autoscroll on mouseover</td></tr>
 		<tr><td colspan="2">Hide the feeds when: <select id="hideFeeds" style="width:95px;"><option selected>Never</option><option>I click on them</option><option>I click "Read More"</option></select><input type="button" value="Flush cache" onclick="flushReadCache();this.disabled=true;" style="width:65px;"/></td></tr>
 		<tr><td colspan="2">Reset feed hiding cache when it reaches <input type="text" id="hideFeedsMax" value="1000" style="width:32px;" maxlength="4"  onkeypress="return onlyNumbers();"/> feeds</td></tr>

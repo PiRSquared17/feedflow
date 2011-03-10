@@ -642,9 +642,20 @@ function nextPage(i)
 /* Navigates through the feeds automatically */
 function autoScroll()
 {
-	nextPage(1);
-	if ( currentPosition == 0 && System.Gadget.Settings.read("disableLoop")==0) getNextFeed(1);
-	else {clearTimeout(autoscrolltimeout);autoscrolltimeout = setTimeout( "autoScroll();", aSInterval );}
+	switch(System.Gadget.Settings.read("loopType")){
+	default:
+		nextPage(1);
+		if(currentPosition==0)getNextFeed(1);
+		else clearTimeout(autoscrolltimeout);autoscrolltimeout = setTimeout( "autoScroll();", aSInterval );
+	break;
+	case 1:
+		nextPage(1);
+		clearTimeout(autoscrolltimeout);autoscrolltimeout = setTimeout( "autoScroll();", aSInterval );
+	break;
+	case 2:
+		getNextFeed(1);
+	break;
+	}
 }
 
 /* Current position in the feed */
