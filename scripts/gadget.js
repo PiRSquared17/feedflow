@@ -497,11 +497,11 @@ function showNews(news)
 	var buffer="";
 	for ( var i = currentPosition; (i < currentPosition+noItems) && (i < news.items.length); i++ )
 	{
-		item_html = "<a style='white-space:"+(System.Gadget.Settings.read("feedWrapTitle"+currentFeed)?"normal":"nowrap")+";' ";
+		item_html = "<a style='white-space:"+(!globalExtendedCollapsed("GwrapTitle","wrapTitle",currentFeed)?"normal":"nowrap")+";' ";
 		item_html += (news.items[i].link == null)?"":"href='javascript:void(0)' onclick='flyoutIndex="+i+";markAsRead(1);showFlyout();' ondblclick='window.location.href=\""+news.items[i].link+"\";'>";
 		item_html += (news.items[i].title == null )?"(no title)</a>":news.items[i].title+"</a>";
-		if( (System.Gadget.Settings.read("GhideDescription")&&System.Gadget.Settings.read("hideDescription"+currentFeed)==2) || (!System.Gadget.Settings.read("GhideDescription")&&System.Gadget.Settings.read("hideDescription"+currentFeed)!=1) )
-				item_html += "<br>"+(news.items[i].description == null?PFDTDOMW(news.items[i].dateObj):"<span style='white-space:"+(System.Gadget.Settings.read("feedWrapDescription"+currentFeed)?"normal":"nowrap")+";'>"+PFDTDOMW(news.items[i].dateObj)+decodeHTML(news.items[i].description)+"</span>");
+		if( globalExtendedCollapsed("GhideDescription","hideDescription",currentFeed) )
+				item_html += "<br>"+(news.items[i].description == null?PFDTDOMW(news.items[i].dateObj):"<span style='white-space:"+(!globalExtendedCollapsed("GwrapDescription","wrapDescription",currentFeed)?"normal":"nowrap")+";'>"+PFDTDOMW(news.items[i].dateObj)+decodeHTML(news.items[i].description)+"</span>");
 		buffer+="<div class='feedItem'>"+item_html+"</div>";
 	}
 	if((newVer==2||(newVer==1&&!window.ActiveXObject))&&System.Gadget.Settings.read("NOUpdate")!=1)
@@ -673,6 +673,10 @@ var currentFeed = ( (System.Gadget.Settings.read("currentFeed") == "" ) ? 0 : Sy
 
 /* Number of items to display on a page */
 var noItems;
+
+function globalExtendedCollapsed(gSET,eSET,fNUM) {
+return ( (System.Gadget.Settings.read(gSET)&&System.Gadget.Settings.read(eSET+fNUM)==2) || (!System.Gadget.Settings.read(gSET)&&System.Gadget.Settings.read(eSET+fNUM)!=1) )
+}
 
 function crc32 ( str ) {
     // Calculate the crc32 polynomial of a string  
