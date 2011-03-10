@@ -313,7 +313,6 @@ function RSS2Item(itemxml)
 	var filterTData=new RegExp(FT=System.Gadget.Settings.read("feedFTitle"+currentFeed));
 	var filterCData=new RegExp(FC=System.Gadget.Settings.read("feedFContent"+currentFeed));
 	var feedMaxAgeToViewArray = new Array(86400000, 3600000, 60000, 1000);
-	var tmpElement = null;
 	
 	try { this.title = itemxml.getElementsByTagName("title")[0].childNodes[0].nodeValue; }
 	catch (e) { this.title = "(no title)"; }
@@ -339,9 +338,14 @@ function RSS2Item(itemxml)
 	if(this.pubDate!=null){
 		var d=new Date();
 		d.setTime(Date.parse(this.pubDate)||convISODate(this.pubDate));
-		if(System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed))
+		if(System.Gadget.Settings.read("maxAgeToViewMode"+currentFeed)==1){
 			if(new Date()-d > System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed)*feedMaxAgeToViewArray[System.Gadget.Settings.read("feedMaxAgeToViewC"+currentFeed)])
 				this.filter=false;
+		}
+		else if(System.Gadget.Settings.read("GmaxAgeToViewMode") && !System.Gadget.Settings.read("maxAgeToViewMode"+currentFeed)){
+			if(new Date()-d > System.Gadget.Settings.read("GmaxAgeToViewMode"+currentFeed)*feedMaxAgeToViewArray[System.Gadget.Settings.read("GMaxAgeToViewC"+currentFeed)])
+				this.filter=false;
+		}
 		this.pubDate=d.toLocaleDateString()+", "+d.toLocaleTimeString();
 		this.dateObj=d;
 	}
@@ -395,9 +399,14 @@ function AtomItem(itemxml)
 	if(this.pubDate!=null){
 		var d=new Date();
 		d.setTime(Date.parse(this.pubDate)||convISODate(this.pubDate));
-		if(System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed))
+		if(System.Gadget.Settings.read("maxAgeToViewMode"+currentFeed)==1){
 			if(new Date()-d > System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed)*feedMaxAgeToViewArray[System.Gadget.Settings.read("feedMaxAgeToViewC"+currentFeed)])
 				this.filter=false;
+		}
+		else if(System.Gadget.Settings.read("GmaxAgeToViewMode") && !System.Gadget.Settings.read("maxAgeToViewMode"+currentFeed)){
+			if(new Date()-d > System.Gadget.Settings.read("GmaxAgeToViewMode"+currentFeed)*feedMaxAgeToViewArray[System.Gadget.Settings.read("GMaxAgeToViewC"+currentFeed)])
+				this.filter=false;
+		}
 		this.pubDate=d.toLocaleDateString()+", "+d.toLocaleTimeString();
 		this.dateObj=d;
 	}

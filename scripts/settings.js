@@ -25,7 +25,7 @@
 
 System.Gadget.onSettingsClosing = settingsClosing;
 
-var aS=["theme","fontFamily","fontSize","autoScroll","autoScrollInterval","loopType","notStopAutoScroll","feedLoadTimeout","feedFetchRefresh","feedFetchRefreshC","hideFeeds","hideFeedsMax","NOUpdate","feedPPGCoefficient","dispPubDateOnMW","GwrapTitle","GwrapDescription","GhideDescription"];
+var aS=["theme","fontFamily","fontSize","autoScroll","autoScrollInterval","loopType","notStopAutoScroll","feedLoadTimeout","feedFetchRefresh","feedFetchRefreshC","hideFeeds","hideFeedsMax","NOUpdate","feedPPGCoefficient","dispPubDateOnMW","GwrapTitle","GwrapDescription","GhideDescription","GmaxAgeToViewMode","GmaxAgeToView","GmaxAgeToViewC"];
 
 function settingsClosing(event)
 {
@@ -45,6 +45,9 @@ function settingsClosing(event)
 		System.Gadget.Settings.write("hideFeedsMax",hideFeedsMax.value);
 		System.Gadget.Settings.write("NOUpdate",0);
 		System.Gadget.Settings.writeString("feedPPGCoefficient",feedPPGCoefficient.value);
+		System.Gadget.Settings.write("GmaxAgeToViewMode",GhideDescription.checked?1:0);
+		System.Gadget.Settings.write("GfeedMaxAgeToView",GmaxAgeToView.value);
+		System.Gadget.Settings.write("GfeedMaxAgeToViewC",GmaxAgeToViewC.selectedIndex);
 		System.Gadget.Settings.write("GwrapTitle",GwrapTitle.checked?1:0);
 		System.Gadget.Settings.write("GwrapDescription",GwrapDescription.checked?1:0);
 		System.Gadget.Settings.write("GhideDescription",GhideDescription.checked?1:0);
@@ -79,6 +82,9 @@ function loadSettings()
 	if(i<0)i=0;
 	feedFetchRefreshC.options[i].selected=true;
 	feedPPGCoefficient.value=System.Gadget.Settings.readString("feedPPGCoefficient")||"1.000";
+	GmaxAgeToViewMode.checked=System.Gadget.Settings.read("GmaxAgeToViewMode")||0;
+	GmaxAgeToView.value=System.Gadget.Settings.read("GfeedMaxAgeToView")||0;
+	GmaxAgeToViewC.options[System.Gadget.Settings.read("GfeedMaxAgeToViewC")||0].selected=1;
 	GwrapTitle.checked=System.Gadget.Settings.read("GwrapTitle")||0;
 	GwrapDescription.checked=System.Gadget.Settings.read("GwrapDescription")||0;
 	GhideDescription.checked=System.Gadget.Settings.read("GhideDescription")||0;
@@ -294,6 +300,7 @@ function eEditCurrentFeed()
 	eEditTableTitle.value=System.Gadget.Settings.read("feedFTitle"+i);
 	eEditTableContent.value=System.Gadget.Settings.read("feedFContent"+i);
 	eEditTableDisableHTML.value=System.Gadget.Settings.read("feedFNotDecoded"+i);
+	feedMaxAgeToViewMode.options[System.Gadget.Settings.read("feedMaxAgeToViewMode"+i)||0].selected=1;
 	maxAgeToView.value=System.Gadget.Settings.read("feedMaxAgeToView"+i)||0;
 	maxAgeToViewC.options[System.Gadget.Settings.read("feedMaxAgeToViewC"+i)||0].selected=1;
 	feedPPCoefficient.value=System.Gadget.Settings.readString("feedPPCoefficient"+i)||"1.000";
@@ -309,6 +316,7 @@ function eEditApplyChanges()
 	System.Gadget.Settings.write("feedFTitle"+i,eEditTableTitle.value);
 	System.Gadget.Settings.write("feedFContent"+i,eEditTableContent.value);
 	System.Gadget.Settings.write("feedFNotDecoded"+i,eEditTableDisableHTML.value);
+	System.Gadget.Settings.write("feedMaxAgeToViewMode"+i,maxAgeToView.value);
 	System.Gadget.Settings.write("feedMaxAgeToView"+i,maxAgeToView.value);
 	System.Gadget.Settings.write("feedMaxAgeToViewC"+i,maxAgeToViewC.selectedIndex);
 	System.Gadget.Settings.writeString("feedPPCoefficient"+i,feedPPCoefficient.value);
@@ -337,6 +345,7 @@ function saveSettingsToFile()
 		nf.WriteLine("feedFTitle="+System.Gadget.Settings.readString("feedFTitle"+i));
 		nf.WriteLine("feedFContent="+System.Gadget.Settings.readString("feedFContent"+i));
 		nf.WriteLine("feedFNotDecoded="+System.Gadget.Settings.readString("feedFNotDecoded"+i));
+		nf.WriteLine("feedMaxAgeToViewMode="+System.Gadget.Settings.read("feedMaxAgeToViewMode"+i));
 		nf.WriteLine("feedMaxAgeToView="+System.Gadget.Settings.read("feedMaxAgeToView"+i));
 		nf.WriteLine("feedMaxAgeToViewC="+System.Gadget.Settings.read("feedMaxAgeToViewC"+i));
 		nf.WriteLine("wrapTitle="+System.Gadget.Settings.read("wrapTitle"+i));
