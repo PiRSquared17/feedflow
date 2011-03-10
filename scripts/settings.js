@@ -293,7 +293,7 @@ function eEditCurrentFeed()
 	wrapTitle.checked=System.Gadget.Settings.read("feedWrapTitle"+i)||0;
 	wrapDescription.checked=System.Gadget.Settings.read("feedWrapDescription"+i)||0;
 	feedPPCoefficient.value=System.Gadget.Settings.readString("feedPPCoefficient"+i)||"1.000";
-	hideDescription.checked=System.Gadget.Settings.read("hideDescription"+i)||0;
+	hideDescription.options[System.Gadget.Settings.read("hideDescription"+i)||0].selected=true;
 	showTable(eEditTable);
 }
 
@@ -308,7 +308,7 @@ function eEditApplyChanges()
 	System.Gadget.Settings.write("feedWrapTitle"+i,wrapTitle.checked?1:0);
 	System.Gadget.Settings.write("feedWrapDescription"+i,wrapDescription.checked?1:0);
 	System.Gadget.Settings.writeString("feedPPCoefficient"+i,feedPPCoefficient.value);
-	System.Gadget.Settings.write("hideDescription"+i,hideDescription.checked?1:0);
+	System.Gadget.Settings.write("hideDescription"+i,hideDescription.selectedIndex);
 	showTable(feedsTable);
 }
 
