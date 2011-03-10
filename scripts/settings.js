@@ -32,7 +32,7 @@ function settingsClosing(event)
         System.Gadget.Settings.write("theme",feedTheme.options[feedTheme.selectedIndex].value );
 		System.Gadget.Settings.write("autoScroll",autoScrollCheckBox.checked?1:0);
 		System.Gadget.Settings.write("autoScrollInterval",(autoScrollInterval.value<2000?2000:autoScrollInterval.value));
-		System.Gadget.Settings.write("disableLoop",disableLoopCheckBox.checked==true?1:0);
+		System.Gadget.Settings.write("loopType",loopType.selectedIndex);
 		System.Gadget.Settings.write("notStopAutoScroll",notStopAutoScroll.checked==true?1:0);
 		System.Gadget.Settings.write("feedLoadTimeout",(feedLoadTimeout.value<2000?2000:feedLoadTimeout.value));
 		System.Gadget.Settings.write("feedFetchRefresh",(feedFetchRefresh.disabled?feedFetchRefresh.value+"abc":feedFetchRefresh.value));
@@ -54,7 +54,7 @@ function loadSettings()
 	if(feedCount=="")feedCount=0;
 
 	autoScrollInterval.value=((interval = System.Gadget.Settings.read("autoScrollInterval"))?interval:15000);
-	disableLoopCheckBox.checked=(System.Gadget.Settings.read("disableLoop")==1);
+	loopType.options[System.Gadget.Settings.read("loopType")||0].selected=true;
 	feedLoadTimeout.value=((feedloadtimeout = System.Gadget.Settings.read("feedLoadTimeout"))?feedloadtimeout:6500);
 	
 	for ( var i=0; i<4; i++ ) if ( feedTheme[i].value == System.Gadget.Settings.read("theme") ) feedTheme[i].selected = "1";
@@ -180,7 +180,7 @@ function flushReadCache()
 
 function checkForFeedFetchingTimeout()
 {
-	if(autoScrollCheckBox.checked && !disableLoopCheckBox.checked && System.Gadget.Settings.read("noFeeds")>1)
+	if(autoScrollCheckBox.checked && (loopType.selectedIndex==0||loopType.selectedIndex==2) && System.Gadget.Settings.read("noFeeds")>1)
 		feedFetchRefresh.disabled=true;
 			else
 		feedFetchRefresh.disabled=false;
@@ -311,7 +311,7 @@ function eEditApplyChanges()
 
 function saveSettingsToFile()
 {
-	var aS=["theme","fontFamily","fontSize","autoScroll","autoScrollInterval","disableLoop","notStopAutoScroll","feedLoadTimeout","feedFetchRefresh","feedFetchRefreshC","hideFeeds","hideFeedsMax","NOUpdate","feedPPGCoefficient","dispPubDateOnMW"];
+	var aS=["theme","fontFamily","fontSize","autoScroll","autoScrollInterval","loopType","notStopAutoScroll","feedLoadTimeout","feedFetchRefresh","feedFetchRefreshC","hideFeeds","hideFeedsMax","NOUpdate","feedPPGCoefficient","dispPubDateOnMW"];
 	var setP=System.Shell.saveFileDialog("C:\\", "FeedFlow config file\0*.fcg\0\0");
 	if(setP=="")
 		return;
