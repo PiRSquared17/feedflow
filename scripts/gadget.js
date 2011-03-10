@@ -493,14 +493,16 @@ function showNews(news)
 	if(!news)
 		return;
 
-	noItems=Math.round((System.Gadget.Settings.read("gHeight")||162)/39*(System.Gadget.Settings.readString("feedPPCoefficient"+currentFeed)||1)*(System.Gadget.Settings.readString("feedPPGCoefficient")||1));
+	noItems=Math.round((System.Gadget.Settings.read("gHeight")||162)/39*(System.Gadget.Settings.readString("feedPPCoefficient"+currentFeed)||1)*(System.Gadget.Settings.readString("feedPPCoefficient")||1));
 	var buffer="";
 	for ( var i = currentPosition; (i < currentPosition+noItems) && (i < news.items.length); i++ )
 	{
 		item_html = "<a style='white-space:"+(System.Gadget.Settings.read("feedWrapTitle"+currentFeed)?"normal":"nowrap")+";' ";
 		item_html += (news.items[i].link == null)?"":"href='javascript:void(0)' onclick='flyoutIndex="+i+";markAsRead(1);showFlyout();' ondblclick='window.location.href=\""+news.items[i].link+"\";'>";
 		item_html += (news.items[i].title == null )?"(no title)</a>":news.items[i].title+"</a>";
-		item_html += "<br>"+(news.items[i].description == null?PFDTDOMW(news.items[i].dateObj):"<span style='white-space:"+(System.Gadget.Settings.read("feedWrapDescription"+currentFeed)?"normal":"nowrap")+";'>"+PFDTDOMW(news.items[i].dateObj)+decodeHTML(news.items[i].description)+"</span>");
+		if(System.Gadget.Settings.read("hideDescription"+currentFeed)==undefined||!System.Gadget.Settings.read("hideDescription"+currentFeed))
+			if(!System.Gadget.Settings.read("GhideDescription"))
+				item_html += "<br>"+(news.items[i].description == null?PFDTDOMW(news.items[i].dateObj):"<span style='white-space:"+(System.Gadget.Settings.read("feedWrapDescription"+currentFeed)?"normal":"nowrap")+";'>"+PFDTDOMW(news.items[i].dateObj)+decodeHTML(news.items[i].description)+"</span>");
 		buffer+="<div class='feedItem'>"+item_html+"</div>";
 	}
 	if((newVer==2||(newVer==1&&!window.ActiveXObject))&&System.Gadget.Settings.read("NOUpdate")!=1)

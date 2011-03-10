@@ -33,7 +33,7 @@ function settingsClosing(event)
 		System.Gadget.Settings.write("autoScroll",autoScrollCheckBox.checked?1:0);
 		System.Gadget.Settings.write("autoScrollInterval",(autoScrollInterval.value<2000?2000:autoScrollInterval.value));
 		System.Gadget.Settings.write("loopType",loopType.selectedIndex);
-		System.Gadget.Settings.write("notStopAutoScroll",notStopAutoScroll.checked==true?1:0);
+		System.Gadget.Settings.write("notStopAutoScroll",notStopAutoScroll.checked?1:0);
 		System.Gadget.Settings.write("feedLoadTimeout",(feedLoadTimeout.value<2000?2000:feedLoadTimeout.value));
 		System.Gadget.Settings.write("feedFetchRefresh",(feedFetchRefresh.disabled?feedFetchRefresh.value+"abc":feedFetchRefresh.value));
 		System.Gadget.Settings.write("feedFetchRefreshC",feedFetchRefreshC.options[feedFetchRefreshC.selectedIndex].value);
@@ -43,6 +43,7 @@ function settingsClosing(event)
 		System.Gadget.Settings.write("hideFeedsMax",hideFeedsMax.value);
 		System.Gadget.Settings.write("NOUpdate",0);
 		System.Gadget.Settings.writeString("feedPPGCoefficient",feedPPGCoefficient.value);
+		System.Gadget.Settings.writeString("GhideDescription",GhideDescription.checked?1:0);
 		System.Gadget.Settings.write("dispPubDateOnMW",dispPubDateOnMW.selectedIndex);
         event.cancel = false;
     }
@@ -64,7 +65,7 @@ function loadSettings()
 	deleteFeed.disabled=!feedCount;
 	moveFeedUpButton.disabled=true;
 	moveFeedDownButton.disabled=feedCount<2;
-	autoScrollCheckBox.checked = System.Gadget.Settings.read( "autoScroll" );
+	autoScrollCheckBox.checked = System.Gadget.Settings.read("autoScroll");
 	notStopAutoScroll.checked = System.Gadget.Settings.read("notStopAutoScroll");
 	hideFeeds[(a=System.Gadget.Settings.read("hideFeeds"))==""?0:a].selected=true;
 	hideFeedsMax.value=((a=System.Gadget.Settings.read("hideFeedsMax"))?a:1000);	
@@ -73,8 +74,8 @@ function loadSettings()
 	var i=Math.round(Math.log(System.Gadget.Settings.read("feedFetchRefreshC")||60000)/4.0943445622221006848304688130651)-1;
 	if(i<0)i=0;
 	feedFetchRefreshC.options[i].selected=true;
-	eEditTableDisableHTML.checked = System.Gadget.Settings.read("feedFNotDecoded");
 	feedPPGCoefficient.value=System.Gadget.Settings.readString("feedPPGCoefficient")||"1.000";
+	GhideDescription.checked=System.Gadget.Settings.read("GhideDescription")||0;
 	dispPubDateOnMW.options[System.Gadget.Settings.read("dispPubDateOnMW")||0].selected=true;
 	checkForFeedFetchingTimeout();
 
@@ -292,6 +293,7 @@ function eEditCurrentFeed()
 	wrapTitle.checked=System.Gadget.Settings.read("feedWrapTitle"+i)||0;
 	wrapDescription.checked=System.Gadget.Settings.read("feedWrapDescription"+i)||0;
 	feedPPCoefficient.value=System.Gadget.Settings.readString("feedPPCoefficient"+i)||"1.000";
+	hideDescription.checked=System.Gadget.Settings.read("hideDescription"+i)||0;
 	showTable(eEditTable);
 }
 
@@ -306,6 +308,7 @@ function eEditApplyChanges()
 	System.Gadget.Settings.write("feedWrapTitle"+i,wrapTitle.checked?1:0);
 	System.Gadget.Settings.write("feedWrapDescription"+i,wrapDescription.checked?1:0);
 	System.Gadget.Settings.writeString("feedPPCoefficient"+i,feedPPCoefficient.value);
+	System.Gadget.Settings.write("hideDescription"+i,hideDescription.checked?1:0);
 	showTable(feedsTable);
 }
 
