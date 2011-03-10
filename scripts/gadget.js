@@ -310,36 +310,48 @@ function RSS2Item(itemxml)
 	this.description;
 	this.pubDate;
 
-	var properties = new Array("title", "link", "description", "pubDate", "enclosure", "media:thumbnail");
+	var filterTData=new RegExp(FT=System.Gadget.Settings.read("feedFTitle"+currentFeed));
+	var filterCData=new RegExp(FC=System.Gadget.Settings.read("feedFContent"+currentFeed));
 	var feedMaxAgeToViewArray = new Array(86400000, 3600000, 60000, 1000);
 	var tmpElement = null;
-	for (var i=0; i<properties.length; i++)
-	{
-		tmpElement = itemxml.getElementsByTagName(properties[i])[0];
-		if(tmpElement==null)
-			continue;
-		var filterTData=new RegExp(FT=System.Gadget.Settings.readString("feedFTitle"+currentFeed));
-		var filterCData=new RegExp(FC=System.Gadget.Settings.readString("feedFContent"+currentFeed));
-		if(i==0 && FT!="" && tmpElement.childNodes[0].nodeValue.match(filterTData)!=null)
-			this.filter=false;
-		if(i==2 && FC!="" && tmpElement.childNodes[0].nodeValue.match(filterCData)!=null)
-			this.filter=false;
-		if(i==0 && isMarkedAsRead(tmpElement.childNodes[0].nodeValue)!=-1)
-			this.filter=false;
-		if(i==3){
-			if(System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed))
-				if(new Date()-Date.parse(tmpElement.childNodes[0].nodeValue) > System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed)*feedMaxAgeToViewArray[System.Gadget.Settings.read("feedMaxAgeToViewC"+currentFeed)])
-					this.filter=false;
-			var d=new Date(tmpElement.childNodes[0].nodeValue);
-			this.dateObj=d;
-		}
-		if ( tmpElement.childNodes != null )
-			if ( tmpElement.childNodes[0] != null )
-				if ( tmpElement.childNodes[0].nodeValue != null )
-					eval("this."+properties[i]+"=tmpElement.childNodes[0].nodeValue;");
-		if (i>=4)
-			this.enclosure=tmpElement.attributes.getNamedItem("url").nodeValue;
+	
+	try { this.title = itemxml.getElementsByTagName("title")[0].childNodes[0].nodeValue; }
+	catch (e) { this.title = "(no title)"; }
+	try { this.link = itemxml.getElementsByTagName("link")[0].childNodes[0].nodeValue; }
+	catch (e) { this.link = "(no link)"; }
+	try { this.description = itemxml.getElementsByTagName("description")[0].childNodes[0].nodeValue; }
+	catch (e) { this.description = "(no summary)"; }
+	
+	if(FT!="" && this.title.match(filterTData)!=null)
+		this.filter=false;
+	if(FC!="" && this.description.match(filterCData)!=null)
+		this.filter=false;
+	if(isMarkedAsRead(this.title)!=-1)
+		this.filter=false;
+	
+	try { this.pubDate = itemxml.getElementsByTagName("pubDate")[0].childNodes[0].nodeValue; }
+	catch (e) {
+	try { this.pubDate = itemxml.getElementsByTagName("dc:date")[0].childNodes[0].nodeValue; }
+	catch (e) {
+	this.pubDate=null;
+	}}
+	
+	if(this.pubDate!=null){
+		var d=new Date();
+		d.setTime(Date.parse(this.pubDate)||convISODate(this.pubDate));
+		if(System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed))
+			if(new Date()-d > System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed)*feedMaxAgeToViewArray[System.Gadget.Settings.read("feedMaxAgeToViewC"+currentFeed)])
+				this.filter=false;
+		this.pubDate=d.toLocaleDateString()+", "+d.toLocaleTimeString();
+		this.dateObj=d;
 	}
+	
+	try { this.enclosure = itemxml.getElementsByTagName("enclosure")[0].childNodes[0].nodeValue; }
+	catch (e) {
+	try { this.enclosure = itemxml.getElementsByTagName("media:thumbnail")[0].childNodes[0].nodeValue; }
+	catch (e) {
+	this.enclosure=undefined;
+	}}
 }
 
 /* Create a new RSS channel object */
