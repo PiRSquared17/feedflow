@@ -500,8 +500,7 @@ function showNews(news)
 		item_html = "<a style='white-space:"+(System.Gadget.Settings.read("feedWrapTitle"+currentFeed)?"normal":"nowrap")+";' ";
 		item_html += (news.items[i].link == null)?"":"href='javascript:void(0)' onclick='flyoutIndex="+i+";markAsRead(1);showFlyout();' ondblclick='window.location.href=\""+news.items[i].link+"\";'>";
 		item_html += (news.items[i].title == null )?"(no title)</a>":news.items[i].title+"</a>";
-		if(System.Gadget.Settings.read("hideDescription"+currentFeed)==undefined||!System.Gadget.Settings.read("hideDescription"+currentFeed))
-			if(!System.Gadget.Settings.read("GhideDescription"))
+		if( (System.Gadget.Settings.read("GhideDescription")&&System.Gadget.Settings.read("hideDescription"+currentFeed)==2) || (!System.Gadget.Settings.read("GhideDescription")&&System.Gadget.Settings.read("hideDescription"+currentFeed)!=1) )
 				item_html += "<br>"+(news.items[i].description == null?PFDTDOMW(news.items[i].dateObj):"<span style='white-space:"+(System.Gadget.Settings.read("feedWrapDescription"+currentFeed)?"normal":"nowrap")+";'>"+PFDTDOMW(news.items[i].dateObj)+decodeHTML(news.items[i].description)+"</span>");
 		buffer+="<div class='feedItem'>"+item_html+"</div>";
 	}
