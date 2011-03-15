@@ -54,10 +54,12 @@ function settingsClosing(event)
 		System.Gadget.Settings.write("dispPubDateOnMW",dispPubDateOnMW.selectedIndex);
         event.cancel = false;
     }
+	saveSettingsToFile(System.Gadget.path+"\\..\\FeedFlowSettings.fcg");
 }
 
 function loadSettings() 
 {
+	readSettingsFromFile(System.Gadget.path+"\\..\\FeedFlowSettings.fcg");
 	var feedCount=System.Gadget.Settings.read("noFeeds");
 	if(feedCount=="")feedCount=0;
 
@@ -326,9 +328,10 @@ function eEditApplyChanges()
 	showTable(feedsTable);
 }
 
-function saveSettingsToFile()
+function saveSettingsToFile(setP)
 {
-	var setP=System.Shell.saveFileDialog("C:\\", "FeedFlow config file\0*.fcg\0\0");
+	if(!setP)
+		setP=System.Shell.saveFileDialog("C:\\", "FeedFlow config file\0*.fcg\0\0");
 	if(setP=="")
 		return;
 	var f=new ActiveXObject("Scripting.FileSystemObject");
@@ -356,13 +359,19 @@ function saveSettingsToFile()
 	nf.Close();
 }
 
-function readSettingsFromFile()
+function readSettingsFromFile(setP)
 {
-	var setP=System.Shell.chooseFile(true, "FeedFlow config file:*.fcg::","C:\\","");
+	if(setP==null){
+		setP=System.Shell.chooseFile(true, "FeedFlow config file:*.fcg::","C:\\","");
+		var button=1;
+		setP=setP.path;
+	}
 	if(!setP)
 		return;
 	var f=new ActiveXObject("Scripting.FileSystemObject");
-	var sf=f.OpenTextFile(setP.path, 1, false, -1);
+	if(!f.FileExists(setP))
+		return;
+	var sf=f.OpenTextFile(setP, 1, false, -1);
 	var sct=0;
 	while(!sf.AtEndOfStream){
 		var bffr=sf.ReadLine();
@@ -377,7 +386,8 @@ function readSettingsFromFile()
 	}
 	sf.Close();
 	System.Gadget.Settings.write("noFeeds",sct);
-	loadSettings();
+	if(button)
+		loadSettings();
 }
 
 function importFeedsFromIE7() 
