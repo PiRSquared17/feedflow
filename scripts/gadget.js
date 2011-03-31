@@ -88,7 +88,9 @@ function initiateGadget()
 			markedAsReadCache=f.readAll();
 	}
 
-	
+	clearInterval(refreshInterval);
+		var refreshTime = System.Gadget.Settings.read('feedFetchRefresh');
+			if (!isNaN(parseFloat(refreshTime)))refreshInterval=setInterval("getNews(null,1);",refreshTime*System.Gadget.Settings.read("feedFetchRefreshC"));
 
 	document.body.style.height=gHeight+60+"px";
 	mainContainer.style.height=gHeight+"px";
