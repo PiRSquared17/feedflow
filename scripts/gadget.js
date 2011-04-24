@@ -339,6 +339,7 @@ function RSS2Item(itemxml)
 	
 	if(this.pubDate!=null){
 		var d=new Date();
+		try {
 		d.setTime(Date.parse(this.pubDate)||convISODate(this.pubDate));
 		if(System.Gadget.Settings.read("maxAgeToViewMode"+currentFeed)==1){
 			if(new Date()-d > System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed)*feedMaxAgeToViewArray[System.Gadget.Settings.read("feedMaxAgeToViewC"+currentFeed)])
@@ -350,6 +351,7 @@ function RSS2Item(itemxml)
 		}
 		this.pubDate=d.toLocaleDateString()+", "+d.toLocaleTimeString();
 		this.dateObj=d;
+		} catch (e) {this.pubDate=null;}
 	}
 	
 	try { this.enclosure = itemxml.getElementsByTagName("enclosure")[0].childNodes[0].nodeValue; }
