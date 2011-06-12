@@ -96,7 +96,7 @@ function loadSettings()
 	GwrapDescription.checked=System.Gadget.Settings.read("GwrapDescription")||0;
 	GhideDescription.checked=System.Gadget.Settings.read("GhideDescription")||0;
 	dispPubDateOnMW.options[System.Gadget.Settings.read("dispPubDateOnMW")||0].selected=true;
-	checkForFeedFetchingTimeout();
+	//checkForFeedFetchingTimeout();
 
 	if(!window.ActiveXObject){
 		saveSettingsToFile.disabled=true;
@@ -145,7 +145,7 @@ function buildFeedList()
 	}
 	feedName.value=System.Gadget.Settings.read("feedName0");
 	feedURL.value=System.Gadget.Settings.read("feedURL0");
-	checkForFeedFetchingTimeout();
+	//checkForFeedFetchingTimeout();
 }
 
 function addNewFeed( name, url )

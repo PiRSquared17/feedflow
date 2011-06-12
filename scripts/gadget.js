@@ -24,9 +24,8 @@
 **********************************************/
 
  var autoscrolltimeout;
- var feedloading=0;
- var isAutoScroll=0;
- var aSInterval=15000;
+ var isAutoScroll;
+ var aSInterval;
  var getNewsTimeout;
  var refreshInterval;
  var newVer=0;
@@ -50,13 +49,19 @@ function settingsClosed(event)
 		clearInterval(refreshInterval);
 		var refreshTime = System.Gadget.Settings.read('feedFetchRefresh');
 			if (!isNaN(parseFloat(refreshTime)))refreshInterval=setInterval("fetchFeeds();",refreshTime*System.Gadget.Settings.read("feedFetchRefreshC"));
+		
+		isAutoScroll=((a=System.Gadget.Settings.read("autoScroll"))==""?0:a);
+		aSInterval=((a=System.Gadget.Settings.read("autoScrollInterval"))==""?15000:a);
+		
+		clearTimeout(autoscrolltimeout);
+		if(isAutoScroll)
+			autoscrolltimeout=setTimeout("autoScroll();",aSInterval);
 		loadTheme();
 		currentFeed = 0;
 		fetchFeeds();
 	}
 }
 
-/* Rezise gadget when docked/undocked */
 function initiateGadget()
 {
 	readSettingsFromFile(System.Gadget.path+"\\..\\FeedFlowSettings.fcg");
@@ -90,11 +95,18 @@ function initiateGadget()
 		if(!f.AtEndOfStream)
 			markedAsReadCache=f.readAll();
 	}
+	
+	isAutoScroll=((a=System.Gadget.Settings.read("autoScroll"))==""?0:a);
+	aSInterval=((a=System.Gadget.Settings.read("autoScrollInterval"))==""?15000:a);
 
 	clearInterval(refreshInterval);
 		var refreshTime = System.Gadget.Settings.read('feedFetchRefresh');
 			if (!isNaN(parseFloat(refreshTime)))refreshInterval=setInterval("fetchFeeds();",refreshTime*System.Gadget.Settings.read("feedFetchRefreshC"));
 
+	clearTimeout(autoscrolltimeout);
+	if(isAutoScroll)
+		autoscrolltimeout=setTimeout("autoScroll();",aSInterval);
+	
 	document.body.style.height=gHeight+60+"px";
 	mainContainer.style.height=gHeight+"px";
 	message.style.height=gHeight-13+"px";
@@ -612,10 +624,11 @@ function clear()
 }
 
 /* Displays the next feed when clicking the top right arrow */
-function getNextFeed(i)
+function getNextFeed()
 {
 	var noFeeds = System.Gadget.Settings.read("noFeeds");
 	if ( noFeeds == "" || noFeeds < 2 ){if (isAutoScroll==1) autoscrolltimeout = setTimeout( "autoScroll();", aSInterval );return true;}
+	currentPosition=0;
 	currentFeed = (currentFeed+1) % noFeeds;
 	//fetchFeeds();
 	showNews();
@@ -626,6 +639,7 @@ function getPreviousFeed()
 {
 	var noFeeds = System.Gadget.Settings.read("noFeeds");
 	if ( noFeeds == "" || noFeeds < 2 ){if (isAutoScroll==1) autoscrolltimeout = setTimeout( "autoScroll();", aSInterval );return true;}
+	currentPosition=0;
 	currentFeed--;
 	if ( currentFeed < 0 ) currentFeed = noFeeds-1;
 	//fetchFeeds();
@@ -653,18 +667,16 @@ function previousPage()
 {
 	if(news==null)
 		return;
-	if(feedloading==1)return;
 	currentPosition = (currentPosition - noItems >= 0) ? currentPosition - noItems : ((news[currentFeed].items.length - news[currentFeed].items.length%noItems)); 
 	if ( currentPosition >= news[currentFeed].items.length ) currentPosition -= noItems;
 	showNews();
 }
 
 /* Scroll one page down */
-function nextPage(i)
+function nextPage()
 {
 	if(news==null)
 		return;
-	if(feedloading==1&&i==1)return;
 	currentPosition = (currentPosition + noItems) >= news[currentFeed].items.length ? 0 : (currentPosition + noItems); 
 	showNews();
 }
@@ -674,16 +686,16 @@ function autoScroll()
 {
 	switch(System.Gadget.Settings.read("loopType")){
 	default:
-		nextPage(1);
-		if(currentPosition==0)getNextFeed(1);
+		nextPage();
+		if(currentPosition==0)getNextFeed();
 		else clearTimeout(autoscrolltimeout);autoscrolltimeout = setTimeout( "autoScroll();", aSInterval );
 	break;
 	case 1:
-		nextPage(1);
+		nextPage();
 		clearTimeout(autoscrolltimeout);autoscrolltimeout = setTimeout( "autoScroll();", aSInterval );
 	break;
 	case 2:
-		getNextFeed(1);
+		getNextFeed();
 	break;
 	}
 }
