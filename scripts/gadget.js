@@ -591,7 +591,7 @@ function showMessage( msg )
 {
 	message.style.display = "block";
 	messageText.innerHTML = msg;
-	if ( msg == "" ) message.style.display = "none";
+	if ( msg == "" ) message.style.display = "none";else mCC.innerHTML="";
 }
 
 /* Loads the current theme or the default one */
@@ -665,7 +665,7 @@ function decodeHTMLR(str,p1)
 /* Scroll one page up */
 function previousPage()
 {
-	if(news==null)
+	if(news[currentFeed]==null)
 		return;
 	currentPosition = (currentPosition - noItems >= 0) ? currentPosition - noItems : ((news[currentFeed].items.length - news[currentFeed].items.length%noItems)); 
 	if ( currentPosition >= news[currentFeed].items.length ) currentPosition -= noItems;
@@ -675,7 +675,7 @@ function previousPage()
 /* Scroll one page down */
 function nextPage()
 {
-	if(news==null)
+	if(news[currentFeed]==null)
 		return;
 	currentPosition = (currentPosition + noItems) >= news[currentFeed].items.length ? 0 : (currentPosition + noItems); 
 	showNews();
@@ -696,6 +696,7 @@ function autoScroll()
 	break;
 	case 2:
 		getNextFeed();
+		clearTimeout(autoscrolltimeout);autoscrolltimeout = setTimeout( "autoScroll();", aSInterval );
 	break;
 	}
 }
