@@ -34,10 +34,11 @@
 	
 		<a href="javascript:void(0);" onclick="showTable(feedsTable);">Feeds</a> |
 		<a href="javascript:void(0);" onclick="showTable(optionsTable);">Options</a> |
-		<a href="javascript:void(0);" onclick="showTable(aboutTable);">About</a>
-		<span style="font-size:10px;"><a href="http://code.google.com/p/feedflow/issues/list" style="margin-left:10px;">Report bug/idea</a> |
-		<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=CQN3JZEVN7UYJ&lc=TR&item_name=FeedFlow%20sidebar%20gadget&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted">Donate</a>
-		</span>
+		<a href="javascript:void(0);" onclick="showTable(aboutTable);">About</a><span> |
+		<a href="javascript:void(0);" onclick="showTable(errorLog);">Error Log</a><br/>
+		<div style="font-size:10px;float:right;margin:5px 82px 5px 0;"><a href="http://code.google.com/p/feedflow/issues/list">Report bug/idea</a> |
+		<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=6F9JKFFWJ9L9N">Donate</a>
+		</div>
 		<div style="height:20px;"></div>
 
 		<div style="overflow:auto;width:290px;height:280px;">
@@ -67,20 +68,20 @@
 				<OPTION value="vista">Vista</OPTION>
 		</SELECT></td></tr>
 		<tr><td>Font:</td><td><select id="feedFontF" style="width:80%;"></select><input type="text" id="feedFontS" maxlength="2" style="width:9%" onkeypress="return onlyNumbers();" value="11"/> px</td></tr>
-		<tr><td></td><td><input type="checkbox" id="autoScrollCheckBox" onclick="checkForFeedFetchingTimeout();" style="width:auto;"/>Auto scroll through feeds</td></tr>
+		<tr><td colspan="2"><input type="checkbox" id="autoScrollCheckBox" style="width:auto;"/>Auto scroll through feeds</td></tr>
 		<tr><td>Autoscroll<br/>Interval:</td><td><input type="text" id="autoScrollInterval" value="15000" onkeypress="return onlyNumbers();" maxlength="6" style="width:90%;"/> ms</td></tr>
 		<tr><td colspan="2"><select id="loopType" style="width:100%;"><option>Loop both feeds and pages during autoscroll</option><option>Only loop between pages during autoscroll</option><option>Only loop between feeds during autoscroll</option></select></td></tr>
-		<tr><td></td><td><input type="checkbox" id="notStopAutoScroll" style="width:auto;"/>Do not stop autoscroll on mouseover</td></tr>
+		<tr><td colspan="2"><input type="checkbox" id="notStopAutoScroll" style="width:auto;"/>Do not stop autoscroll on mouseover</td></tr>
 		<tr><td colspan="2">Hide the feeds when: <select id="hideFeeds" style="width:95px;"><option selected>Never</option><option>I click on them</option><option>I click "Read More"</option></select><input type="button" value="Flush cache" onclick="flushReadCache();this.disabled=true;" style="width:65px;"/></td></tr>
 		<tr><td colspan="2">Reset feed hiding cache when it reaches <input type="text" id="hideFeedsMax" value="1000" style="width:32px;" maxlength="4"  onkeypress="return onlyNumbers();"/> feeds</td></tr>
 		<tr><td colspan="2"><select id="dispPubDateOnMW" style="width:70%;"><option>Display nothing about feed pub. date</option><option>Display the date feed was published</option><option>Display time passed since feed pub.</option></select> on main window</td></tr>
-		<tr><td>Feed fetching<br/>Interval:</td><td><input type="text" id="feedFetchRefresh" value="15" maxlength="6" onkeypress="return onlyNumbers();" style="width:72%;"/><select id="feedFetchRefreshC" style="width:20%;"><option value="1">ms</option><option value="1000">sec</option><option value="60000" selected>min</option><option value="3600000">h</option></select> | <a title="This will be ineffective if you have more then 1 feed & autoscroll on & disable changing feeds during autoscroll off.">?</a></td></tr>
+		<tr><td>Feed fetching<br/>Interval:</td><td><input type="text" id="feedFetchRefresh" value="15" maxlength="6" onkeypress="return onlyNumbers();" style="width:76%;"/><select id="feedFetchRefreshC" style="width:20%;"><option value="1">ms</option><option value="1000">sec</option><option value="60000" selected>min</option><option value="3600000">h</option></select></td></tr>
 		<tr><td>Feed fetching<br/>timeout:</td><td><input type="text" id="feedLoadTimeout" value="6500" onkeypress="return onlyNumbers();" maxlength="5"/></td></tr>
 		<tr><td>Global:feed per page<br/>coefficient:</td><td><input type="text" id="feedPPGCoefficient" value="1" onkeypress="return onlyNumbers(null,46);" maxlength="5"/> <a title="Adjust this to increase and decrease feed number per page, i.e. 0.5 is simply half times of normal count. May help if you use custom font settings.">?</a></td></tr>
 		<tr><td colspan="2"><input id="GmaxAgeToViewMode" type="checkbox" style="width:auto;"/> Hide items older than <input type="text" id="GmaxAgeToView" maxlength="3" style="width:25px;" onchange="return onlyNumbers();"/><select id="GmaxAgeToViewC" style="width:35px;"><option value="86400000">d</option><option value="3600000">h</option><option value="60000">m</option><option value="1000">s</option></select><a title="Leave zero for no effect.">?</a></td></tr>
-		<tr><td></td><td><input type="checkbox" id="GwrapTitle" style="width:auto;"/>Global:wrap titles</td></tr>
-		<tr><td></td><td><input type="checkbox" id="GwrapDescription" style="width:auto;"/>Global:wrap descriptions</td></tr>
-		<tr><td></td><td><input type="checkbox" id="GhideDescription" style="width:auto;"/>Global:hide descriptions</td></tr>
+		<tr><td colspan="2"><input type="checkbox" id="GwrapTitle" style="width:auto;"/>Global:wrap titles</td></tr>
+		<tr><td colspan="2"><input type="checkbox" id="GwrapDescription" style="width:auto;"/>Global:wrap descriptions</td></tr>
+		<tr><td colspan="2"><input type="checkbox" id="GhideDescription" style="width:auto;"/>Global:hide descriptions</td></tr>
 		<tr style="display:none;"><td></td><td><input type="checkbox" id="disableUpdate" style="width:auto;"/>Disable update systems <a title="You will not be notified of the new versions and there won't be any auto updates. Not recommended.">?</a></td></tr>
 		</table>
 
@@ -118,6 +119,11 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public 
 You should have received a copy of the GNU General Public License along with FeedFlow. If not, see <http://www.gnu.org/licenses/>.
 		</textarea>
 		</td></tr></table>
+		
+		<table id="errorLog" style='display:none;'><tr><td>
+		<textarea cols="32" rows="15" id='errorLogArea' readonly='readonly'></textarea>
+		</td></tr><tr><td><input type='button' onclick='flushErrorLog();' value='Flush Log' style='width:auto;'/></table>
+		
 		</div>
 	</BODY>
 </HTML>

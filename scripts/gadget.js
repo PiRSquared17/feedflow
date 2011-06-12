@@ -32,6 +32,7 @@
  var newVer=0;
  var markedAsReadCache="";
  var Months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+ var news=new Array();
 
 /* Set the event handlers */
 System.Gadget.settingsUI = "Settings.html";
@@ -48,16 +49,18 @@ function settingsClosed(event)
 		clearTimeout(getNewsTimeout);
 		clearInterval(refreshInterval);
 		var refreshTime = System.Gadget.Settings.read('feedFetchRefresh');
-			if (!isNaN(parseFloat(refreshTime)))refreshInterval=setInterval("getNews(null,1);",refreshTime*System.Gadget.Settings.read("feedFetchRefreshC"));
+			if (!isNaN(parseFloat(refreshTime)))refreshInterval=setInterval("fetchFeeds();",refreshTime*System.Gadget.Settings.read("feedFetchRefreshC"));
 		loadTheme();
 		currentFeed = 0;
-		getNews(1);
+		fetchFeeds();
 	}
 }
 
 /* Rezise gadget when docked/undocked */
 function initiateGadget()
 {
+	readSettingsFromFile(System.Gadget.path+"\\..\\FeedFlowSettings.fcg");
+	loadTheme();
 	var gHeight=System.Gadget.Settings.read("gHeight")||162;
 	var gWidth=System.Gadget.Settings.read("gWidth")||132;
 
@@ -90,7 +93,7 @@ function initiateGadget()
 
 	clearInterval(refreshInterval);
 		var refreshTime = System.Gadget.Settings.read('feedFetchRefresh');
-			if (!isNaN(parseFloat(refreshTime)))refreshInterval=setInterval("getNews(null,1);",refreshTime*System.Gadget.Settings.read("feedFetchRefreshC"));
+			if (!isNaN(parseFloat(refreshTime)))refreshInterval=setInterval("fetchFeeds();",refreshTime*System.Gadget.Settings.read("feedFetchRefreshC"));
 
 	document.body.style.height=gHeight+60+"px";
 	mainContainer.style.height=gHeight+"px";
@@ -169,7 +172,7 @@ function resizeVE()
 	document.body.style.cursor="";
 	document.body.onmousemove="";
 	document.body.onmouseup="";
-	showNews(news);
+	showNews();
 }
 
 function resizeHB()
@@ -267,7 +270,7 @@ function markAsRead(i)
 	if(!window.ActiveXObject)
 		return 0;
 	if(i==System.Gadget.Settings.read("hideFeeds")){
-		if(isMarkedAsRead(news.items[flyoutIndex].title)==-1){
+		if(isMarkedAsRead(news[currentFeed].items[flyoutIndex].title)==-1){
 			var fO=new ActiveXObject("Scripting.FileSystemObject");
 			if(markedAsReadCache.length > System.Gadget.Settings.read("hideFeedsMax")*11){
 				markedAsReadCache="";
@@ -276,9 +279,9 @@ function markAsRead(i)
 			else
 				var fmode=8;
 			var f=fO.OpenTextFile(System.Gadget.path+"\\readFeeds",fmode,true);
-			f.Write(crc32(news.items[flyoutIndex].title)+",");
+			f.Write(crc32(news[currentFeed].items[flyoutIndex].title)+",");
 			f.Close();
-			markedAsReadCache=markedAsReadCache+crc32(news.items[flyoutIndex].title)+",";
+			markedAsReadCache=markedAsReadCache+crc32(news[currentFeed].items[flyoutIndex].title)+",";
 		}
 	}
 }
@@ -301,7 +304,15 @@ function fillFeedList()
 function feedListMUP(e)
 {
 	if(e.button==2)
-		getNews();
+		fetchFeeds();
+}
+
+function logError(e)
+{
+	var fO=new ActiveXObject("Scripting.FileSystemObject");
+	var f=fO.OpenTextFile(System.Gadget.path+"\\errorLog.txt",8,true);
+	f.Write(e);
+	f.Close();
 }
 
 /* Create a new RSS item object */
@@ -455,66 +466,66 @@ function AtomChannel(atomxml)
 }
 
 /* Download (request) the feed from the URL */
-function getNews(i,p)
+function fetchFeeds(i,startup)
 {
 	clearTimeout(getNewsTimeout);
-	isAutoScroll = System.Gadget.Settings.read("autoScroll");
-	var URL = System.Gadget.Settings.read("feedURL"+currentFeed);
-	if (URL=="")
+	if(i==null)
+		i=0;
+	var URL=System.Gadget.Settings.read("feedURL"+i);
+	if (URL==""&&i==0)
 	{
 		titleLink.innerHTML="FeedFlow";
-		showMessage( "No Feed" );
+		showMessage("No Feed");
 		return true;
-	}
-	var name = System.Gadget.Settings.read("feedName"+currentFeed);
-	if (name != "") titleLink.innerHTML = name;
-	else titleLink.innerHTML="FeedFlow";
-	//position.innerHTML="";
-	//mCC.innerHTML="";
+	} else if(URL=="")
+		return true;
 
 	loadingIcon.style.display="block";
-	if(p!=1)
-		currentPosition = 0;
+	loadingIcon.title="Loading "+i+". feed...";
 
-	window["xmlDocument"] = new ActiveXObject('Microsoft.XMLDOM');
+	//window["xmlDocument"] = new ActiveXObject('Microsoft.XMLDOM');
+	window["xmlDocument"] = new XMLHttpRequest();
 	xmlDocument.onreadystatechange = function () {
-		if (xmlDocument.readyState == 4) {
-				/*if(xmlDocument.getResponseHeader("Content-Type")!="text/xml")
+		if (xmlDocument.readyState == 4)
+		{
+				if(xmlDocument.getResponseHeader("Content-Type")!="text/xml")
 					xmlDocument.responseXML.loadXML(xmlDocument.responseText);
-				xmlDocument=xmlDocument.responseXML;*/
-				if ( xmlDocument.getElementsByTagName("item")[0] != null ) news = new RSS2Channel(xmlDocument);
-				else news = new AtomChannel(xmlDocument);
-				currentPosition=0;
-				showNews(news);
+				xmlDocument=xmlDocument.responseXML;
+				if ( xmlDocument.getElementsByTagName("item")[0] != null ) news[i] = new RSS2Channel(xmlDocument);
+				else news[i] = new AtomChannel(xmlDocument);
+				if(startup&&currentFeed==i)
+					showNews();
 				loadingIcon.style.display="none";
 				clearTimeout(getNewsTimeout);
-				aSInterval=System.Gadget.Settings.read("autoScrollInterval");
-				if(i==1&&isAutoScroll==1)
-					autoscrolltimeout=setTimeout("autoScroll();",aSInterval);
+				fetchFeeds(i+1);
 		}
 	};
-	xmlDocument.load(URL+(URL.match(/\?/)?"&":"?")+Math.random()+"=1");
+	//xmlDocument.load(URL+(URL.match(/\?/)?"&":"?")+Math.random()+"=1");
+	xmlDocument.open("GET",URL+(URL.match(/\?/)?"&":"?")+Math.random()+"=1",true);
+	xmlDocument.send();
 
-	getNewsTimeout=setTimeout(function(){xmlDocument.abort();loadingIcon.style.display="none";/*showMessage("Could not load<br>"+name);*/setTimeout(getNextFeed,3000);}, System.Gadget.Settings.read("feedLoadTimeout"));
+	getNewsTimeout=setTimeout(function(){logError(i+". feed failed to fetch.\r\n");xmlDocument.abort();loadingIcon.style.display="none";fetchFeeds(i+1);}, System.Gadget.Settings.read("feedLoadTimeout"));
 
 	return;
 }
 
-/* Display the current 4 items in the news */
-function showNews(news)
+function showNews()
 {
-	if(!news)
-		return;
-
+	if(!news[currentFeed])
+	{
+		showMessage("This feed is not fetched yet.");
+		return 0;
+	}
+	titleLink.innerHTML=System.Gadget.Settings.read("feedName"+currentFeed);
 	noItems=Math.round((System.Gadget.Settings.read("gHeight")||162)/39*(System.Gadget.Settings.readString("feedPPCoefficient"+currentFeed)||1)*(System.Gadget.Settings.readString("feedPPCoefficient")||1));
 	var buffer="";
-	for ( var i = currentPosition; (i < currentPosition+noItems) && (i < news.items.length); i++ )
+	for ( var i = currentPosition; (i < currentPosition+noItems) && (i < news[currentFeed].items.length); i++ )
 	{
 		item_html = "<a style='white-space:"+(!globalExtendedCollapsed("GwrapTitle","wrapTitle",currentFeed)?"normal":"nowrap")+";' ";
-		item_html += (news.items[i].link == null)?"":"href='javascript:void(0)' onclick='flyoutIndex="+i+";markAsRead(1);showFlyout();' ondblclick='window.location.href=\""+news.items[i].link+"\";'>";
-		item_html += (news.items[i].title == null )?"(no title)</a>":news.items[i].title+"</a>";
+		item_html += (news[currentFeed].items[i].link == null)?"":"href='javascript:void(0)' onclick='flyoutIndex="+i+";markAsRead(1);showFlyout();' ondblclick='window.location.href=\""+news[currentFeed].items[i].link+"\";'>";
+		item_html += (news[currentFeed].items[i].title == null )?"(no title)</a>":news[currentFeed].items[i].title+"</a>";
 		if( globalExtendedCollapsed("GhideDescription","hideDescription",currentFeed) )
-				item_html += "<br>"+(news.items[i].description == null?PFDTDOMW(news.items[i].dateObj):"<span style='white-space:"+(!globalExtendedCollapsed("GwrapDescription","wrapDescription",currentFeed)?"normal":"nowrap")+";'>"+PFDTDOMW(news.items[i].dateObj)+decodeHTML(news.items[i].description)+"</span>");
+				item_html += "<br>"+(news[currentFeed].items[i].description == null?PFDTDOMW(news[currentFeed].items[i].dateObj):"<span style='white-space:"+(!globalExtendedCollapsed("GwrapDescription","wrapDescription",currentFeed)?"normal":"nowrap")+";'>"+PFDTDOMW(news[currentFeed].items[i].dateObj)+decodeHTML(news[currentFeed].items[i].description)+"</span>");
 		buffer+="<div class='feedItem'>"+item_html+"</div>";
 	}
 	if((newVer==2||(newVer==1&&!window.ActiveXObject))&&System.Gadget.Settings.read("NOUpdate")!=1)
@@ -522,7 +533,7 @@ function showNews(news)
 
 	mCC.innerHTML=buffer;
 
-	var posText = (currentPosition + 1) + '-' + ((currentPosition + noItems)>news.items.length?news.items.length:(currentPosition + noItems)) + '/' + news.items.length;
+	var posText = (currentPosition + 1) + '-' + ((currentPosition + noItems)>news[currentFeed].items.length?news[currentFeed].items.length:(currentPosition + noItems)) + '/' + news[currentFeed].items.length;
 	position.innerHTML = posText;
 
 	System.Gadget.Settings.write("currentFeed", currentFeed);
@@ -579,13 +590,12 @@ function loadTheme()
 	document.styleSheets(1).href = 'themes/' + themeName + '/style.css';
 	document.body.style.fontFamily=System.Gadget.Settings.read("fontFamily");
 	document.body.style.fontSize=System.Gadget.Settings.read("fontSize");
-	initiateGadget();	
 }
 
 /* Show the flyout when mouse is over an item */
 function showFlyout()
 {
-	if ( flyoutIndex >= news.items.length )
+	if ( flyoutIndex >= news[currentFeed].items.length )
 	{
 		System.Gadget.Flyout.show = false;
 		return true;
@@ -607,7 +617,8 @@ function getNextFeed(i)
 	var noFeeds = System.Gadget.Settings.read("noFeeds");
 	if ( noFeeds == "" || noFeeds < 2 ){if (isAutoScroll==1) autoscrolltimeout = setTimeout( "autoScroll();", aSInterval );return true;}
 	currentFeed = (currentFeed+1) % noFeeds;
-	getNews(i);	
+	//fetchFeeds();
+	showNews();
 }
 
 /* Displays the previous feed when clicking the top left arrow */
@@ -617,7 +628,8 @@ function getPreviousFeed()
 	if ( noFeeds == "" || noFeeds < 2 ){if (isAutoScroll==1) autoscrolltimeout = setTimeout( "autoScroll();", aSInterval );return true;}
 	currentFeed--;
 	if ( currentFeed < 0 ) currentFeed = noFeeds-1;
-	getNews();	
+	//fetchFeeds();
+	showNews();
 }
 
 function decodeHTML(text)
@@ -639,18 +651,22 @@ function decodeHTMLR(str,p1)
 /* Scroll one page up */
 function previousPage()
 {
+	if(news==null)
+		return;
 	if(feedloading==1)return;
-	currentPosition = (currentPosition - noItems >= 0) ? currentPosition - noItems : ((news.items.length - news.items.length%noItems)); 
-	if ( currentPosition >= news.items.length ) currentPosition -= noItems;
-	showNews(news);
+	currentPosition = (currentPosition - noItems >= 0) ? currentPosition - noItems : ((news[currentFeed].items.length - news[currentFeed].items.length%noItems)); 
+	if ( currentPosition >= news[currentFeed].items.length ) currentPosition -= noItems;
+	showNews();
 }
 
 /* Scroll one page down */
 function nextPage(i)
 {
+	if(news==null)
+		return;
 	if(feedloading==1&&i==1)return;
-	currentPosition = (currentPosition + noItems) >= news.items.length ? 0 : (currentPosition + noItems); 
-	showNews(news);
+	currentPosition = (currentPosition + noItems) >= news[currentFeed].items.length ? 0 : (currentPosition + noItems); 
+	showNews();
 }
 
 /* Navigates through the feeds automatically */

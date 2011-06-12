@@ -59,13 +59,18 @@ function settingsClosing(event)
 
 function loadSettings() 
 {
-	readSettingsFromFile(System.Gadget.path+"\\..\\FeedFlowSettings.fcg");
+	var fO=new ActiveXObject("Scripting.FileSystemObject");
+	var f=fO.OpenTextFile(System.Gadget.path+"\\errorLog.txt",1,true);
+	if(!f.AtEndOfStream)
+		document.getElementById("errorLogArea").innerHTML=f.ReadAll();
+	f.Close();
+	
 	var feedCount=System.Gadget.Settings.read("noFeeds");
 	if(feedCount=="")feedCount=0;
 
 	autoScrollInterval.value=((interval = System.Gadget.Settings.read("autoScrollInterval"))?interval:15000);
 	loopType.options[System.Gadget.Settings.read("loopType")||0].selected=true;
-	feedLoadTimeout.value=((feedloadtimeout = System.Gadget.Settings.read("feedLoadTimeout"))?feedloadtimeout:6500);
+	feedLoadTimeout.value=((feedloadtimeout = System.Gadget.Settings.read("feedLoadTimeout"))?feedloadtimeout:16500);
 	
 	for ( var i=0; i<4; i++ ) if ( feedTheme[i].value == System.Gadget.Settings.read("theme") ) feedTheme[i].selected = "1";
 	updatePreview();
@@ -191,6 +196,14 @@ function flushReadCache()
 	f.Write("a,");
 	f.Close();
 	System.Gadget.document.parentWindow.markedAsReadCache="";
+}
+
+function flushErrorLog()
+{
+	var f=new ActiveXObject("Scripting.FileSystemObject").OpenTextFile(System.Gadget.path+"\\errorLog.txt",2,true);
+	f.Write("");
+	f.Close();
+	document.getElementById("errorLogArea").innerHTML="";
 }
 
 function checkForFeedFetchingTimeout()
@@ -438,10 +451,9 @@ function exportFeeds()
 
 function showTable( table )
 {
-	feedsTable.style.display = 'none';
-	aboutTable.style.display = 'none';
-	optionsTable.style.display = 'none';
-	eEditTable.style.display="none";
+	var a=document.getElementsByTagName("table");
+	for(var i=0;a[i];i++)
+		a[i].style.display='none';
 	table.style.display = 'block';
 }
 
