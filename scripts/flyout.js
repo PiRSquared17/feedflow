@@ -23,6 +23,8 @@
  
  **********************************************/
  
+var currentFeed = System.Gadget.document.parentWindow.currentFeed;
+	
 /* Retrieves the content that must be displayed in the flyout */
 function initFlyout()
 {
@@ -31,10 +33,10 @@ function initFlyout()
 	var news = System.Gadget.document.parentWindow.news;
 	var i = System.Gadget.document.parentWindow.flyoutIndex;
 	var d;
-	flyoutTitle.innerHTML = news.items[i].title;
-	flyoutDescription.innerHTML = (news.items[i].enclosure!=undefined?"<img src='"+news.items[i].enclosure+"' alt='' align='left'/>"+news.items[i].description.replace(/\<img .+?\>/ig,''):news.items[i].description);
-	flyoutPubDate.innerHTML = "Published on: " + ((d=news.items[i].dateObj)==null?"undefined":d.toLocaleDateString()+", "+d.toLocaleTimeString());
-	flyoutLink.href = news.items[i].link;
+	flyoutTitle.innerHTML = news[currentFeed].items[i].title;
+	flyoutDescription.innerHTML = (news[currentFeed].items[i].enclosure!=undefined?"<img src='"+news[currentFeed].items[i].enclosure+"' alt='' align='left'/>"+news[currentFeed].items[i].description.replace(/\<img .+?\>/ig,''):news[currentFeed].items[i].description);
+	flyoutPubDate.innerHTML = "Published on: " + ((d=news[currentFeed].items[i].dateObj)==null?"undefined":d.toLocaleDateString()+", "+d.toLocaleTimeString());
+	flyoutLink.href = news[currentFeed].items[i].link;
 	self.focus();
 }
 
@@ -42,9 +44,18 @@ function hideFlyout()
 {
 	if(System.Gadget.document.parentWindow.isAutoScroll==1)
 		System.Gadget.document.parentWindow.autoscrolltimeout=System.Gadget.document.parentWindow.setTimeout("autoScroll();",System.Gadget.document.parentWindow.aSInterval);
-	var xD=System.Gadget.document.parentWindow.xmlDocument;
-	if ( xD.getElementsByTagName("item")[0] != null ) news = new System.Gadget.document.parentWindow.RSS2Channel(xD);
-		else news = new System.Gadget.document.parentWindow.AtomChannel(xD);
-	System.Gadget.document.parentWindow.showNews(news);
-	System.Gadget.document.parentWindow.news=news;
+	if(System.Gadget.Settings.read("hideFeeds")==1)
+	{
+		System.Gadget.document.parentWindow.news[currentFeed].items.splice(System.Gadget.document.parentWindow.flyoutIndex,1);
+		System.Gadget.document.parentWindow.showNews();
+	}
+}
+
+function readMoreClick()
+{
+	System.Gadget.document.parentWindow.markAsRead(2);
+	if(System.Gadget.Settings.read('hideFeeds')==2)
+	{
+		System.Gadget.document.parentWindow.news[currentFeed].items.splice(System.Gadget.document.parentWindow.flyoutIndex,1);System.Gadget.document.parentWindow.showNews();
+	}
 }
