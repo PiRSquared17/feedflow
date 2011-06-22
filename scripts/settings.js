@@ -43,11 +43,11 @@ function settingsClosing(event)
 		System.Gadget.Settings.write("fontSize",feedFontS.value);
 		System.Gadget.Settings.write("hideFeeds",hideFeeds.selectedIndex);
 		System.Gadget.Settings.write("hideFeedsMax",hideFeedsMax.value);
-		System.Gadget.Settings.write("NOUpdate",0);
+		System.Gadget.Settings.write("NOUpdate",NOUpdate.checked?1:0);
 		System.Gadget.Settings.writeString("feedPPGCoefficient",feedPPGCoefficient.value);
 		System.Gadget.Settings.write("GmaxAgeToViewMode",GmaxAgeToViewMode.checked?1:0);
-		System.Gadget.Settings.write("GfeedMaxAgeToView",GmaxAgeToView.value);
-		System.Gadget.Settings.write("GfeedMaxAgeToViewC",GmaxAgeToViewC.selectedIndex);
+		System.Gadget.Settings.write("GmaxAgeToView",GmaxAgeToView.value);
+		System.Gadget.Settings.write("GmaxAgeToViewC",GmaxAgeToViewC.selectedIndex);
 		System.Gadget.Settings.write("GwrapTitle",GwrapTitle.checked?1:0);
 		System.Gadget.Settings.write("GwrapDescription",GwrapDescription.checked?1:0);
 		System.Gadget.Settings.write("GhideDescription",GhideDescription.checked?1:0);
@@ -77,6 +77,7 @@ function loadSettings()
 
 	buildFeedList();
 	deleteFeed.disabled=!feedCount;
+	NOUpdate.checked = System.Gadget.Settings.read("NOUpdate");
 	moveFeedUpButton.disabled=true;
 	moveFeedDownButton.disabled=feedCount<2;
 	autoScrollCheckBox.checked = System.Gadget.Settings.read("autoScroll");
@@ -90,8 +91,8 @@ function loadSettings()
 	feedFetchRefreshC.options[i].selected=true;
 	feedPPGCoefficient.value=System.Gadget.Settings.readString("feedPPGCoefficient")||"1.000";
 	GmaxAgeToViewMode.checked=System.Gadget.Settings.read("GmaxAgeToViewMode")||0;
-	GmaxAgeToView.value=System.Gadget.Settings.read("GfeedMaxAgeToView")||0;
-	GmaxAgeToViewC.options[System.Gadget.Settings.read("GfeedMaxAgeToViewC")||0].selected=1;
+	GmaxAgeToView.value=System.Gadget.Settings.read("GmaxAgeToView")||0;
+	GmaxAgeToViewC.options[System.Gadget.Settings.read("GmaxAgeToViewC")||0].selected=1;
 	GwrapTitle.checked=System.Gadget.Settings.read("GwrapTitle")||0;
 	GwrapDescription.checked=System.Gadget.Settings.read("GwrapDescription")||0;
 	GhideDescription.checked=System.Gadget.Settings.read("GhideDescription")||0;

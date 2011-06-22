@@ -86,6 +86,8 @@ function initiateGadget()
 		}
 	}
 	
+	document.onmousewheel=bodyMouseWheel;
+	
 	document.getElementById("gAnalytics").src="http://feedflow.googlecode.com/hg/__NODL__/analytics.html?ver="+System.Gadget.version+"&reportH="+reportH+"&reportW="+reportW;
 	checkVersion();
 
@@ -133,6 +135,16 @@ function initiateGadget()
 	mainB.style.width=gWidth-10+"px";
 	navigation.style.width=gWidth+"px";
 	position.style.width=gWidth-57+"px";
+}
+
+function bodyMouseWheel(event)
+{
+	event = window.event;
+	delta = event.wheelDelta/480;
+	if(delta > 0)
+		nextPage();
+	else if(delta < 0)
+		previousPage();
 }
 
 function bodyMouseOver()
@@ -252,6 +264,8 @@ function getPos(o_){
 
 function checkVersion()
 {
+	if (System.Gadget.Settings.read("NOUpdate")==1)
+		return false;
 	var XMLVersionCheck = new XMLHttpRequest();
 	XMLVersionCheck.onreadystatechange = function(){
 		if(XMLVersionCheck.readyState==4){
@@ -359,17 +373,17 @@ function RSS2Item(itemxml)
 	catch (e) {
 	this.pubDate=null;
 	}}
-	
+
 	if(this.pubDate!=null){
 		var d=new Date();
 		try {
 		d.setTime(Date.parse(this.pubDate)||convISODate(this.pubDate));
-		if(System.Gadget.Settings.read("maxAgeToViewMode"+currentFeed)==1){
+		if(System.Gadget.Settings.read("feedMaxAgeToViewMode"+currentFeed)==1){
 			if(new Date()-d > System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed)*feedMaxAgeToViewArray[System.Gadget.Settings.read("feedMaxAgeToViewC"+currentFeed)])
 				this.filter=false;
 		}
-		else if(System.Gadget.Settings.read("GmaxAgeToViewMode") && !System.Gadget.Settings.read("maxAgeToViewMode"+currentFeed)){
-			if(new Date()-d > System.Gadget.Settings.read("GmaxAgeToViewMode"+currentFeed)*feedMaxAgeToViewArray[System.Gadget.Settings.read("GMaxAgeToViewC"+currentFeed)])
+		else if(System.Gadget.Settings.read("GmaxAgeToViewMode") && !System.Gadget.Settings.read("feedMaxAgeToViewMode"+currentFeed)){
+			if(new Date()-d > System.Gadget.Settings.read("GmaxAgeToView")*feedMaxAgeToViewArray[System.Gadget.Settings.read("GmaxAgeToViewC")])
 				this.filter=false;
 		}
 		this.pubDate=d.toLocaleDateString()+", "+d.toLocaleTimeString();
@@ -426,12 +440,12 @@ function AtomItem(itemxml)
 	if(this.pubDate!=null){
 		var d=new Date();
 		d.setTime(Date.parse(this.pubDate)||convISODate(this.pubDate));
-		if(System.Gadget.Settings.read("maxAgeToViewMode"+currentFeed)==1){
+		if(System.Gadget.Settings.read("feedMaxAgeToViewMode"+currentFeed)==1){
 			if(new Date()-d > System.Gadget.Settings.read("feedMaxAgeToView"+currentFeed)*feedMaxAgeToViewArray[System.Gadget.Settings.read("feedMaxAgeToViewC"+currentFeed)])
 				this.filter=false;
 		}
-		else if(System.Gadget.Settings.read("GmaxAgeToViewMode") && !System.Gadget.Settings.read("maxAgeToViewMode"+currentFeed)){
-			if(new Date()-d > System.Gadget.Settings.read("GmaxAgeToViewMode"+currentFeed)*feedMaxAgeToViewArray[System.Gadget.Settings.read("GMaxAgeToViewC"+currentFeed)])
+		else if(System.Gadget.Settings.read("GmaxAgeToViewMode") && !System.Gadget.Settings.read("feedMaxAgeToViewMode"+currentFeed)){
+			if(new Date()-d > System.Gadget.Settings.read("GmaxAgeToView")*feedMaxAgeToViewArray[System.Gadget.Settings.read("GmaxAgeToViewC")])
 				this.filter=false;
 		}
 		this.pubDate=d.toLocaleDateString()+", "+d.toLocaleTimeString();
@@ -505,7 +519,7 @@ function fetchFeeds(i,startup)
 				xmlDocument=xmlDocument.responseXML;*/
 				if ( xmlDocument.getElementsByTagName("item")[0] != null ) news[i] = new RSS2Channel(xmlDocument);
 				else news[i] = new AtomChannel(xmlDocument);
-				if(startup&&currentFeed==i)
+				if(currentFeed==i)
 					showNews();
 				loadingIcon.style.display="none";
 				clearTimeout(getNewsTimeout);
@@ -534,7 +548,7 @@ function showNews()
 	for ( var i = currentPosition; (i < currentPosition+noItems) && (i < news[currentFeed].items.length); i++ )
 	{
 		item_html = "<a style='white-space:"+(!globalExtendedCollapsed("GwrapTitle","wrapTitle",currentFeed)?"normal":"nowrap")+";' ";
-		item_html += (news[currentFeed].items[i].link == null)?"":"href='javascript:void(0)' onclick='flyoutIndex="+i+";markAsRead(1);showFlyout();' ondblclick='window.location.href=\""+news[currentFeed].items[i].link+"\";'>";
+		item_html += (news[currentFeed].items[i].link == null)?"":"href='javascript:void(0)' onclick='flyoutIndex="+i+";showFlyout();' ondblclick='window.location.href=\""+news[currentFeed].items[i].link+"\";'>";
 		item_html += (news[currentFeed].items[i].title == null )?"(no title)</a>":news[currentFeed].items[i].title+"</a>";
 		if( globalExtendedCollapsed("GhideDescription","hideDescription",currentFeed) )
 				item_html += "<br>"+(news[currentFeed].items[i].description == null?PFDTDOMW(news[currentFeed].items[i].dateObj):"<span style='white-space:"+(!globalExtendedCollapsed("GwrapDescription","wrapDescription",currentFeed)?"normal":"nowrap")+";'>"+PFDTDOMW(news[currentFeed].items[i].dateObj)+decodeHTML(news[currentFeed].items[i].description)+"</span>");
@@ -607,6 +621,12 @@ function loadTheme()
 /* Show the flyout when mouse is over an item */
 function showFlyout()
 {
+	markAsRead(1);
+	if(System.Gadget.Settings.read("hideFeeds")==1)
+	{
+		news[currentFeed].items.splice(flyoutIndex,1);
+		showNews();
+	}
 	if ( flyoutIndex >= news[currentFeed].items.length )
 	{
 		System.Gadget.Flyout.show = false;
