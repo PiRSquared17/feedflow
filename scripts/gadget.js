@@ -64,6 +64,10 @@ function settingsClosed(event)
 
 function initiateGadget()
 {
+	var f=new ActiveXObject("Scripting.FileSystemObject").OpenTextFile(System.Gadget.path+"\\errorLog.txt",2,true);
+	f.Write("");
+	f.Close();
+	
 	readSettingsFromFile(System.Gadget.path+"\\..\\FeedFlowSettings.fcg");
 	loadTheme();
 	var gHeight=System.Gadget.Settings.read("gHeight")||162;
@@ -537,12 +541,12 @@ function fetchFeeds(i,startup)
 
 function showNews()
 {
+	titleLink.innerHTML=System.Gadget.Settings.read("feedName"+currentFeed);
 	if(!news[currentFeed])
 	{
 		showMessage("This feed is not fetched yet.");
 		return 0;
 	}
-	titleLink.innerHTML=System.Gadget.Settings.read("feedName"+currentFeed);
 	noItems=Math.round((System.Gadget.Settings.read("gHeight")||162)/39*(System.Gadget.Settings.readString("feedPPCoefficient"+currentFeed)||1)*(System.Gadget.Settings.readString("feedPPCoefficient")||1));
 	var buffer="";
 	for ( var i = currentPosition; (i < currentPosition+noItems) && (i < news[currentFeed].items.length); i++ )
@@ -621,12 +625,6 @@ function loadTheme()
 /* Show the flyout when mouse is over an item */
 function showFlyout()
 {
-	markAsRead(1);
-	if(System.Gadget.Settings.read("hideFeeds")==1)
-	{
-		news[currentFeed].items.splice(flyoutIndex,1);
-		showNews();
-	}
 	if ( flyoutIndex >= news[currentFeed].items.length )
 	{
 		System.Gadget.Flyout.show = false;
