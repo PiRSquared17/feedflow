@@ -38,6 +38,13 @@ function initFlyout()
 	flyoutPubDate.innerHTML = "Published on: " + ((d=news[currentFeed].items[i].dateObj)==null?"undefined":d.toLocaleDateString()+", "+d.toLocaleTimeString());
 	flyoutLink.href = news[currentFeed].items[i].link;
 	self.focus();
+	
+	System.Gadget.document.parentWindow.markAsRead(1);
+	if(System.Gadget.Settings.read("hideFeeds")==1)
+	{
+		System.Gadget.document.parentWindow.news[currentFeed].items.splice(i,1);
+		System.Gadget.document.parentWindow.showNews();
+	}
 }
 
 function hideFlyout()
