@@ -38,18 +38,19 @@ function initFlyout()
 	flyoutPubDate.innerHTML = "Published on: " + ((d=news[currentFeed].items[i].dateObj)==null?"undefined":d.toLocaleDateString()+", "+d.toLocaleTimeString());
 	flyoutLink.href = news[currentFeed].items[i].link;
 	self.focus();
-}
-
-function hideFlyout()
-{
-	if(System.Gadget.document.parentWindow.isAutoScroll==1)
-		System.Gadget.document.parentWindow.autoscrolltimeout=System.Gadget.document.parentWindow.setTimeout("autoScroll();",System.Gadget.document.parentWindow.aSInterval);
+	
 	System.Gadget.document.parentWindow.markAsRead(1);
 	if(System.Gadget.Settings.read("hideFeeds")==1)
 	{
 		System.Gadget.document.parentWindow.news[currentFeed].items.splice(System.Gadget.document.parentWindow.flyoutIndex,1);
 		System.Gadget.document.parentWindow.showNews();
 	}
+}
+
+function hideFlyout()
+{
+	if(System.Gadget.document.parentWindow.isAutoScroll==1)
+		System.Gadget.document.parentWindow.autoscrolltimeout=System.Gadget.document.parentWindow.setTimeout("autoScroll();",System.Gadget.document.parentWindow.aSInterval);
 }
 
 function readMoreClick()
