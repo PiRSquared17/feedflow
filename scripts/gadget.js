@@ -573,6 +573,8 @@ function showNews()
 
 function PFDTDOMW(d)
 {
+	if(d==undefined)
+	return "";
 	try	{
 	var i;
 	var r="";
