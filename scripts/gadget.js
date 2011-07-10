@@ -547,7 +547,7 @@ function showNews()
 		showMessage("This feed is not fetched yet.");
 		return 0;
 	}
-	noItems=Math.round((System.Gadget.Settings.read("gHeight")||162)/39*(System.Gadget.Settings.readString("feedPPCoefficient"+currentFeed)||1)*(System.Gadget.Settings.readString("feedPPCoefficient")||1));
+	noItems=Math.round((System.Gadget.Settings.read("gHeight")||162)/39*(System.Gadget.Settings.readString("feedPPCoefficient"+currentFeed)||1)*(System.Gadget.Settings.readString("feedPPGCoefficient")||1));
 	var buffer="";
 	for ( var i = currentPosition; (i < currentPosition+noItems) && (i < news[currentFeed].items.length); i++ )
 	{
