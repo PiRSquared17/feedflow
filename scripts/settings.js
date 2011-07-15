@@ -353,7 +353,7 @@ function saveSettingsToFile(setP)
 
 	nf.WriteLine("[G]");
 	for(n in aS)
-		nf.WriteLine(aS[n]+"="+System.Gadget.Settings.read(aS[n]));
+		nf.WriteLine(aS[n]+"="+System.Gadget.Settings.readString(aS[n]));
 
 	for(var i=0;i<System.Gadget.Settings.read("noFeeds");i++){
 		nf.WriteLine("[F]");
