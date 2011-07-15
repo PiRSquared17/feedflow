@@ -513,14 +513,14 @@ function fetchFeeds(i,startup)
 	loadingIcon.style.display="block";
 	loadingIcon.title="Loading "+i+". feed...";
 
-	window["xmlDocument"] = new ActiveXObject('Microsoft.XMLDOM');
-	//window["xmlDocument"] = new XMLHttpRequest();
+	//window["xmlDocument"] = new ActiveXObject('Microsoft.XMLDOM');
+	window["xmlDocument"] = new XMLHttpRequest();
 	xmlDocument.onreadystatechange = function () {
 		if (xmlDocument.readyState == 4)
 		{
-				/*if(xmlDocument.getResponseHeader("Content-Type")!="text/xml")
+				if(xmlDocument.getResponseHeader("Content-Type")!="text/xml")
 					xmlDocument.responseXML.loadXML(xmlDocument.responseText);
-				xmlDocument=xmlDocument.responseXML;*/
+				xmlDocument=xmlDocument.responseXML;
 				if ( xmlDocument.getElementsByTagName("item")[0] != null ) news[i] = new RSS2Channel(xmlDocument);
 				else news[i] = new AtomChannel(xmlDocument);
 				if(currentFeed==i)
@@ -530,9 +530,9 @@ function fetchFeeds(i,startup)
 				fetchFeeds(i+1);
 		}
 	};
-	xmlDocument.load(URL+(URL.match(/\?/)?"&":"?")+Math.random()+"=1");
-	/*xmlDocument.open("GET",URL+(URL.match(/\?/)?"&":"?")+Math.random()+"=1",true);
-	xmlDocument.send();*/
+	//xmlDocument.load(URL+(URL.match(/\?/)?"&":"?")+Math.random()+"=1");
+	xmlDocument.open("GET",URL+(URL.match(/\?/)?"&":"?")+Math.random()+"=1",true);
+	xmlDocument.send();
 
 	getNewsTimeout=setTimeout(function(){logError(i+". feed failed to fetch.\r\n");xmlDocument.abort();loadingIcon.style.display="none";fetchFeeds(i+1);}, System.Gadget.Settings.read("feedLoadTimeout"));
 
