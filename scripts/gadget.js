@@ -197,6 +197,7 @@ function resizeVE()
 {
 	var gHeight=parseInt(mainContainer.style.height);
 	System.Gadget.Settings.write("gHeight",gHeight);
+	saveSettingsToFile(System.Gadget.path+"\\..\\FeedFlowSettings.fcg");
 	document.body.style.cursor="";
 	document.body.onmousemove="";
 	document.body.onmouseup="";
@@ -245,6 +246,7 @@ function resizeHE()
 {
 	var gWidth=parseInt(mainContainer.style.width);
 	System.Gadget.Settings.write("gWidth",gWidth);
+	saveSettingsToFile(System.Gadget.path+"\\..\\FeedFlowSettings.fcg");
 	document.body.style.cursor="";
 	document.body.onmousemove="";
 	document.body.onmouseup="";
