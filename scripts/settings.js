@@ -25,7 +25,7 @@
 
 System.Gadget.onSettingsClosing = settingsClosing;
 
-var aS=["theme","fontFamily","fontSize","autoScroll","autoScrollInterval","loopType","notStopAutoScroll","feedLoadTimeout","feedFetchRefresh","feedFetchRefreshC","hideFeeds","hideFeedsMax","NOUpdate","feedPPGCoefficient","dispPubDateOnMW","GwrapTitle","GwrapDescription","GhideDescription","GmaxAgeToViewMode","GmaxAgeToView","GmaxAgeToViewC"];
+var aS=["theme","fontFamily","fontSize","autoScroll","autoScrollInterval","loopType","notStopAutoScroll","feedLoadTimeout","feedFetchRefresh","feedFetchRefreshC","hideFeeds","hideFeedsMax","NOUpdate","feedPPGCoefficient","dispPubDateOnMW","GwrapTitle","GwrapDescription","GhideDescription","GmaxAgeToViewMode","GmaxAgeToView","GmaxAgeToViewC","gHeight","gWidth"];
 
 function settingsClosing(event)
 {
@@ -467,7 +467,6 @@ function onlyNumbers(evt,d)
         return false;
 
     return true;
-
 }
 
 function parseTimeStr(str)
